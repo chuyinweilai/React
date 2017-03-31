@@ -23,7 +23,7 @@ var config = {
 		loaders: [
 			{
 				test: /\.less$/,
-				loaders: ['style-loader', 'css-loader', 'less-loader'],
+				loaders: ['style-loader', 'css-loader', 'scss-loader'],
 				include: path.resolve(__dirname, 'app')
 			},{
         test: /\.(png|jpg)$/,
