@@ -1,0 +1,12 @@
+@import '~antd/dist/antd.css';
+HTML,
+window {
+    width: 100%;
+    height: 100%;
+    display: flex;
+}
+
+Layout {
+    width: 100%;
+    height: 100%;
+}
