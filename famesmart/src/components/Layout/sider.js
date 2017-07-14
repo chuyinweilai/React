@@ -1,8 +1,8 @@
 import React,{Component} from 'react';
-import {Layout, Menu, } from 'antd'
+import {Layout, Menu, Icon} from 'antd'
 
 const { Sider } = Layout;
-const { SubMenu } = Menu;
+const { SubMenu,MenuItemGroup } = Menu;
 
 export default class siders extends Component{
 	constructor(props){
@@ -26,15 +26,24 @@ export default class siders extends Component{
 					style={{ height: '100%',borderRight: 0 }}
 					onSelect = {this._click.bind(this)}
 				>
-					<Menu.Item key="home">首页</Menu.Item>
-					<Menu.Item key="2">五违管理</Menu.Item>
-					<Menu.Item key="3">文明管理</Menu.Item>
-					<Menu.Item key="4">发卡管理</Menu.Item>
-					<Menu.Item key="5">刷卡管理</Menu.Item>
-					<Menu.Item key="6">志愿者</Menu.Item>
-					<Menu.Item key="7">用户管理</Menu.Item>
-					<Menu.Item key="point">积分管理</Menu.Item>
-					<Menu.Item key="test">test</Menu.Item>
+					<Menu.Item key="home">option1</Menu.Item>
+					<SubMenu key="sub1" title={<span><Icon type="user" />subnav 1</span>}>
+						<Menu.Item key="2">option2</Menu.Item>
+						<Menu.Item key="3">option3</Menu.Item>
+						<Menu.Item key="4">option4</Menu.Item>
+					</SubMenu>
+					<SubMenu key="sub2" title={<span><Icon type="laptop" />subnav 2</span>}>
+						<Menu.Item key="5">option5</Menu.Item>
+						<Menu.Item key="6">option6</Menu.Item>
+						<Menu.Item key="7">option7</Menu.Item>
+						<Menu.Item key="8">option8</Menu.Item>
+					</SubMenu>
+					<SubMenu key="sub3" title={<span><Icon type="notification" />志愿者</span>}>
+						<Menu.Item key="point">积分管理（列表打印）</Menu.Item>
+						<Menu.Item key="active">活动发布（列表+From表单）</Menu.Item>
+						{/* <Menu.Item key="11">签到</Menu.Item> */}
+						<Menu.Item key="12">积分兑换</Menu.Item>
+					</SubMenu>
 				</Menu>
 		)
 	}

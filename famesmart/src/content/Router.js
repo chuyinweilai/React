@@ -1,7 +1,7 @@
 import React,{Component} from 'react';
 import Home from './home/home'
 import Point from './point/point'
-import Point2 from './point2/point2'
+import Point2 from './active/active'
 import Test from './test/index'
 
 
@@ -22,7 +22,7 @@ export default class mainPage extends Component{
 			return <Home message={this.mess} Router={this.Router}/>
 		else if(name == 'point')	
 			return <Point message={this.mess} Router={this.Router}/>
-		else if(name == 'point2')	
+		else if(name == 'active')	
 			return <Point2 message={this.mess} Router={this.Router}/>
 		else if(name == 'test')	
 			return <Test message={this.mess} Router={this.Router}/>

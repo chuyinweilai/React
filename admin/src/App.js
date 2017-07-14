@@ -8,10 +8,8 @@ import {
   Breadcrumb,
 } from 'antd';
 
-import {
-  Headers,
-  Siders,
-} from './components/Layout';
+import Headers from './components/Layout/header';
+import Siders from './components/Layout/sider';
 import Router from './content/Router';
 
 const { SubMenu } = Menu;
