@@ -11,8 +11,7 @@ import ATable from './aTable'
 
 const { Content } = Layout;
 
-
-export default class patrol_ctrl extends Component{
+export default class accumulate_exchange extends Component{
 	constructor(props){
 		super(props);
 		this.Router;
@@ -31,12 +30,12 @@ export default class patrol_ctrl extends Component{
 		return (
 			<Layout style={{ padding: '0 24px 24px' }}>
 				<Breadcrumb style={{ margin: '12px 0' }}>
-				<Breadcrumb.Item>刷卡管理</Breadcrumb.Item>
-				<Breadcrumb.Item>刷卡管理</Breadcrumb.Item>
+				<Breadcrumb.Item>设备管理</Breadcrumb.Item>
+				<Breadcrumb.Item>权限常用组</Breadcrumb.Item>
 				</Breadcrumb>
 				<Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>
 					<div>
-						<h2>刷卡管理</h2>
+						<h2>权限常用组</h2>
 
 					</div>
 					<ATable />

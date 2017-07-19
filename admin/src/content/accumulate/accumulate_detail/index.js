@@ -12,7 +12,7 @@ import ATable from './aTable'
 const { Content } = Layout;
 
 
-export default class device_wlist extends Component{
+export default class accumulate_detail extends Component{
 	constructor(props){
 		super(props);
 		this.Router;
@@ -32,11 +32,11 @@ export default class device_wlist extends Component{
 			<Layout style={{ padding: '0 24px 24px' }}>
 				<Breadcrumb style={{ margin: '12px 0' }}>
 				<Breadcrumb.Item>设备管理</Breadcrumb.Item>
-				<Breadcrumb.Item>设备白名单</Breadcrumb.Item>
+				<Breadcrumb.Item>设备区域对应表</Breadcrumb.Item>
 				</Breadcrumb>
 				<Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>
 					<div>
-						<h2>设备白名单</h2>
+						<h2>设备区域对应表</h2>
 
 					</div>
 					<ATable />

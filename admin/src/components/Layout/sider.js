@@ -27,24 +27,16 @@ export default class siders extends Component{
 					onSelect = {this._click.bind(this)}
 				>
 					<Menu.Item key="home"><Icon type="home" />首页</Menu.Item>
-					<Menu.Item key='infraction'><Icon type="api" />五违管理</Menu.Item>
-					<Menu.Item key="civilization"><Icon type="heart-o" />文明管理</Menu.Item>
-					<SubMenu key='civilbeh' title={<span><Icon type="exception" />任务分发</span>}>
+					<SubMenu key='volunteer' title={<span><Icon type="user" />志愿者活动</span>}>
+						<Menu.Item key="Volunteer_ative">活动管理</Menu.Item>
+						<Menu.Item key="Volunteer_add">新增（修改）活动</Menu.Item>
+						<Menu.Item key="Volunteer_sign">活动签到</Menu.Item>
+						<Menu.Item key="Volunteer_user">用户管理</Menu.Item>
 					</SubMenu>
-					<SubMenu key='cardrec' title={<span><Icon type='credit-card' />刷卡管理</span>}>
-						<Menu.Item key="record">刷卡记录</Menu.Item>
-						<Menu.Item key="patrol_ctrl">巡更管理</Menu.Item>
-					</SubMenu>
-					<SubMenu key='users' title={<span><Icon type="user" />用户管理</span>}>
-						<Menu.Item key="guard">门禁用户表</Menu.Item>
-						<Menu.Item key="patrol">巡更用户表</Menu.Item>
-					</SubMenu>
-					<SubMenu key='device' title={<span><Icon type="shake" />设备管理</span>}>
-						<Menu.Item key="device_area">设备区域对应表</Menu.Item>
-						<Menu.Item key="device_wlist">设备白名单</Menu.Item>
-						<Menu.Item key="device_root">权限常用组</Menu.Item>
-					</SubMenu>
-					<SubMenu key='districtImg' title={<span><Icon type='global' />小区布局</span>}>
+					<SubMenu key='Accumulate' title={<span><Icon type="shake" />兑换商品</span>}>
+						<Menu.Item key="Accumulate_detail">积分详情</Menu.Item>
+						<Menu.Item key="Accumulate_exchange">兑换商品</Menu.Item>
+						<Menu.Item key="Accumulate_add">新增（修改）商品</Menu.Item>
 					</SubMenu>
 				</Menu>
 		)

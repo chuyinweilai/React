@@ -22,7 +22,6 @@ export default class home extends Component{
 	}
 
 	_jump(nextPage,mess){
-		console.log(nextPage,mess,this.mess.nextPage)
 		this.Router(nextPage,mess,this.mess.nextPage)
 	}
 

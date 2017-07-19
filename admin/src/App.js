@@ -19,7 +19,7 @@ class App extends Component {
     super(props);
     this.state={
       message:{
-        nextPage: 'home',
+        nextPage: 'login',
         historyPage: '',
         mess:'',
       },
@@ -38,22 +38,28 @@ class App extends Component {
   }
 
   render() {
-    return ( 
-    <Layout>
-      <Header className="header" >
-        <Headers className="header" >
-        </Headers>
-      </Header>
-      <Layout>
-        <Sider width={200} style={{ background: '#fff' }}>
-          <Siders message={this.state.message} Router={(nextPage,mess, historyPage) => this._Router(nextPage,mess,historyPage)}></Siders>
-        </Sider>
-
-        <Router message={this.state.message} Router={(nextPage,mess,historyPage) => this._Router(nextPage,mess,historyPage)}/>
-          
-      </Layout>
-    </Layout>
-    );
+    if(this.state.message.nextPage === "login"){
+      return ( 
+        <Layout>
+            <Router message={this.state.message} Router={(nextPage,mess,historyPage) => this._Router(nextPage,mess,historyPage)}/>
+        </Layout>
+      );
+    } else {
+      return ( 
+        <Layout>
+          <Header className="header" >
+            <Headers className="header" >
+            </Headers>
+          </Header>
+          <Layout>
+            <Sider width={200} style={{ background: '#fff' }}>
+              <Siders message={this.state.message} Router={(nextPage,mess, historyPage) => this._Router(nextPage,mess,historyPage)}></Siders>
+            </Sider>
+            <Router message={this.state.message} Router={(nextPage,mess,historyPage) => this._Router(nextPage,mess,historyPage)}/>
+          </Layout>
+        </Layout>
+      );
+    }
   }
 
 

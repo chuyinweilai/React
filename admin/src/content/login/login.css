@@ -1,0 +1,22 @@
+.login-box {
+    flex: 1;
+    /* padding: 0 50%; */
+    background-color: #fff;
+    justify-content: center;
+    align-items: center;
+}
+
+.login-form {
+    width: 300px;
+    padding: 40px 30px 20px;
+    border-radius: 20px;
+    background-color: #ececec;
+}
+
+.login-form-forgot {
+    float: right;
+}
+
+.login-form-button {
+    width: 100%;
+}
