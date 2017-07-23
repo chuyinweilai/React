@@ -1,8 +1,16 @@
 .active_content {
-    padding: 0;
-    margin: 0;
+    /* padding: 0;
+    margin: 0; */
     /* width: 180px;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis; */
+}
+
+.ant-layout-content {
+    height: 100%
+}
+
+td {
+    text-align: center;
 }

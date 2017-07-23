@@ -10,12 +10,12 @@ import {
 	Popconfirm,
 } from 'antd'
 import ATable from './aTable'
-import appData from './../../../assert/Ajax';
 import '../../../App.css'
+import appData from './../../../assert/Ajax';
 
 const { Content } = Layout;
 
-export default class accumulate_exchange extends Component{
+export default class accumulate_history extends Component{
 	constructor(props){
 		super(props);
 		this.Router;
@@ -39,9 +39,8 @@ export default class accumulate_exchange extends Component{
 		return (
 			<Layout style={{ padding: '0 24px 24px' }}>
 				<Breadcrumb style={{ margin: '12px 0' }} className="printHidden">
-				<Breadcrumb.Item>活动积分</Breadcrumb.Item>
-				<Breadcrumb.Item>积分列表</Breadcrumb.Item>
-				<Breadcrumb.Item>积分兑换</Breadcrumb.Item>
+				<Breadcrumb.Item>设备管理</Breadcrumb.Item>
+				<Breadcrumb.Item>设备白名单</Breadcrumb.Item>
 				</Breadcrumb>
 				<Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>
 					<Row type="flex" justify="space-between" gutter={1}>
@@ -56,8 +55,7 @@ export default class accumulate_exchange extends Component{
 					<Row>
 						<Col span={8} style={{margin:'10px'}}> </Col>
 					</Row>
-
- 					<ATable  message={this.mess} Router={this.Router}/> 
+					<ATable  message={this.mess} Router={this.Router}/>
 				</Content>
 			</Layout>
 		)

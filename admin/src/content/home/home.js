@@ -5,6 +5,7 @@ import {
 	Button,
 	Breadcrumb, 
 } from 'antd'
+import '../../App.css'
 
 const { Content } = Layout;
 

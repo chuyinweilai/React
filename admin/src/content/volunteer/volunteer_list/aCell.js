@@ -1,6 +1,7 @@
 
 import React, { PropTypes,Component } from 'react';
 import { Table, Input, Icon, Button, Popconfirm } from 'antd'
+import  '../../../App.css'
 
 export default class pointCell extends Component  {
 	constructor(props){

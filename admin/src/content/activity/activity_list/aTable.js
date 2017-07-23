@@ -8,11 +8,13 @@ import {
 	Row,
 	Col,
 	Popconfirm, 
+	Pagination,
 	Menu, 
 	Dropdown 
 } from 'antd'
 import appData from './../../../assert/Ajax';
 import ACell from './aCell';
+import '../../../App.css'
 
 require('./index.css');
 export default class pointTable extends Component {
@@ -21,45 +23,38 @@ export default class pointTable extends Component {
 		this.state = {
 			dataSource: [],
 			count: 1,
+			total:0,
+			listMess:{},
+			pageSum:1,
+			pageNum:1,
 		};
+
 		this.columns = [
 			{
+				colSpan:1,
 				title: 'ID',
-				dataIndex: 'id',
-				// render:
-				// width: '20px',
 				render:(text,record,index) => {
-					console.log(record,index)
-					// let text = record
 					return(
 						<text>{index}</text>
 					)
 				}
 			},
 			{
+				colSpan:1,
 				title: '活动编号',
 				dataIndex: 'activity_no',
-  				// sorter: true,
-  				// render: name => `${name.first} ${name.last}`,
-				// width: '100px',
 			},
 			{
+  				colSpan: 1,
 				title: '活动日期',
 				dataIndex: 'open_date',
-  				colSpan: 1,
-				// width: '100px',
 			}, 
 			{
+				colSpan:1,
 				title: '活动类型',
 				dataIndex: 'type',
-				// width: '100px',
 				render:(text,record) => {
-					console.log(text)
 					let test = ''
-					// 	1:社区服务
-					// 2:公益活动
-					// 3:其他
-
 					if(text === 1 ){
 						test = '社区服务'
 					} else if(text === 2){
@@ -71,73 +66,104 @@ export default class pointTable extends Component {
 				}
 			}, 
 			{
+				colSpan:1,
 				title: '活动积分',
 				dataIndex: 'score',
-				// width: "100px",
 			},
 			{
+				colSpan:1,
 				title: '活动主题',
 				dataIndex: 'title',
-				// width: '100px',
 			},
 			{
+				colSpan:1,
 				title: '活动内容',
 				dataIndex: 'detail',
-				// width: '200px',
-				render:(text,record) => (<text  className="active_content">{text}</text>)
+				width: '300px',
+				render:(text,record) => {
+					if(text.length > 20){
+						let str = text.substring(-1,20);
+						return (
+							<text>{str}......</text>
+						)
+					} else {
+						return (
+							<text>{text}</text>
+						)
+					}
+				}
 			},
 			{
+				colSpan:1,
 				title: '人数限制',
 				dataIndex: 'join_limit',
-				// width: '100px',
 			},
 			{
+				colSpan:1,
 				title: '报名开始',
 				dataIndex: 'vld_start',
-				// width: '100px',
 			},
 			{
+				colSpan:1,
 				title: '报名截止',
 				dataIndex: 'vld_end',
-				// width: '100px',
 			},
 			{
+				colSpan:1,
 				title: '活动状态',
 				dataIndex: 'vld_flag',
-				// width: '100px',
+				render:(text,record) => {
+					let test = ''
+
+					if(text === 1 ){
+						test = '有效'
+					} else if(text === 2){
+						test = '无效'
+					}
+					return <div>{test}</div>
+				}
 			},
 			{
+				colSpan:1,
 				title: '报名人数',
 				dataIndex: 'join_cnt',
-				// width: '100px',
 			},
 			{
+				colSpan:1,
 				title: '签到人数',
 				dataIndex: 'sign_cnt',
-				// width: '100px',
 			},
 			{
 				title:"操作",
 				key:"action",
-  				// colSpan: 3,
-				render:(text, record)=>(
-					<Row type="flex" justify="space-between">
-						<Button onClick={() =>this._action('sign')}>签到</Button>
-						<Button onClick={() =>this._action('change')}>修改</Button>
-						<Button onClick={() =>this._action('refuse')}>取消</Button>
-					</Row>
-				)
+  				colSpan: 3,
+				render:(text, record)=>{
+					return (
+						<Row type="flex" justify="space-between">
+							<Button onClick={() =>this._action('sign',record)}>签到</Button>
+							<Button onClick={() =>this._action('change',record)}>修改</Button>
+							<Button onClick={() =>this._action('refuse',record)}>取消</Button>
+						</Row>
+					)
+				}
 			}
 		];
+		
+		this.Router;
+		this.mess = null;
 	}
 
 	componentWillMount(){
-		console.log("active")
+		this.Router = this.props.Router;
+		this.mess = this.props.message;
 		appData._Storage('get',"userMess",(res) =>{
-			console.log(res)
 			this.userMess = res
 			this._getEvent()
 		})
+	}
+
+	_jump(nextPage,mess){
+		this.Router(nextPage,mess,this.mess.nextPage)
 	}
 
 	//获取后台信息
@@ -148,15 +174,47 @@ export default class pointTable extends Component {
 			 "comm_code": userMess.comm_code
 		}
 		appData._dataPost(afteruri,body,(res) => {
+			let pageSum = Math.ceil(res.total/res.per_page)
 			let data = res.data;
 			let len = data.length;
 			this.setState({
+				total:res.total,
 				dataSource: data,
 				count:len,
 			})
 		})
 	}
 	
+	//操作栏功能
+	_action(type,mess){
+		if(type=== "sign"){
+			this._jump('activity_sign', mess)
+		} else if(type === "change"){
+			this._jump('activity_add', mess)
+		}else if(type === "refuse"){
+			
+		}
+	}
+
+	//分页器activity/list?page=num
+	_pageChange(pageNumber){
+		let userMess = this.userMess;
+		let afteruri = 'activity/list?page=' + pageNumber ;
+		let body = {
+			 "comm_code": userMess.comm_code
+		}
+		appData._dataPost(afteruri,body,(res) => {
+			let pageSum = Math.ceil(res.total/res.per_page)
+			let data = res.data;
+			let len = data.length;
+			this.setState({
+				total:res.total,
+				dataSource: data,
+				count:len,
+				pageNum:pageNumber
+			})
+		})
+	}
 
 	render() {
 		const { dataSource } = this.state;
@@ -166,7 +224,10 @@ export default class pointTable extends Component {
 			 <Table bordered 
 			 //pagination={{ pageSize: 50 }} scroll={{ y: 600 }} 
 			 dataSource={this.state.dataSource} 
-			 columns={columns} rowKey='key'/> 
+			 columns={columns} rowKey='key' pagination={false}/> 
+			 <Row type="flex" justify="end">
+			 	<Pagination showQuickJumper defaultCurrent={1} current={this.state.pageNum} total={this.state.total} onChange={this._pageChange.bind(this)} />
+			 </Row>
 		</div>
 		);
 	}

@@ -8,10 +8,11 @@ import {
 	Popconfirm,
 } from 'antd'
 import ATable from './aTable'
+import  '../../../App.css'
 
 const { Content } = Layout;
 
-export default class Volunteer_add extends Component{
+export default class volunteer_edit extends Component{
 	constructor(props){
 		super(props);
 		this.Router;
@@ -29,16 +30,12 @@ export default class Volunteer_add extends Component{
 	render(){
 		return (
 			<Layout style={{ padding: '0 24px 24px' }}>
-				<Breadcrumb style={{ margin: '12px 0' }}>
-				<Breadcrumb.Item>用户管理</Breadcrumb.Item>
-				<Breadcrumb.Item>巡更用户表</Breadcrumb.Item>
+				<Breadcrumb style={{ margin: '12px 0' }} className="printHidden">
+				 <Breadcrumb.Item>活动管理</Breadcrumb.Item>
+				<Breadcrumb.Item>新增（修改）活动</Breadcrumb.Item> 
 				</Breadcrumb>
 				<Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>
-					<div>
-						<h2>巡更用户表</h2>
-
-					</div>
-					<ATable />
+					<ATable message={this.mess} Router={this.Router}/>
 				</Content>
 			</Layout>
 		)

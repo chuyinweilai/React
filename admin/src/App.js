@@ -47,12 +47,12 @@ class App extends Component {
     } else {
       return ( 
         <Layout>
-          <Header className="header" >
-            <Headers className="header" >
+          <Header className="header printHidden" >
+            <Headers className="header printHidden" >
             </Headers>
           </Header>
           <Layout>
-            <Sider width={200} style={{ background: '#fff' }}>
+            <Sider className="printHidden" width={200} style={{ background: '#fff' }}>
               <Siders message={this.state.message} Router={(nextPage,mess, historyPage) => this._Router(nextPage,mess,historyPage)}></Siders>
             </Sider>
             <Router message={this.state.message} Router={(nextPage,mess,historyPage) => this._Router(nextPage,mess,historyPage)}/>

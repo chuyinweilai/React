@@ -15,9 +15,13 @@ import '../../../App.css'
 
 const { Content } = Layout;
 
-export default class accumulate_exchange extends Component{
+
+export default class accumulate_detail extends Component{
 	constructor(props){
 		super(props);
+		this.state={
+			comm_name:'',
+		}
 		this.Router;
 		this.mess = null;
 	}
@@ -41,13 +45,12 @@ export default class accumulate_exchange extends Component{
 				<Breadcrumb style={{ margin: '12px 0' }} className="printHidden">
 				<Breadcrumb.Item>活动积分</Breadcrumb.Item>
 				<Breadcrumb.Item>积分列表</Breadcrumb.Item>
-				<Breadcrumb.Item>积分兑换</Breadcrumb.Item>
 				</Breadcrumb>
 				<Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>
 					<Row type="flex" justify="space-between" gutter={1}>
 						<Col span={19}>所在社区:{this.state.comm_name}</Col>
 						<Col span={2} className="printHidden">
-								<Button onClick = {()=>this._action('add')}>新增活动</Button>
+								<Button onClick = {()=>this._action('warning')}>到期提醒</Button>
 						</Col>
 						<Col span={2} className="printHidden">
 								<Button onClick={() => this._print()}>打印</Button>
@@ -56,8 +59,7 @@ export default class accumulate_exchange extends Component{
 					<Row>
 						<Col span={8} style={{margin:'10px'}}> </Col>
 					</Row>
-
- 					<ATable  message={this.mess} Router={this.Router}/> 
+					<ATable  message={this.mess} Router={this.Router}/>
 				</Content>
 			</Layout>
 		)

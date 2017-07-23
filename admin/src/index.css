@@ -6,7 +6,7 @@ body,
     height: 100%;
 }
 
-.ant-layout {
+.ant-layout .ant-layout-content {
     height: 100%;
 }
 
@@ -14,4 +14,10 @@ body {
     margin: 0;
     padding: 0;
     font-family: sans-serif;
+}
+
+@media print {
+    .printHidden {
+        visibility: hidden;
+    }
 }

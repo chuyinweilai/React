@@ -12,6 +12,8 @@ import {
     Button,
     Checkbox
 } from 'antd';
+import '../../App.css'
+
 const FormItem = Form.Item;
 
 function hasErrors(fieldsError) {
@@ -32,7 +34,6 @@ class Login extends Component {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
             if (!err) {
-                console.log('Received values of form: ', values);
                 let afteruri = 'vcity/login'
                 //root  234
                 let body = {

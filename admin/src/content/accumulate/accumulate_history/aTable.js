@@ -1,7 +1,7 @@
 
 import React, { PropTypes,Component } from 'react';
 import { Table, Input, Icon, Button, Popconfirm } from 'antd'
-
+import '../../../App.css'
 import ACell from './aCell';
 
 export default class pointTable extends Component {
