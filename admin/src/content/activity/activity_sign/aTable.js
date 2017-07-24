@@ -132,20 +132,7 @@ export default class pointTable extends Component {
 			})
 		})
 	}
-/*
-activity_no:14
-comm_code:"M0001"
-detail:"测试活动内容"
-flag:0
-id:15
-join_cnt:0
-join_limit:2
-open_add:""
-score:5
-sign_cnt:0
-title:"测试"
-type:1
-*/
+
 	_jump(nextPage,mess){
 		if(nextPage == 'back'){
 			this.props.Router(this.props.message.historyPage,mess,this.props.message.nextPage)
@@ -165,7 +152,7 @@ type:1
 	//分页器activity/list?page=num
 	_pageChange(pageNumber){
 		let userMess = this.userMess;
-		let afteruri = 'activity/list?page=' + pageNumber ;
+		let afteruri = 'activity/check?page=' + pageNumber ;
 		let body = {
 			 "comm_code": userMess.comm_code
 		}

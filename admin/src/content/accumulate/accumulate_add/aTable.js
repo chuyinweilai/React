@@ -35,14 +35,13 @@ class pointTable extends Component {
 		this.state = {
 			mobile: 0,
 			score:0,
-			ch_score: 0,
-			ch_name: '',
-			ch_number:1,
-			gift_no: "",
+			rule_score: 0,
+			rule_name: '',
+			rule_no: 0,
 			comm_name: "",
-			maxNumber: 0,
-			btnAble:true,
+			disable:true,
 			visible: false,
+			type_list:[],
 		};
 		this.userMess;
 		this.choMess;
@@ -71,16 +70,24 @@ class pointTable extends Component {
 	}
 	
 	_getEvents(mess){
-		let afteruri = "gift/list"
+		let afteruri = 'vcity/listrule'
 		let body = {
 			comm_code: mess.comm_code
 		}
 		appData._dataPost(afteruri,body,(res) => {
-			console.log(res)
-			this.change_mess = res
-			res.forEach((value) => {
+			let others = {
+				comm_code:"M0001",
+				rule_name:"其他",
+				rule_score:0,
+				rule_no:0,
+			}
+			res.push(others)
+			this.setState({
+				type_list:res,
+			})
+			res.forEach((val) => {
 				this.Children.push(
-					<Option key={value.gift_no}>{value.gift_name}</Option>
+					<Option key={val.rule_no}>{val.rule_name}</Option>
 				)
 			})
 		})
@@ -95,61 +102,26 @@ class pointTable extends Component {
 	}
 
 	_input(name,e){
-		if(name === 'mobile'){
-			this.setState({
-				mobile: e
-			})
-		} else if(name === 'score'){
-			this.setState({
-				score: e
-			})
-		} else if(name === 'ch_number'){
-			let score = this.state.ch_score * e;
-			if(score > this.choMess.score){
-				this.setState({
-					btnAble: true,
-				})
-			} else {
-				this.setState({
-					btnAble: false,
-				})
-			}
-			this.setState({
-				ch_number: e,
-			})
-
-			// this.props.form.setFieldsValue({
-			// 	ch_score: score*e
-			// })
+		if(name === 'rule_score'){
+			this.setState({rule_score: e})
 		}
 	}
 
 	//选择活动类型，积分
 	_selectChange(value){
-		this.change_mess.forEach((val)=> {
-			if(value == val.gift_no){
-				let maxNumber = Number(val.change_limit-val.change_cnt)
-					if(this.choMess.score < val.change_score && maxNumber <=0){
-						this.setState({
-							btnAble: true,
-							maxNumber: 0
-						})
-					} else {
-						this.setState({
-							btnAble: false,
-						})
-					}
+		this.state.type_list.forEach((val)=> {
+			if(value == val.rule_no){
 				this.setState({
-					gift_no: value,
-					ch_name: val.gift_name,
-					maxNumber: maxNumber
+					rule_no: value,
+					rule_name: val.rule_name,
+					rule_score: val.rule_score,
 				})
 				this.props.form.setFieldsValue({
-					ch_score: val.change_score
+					rule_name: val.rule_name,
+					rule_score: val.rule_score
 				})
-				this.setState({
-					ch_score:  val.change_score
-				})
+				if(value == 0) this.setState({ disable: false})
+				else  this.setState({ disable: true})
 			}
 		});
 	}
@@ -157,16 +129,18 @@ class pointTable extends Component {
 	//提交创建新活动
 
 	_upData(){
-		let afteruri  = 'gift/change';
+		let afteruri  = 'volunteer/sign2';
+		console.log(this.userMess)
 		let body = {
 			"wx_id": this.choMess.wx_id,
-			"comm_code":this.choMess.comm_code,
-			"gift_no":this.state.gift_no,
-			"operator":this.userMess.user_id,
-			"change_num":this.state.ch_number,
-			"used_score":this.state.ch_score * this.state.ch_number,
+			"comm_code": this.choMess.comm_code,
+			"operator": this.userMess.user_id,
+			"activity_score": this.state.rule_score,
+			"activity_no": this.state.rule_no,
 		}
+		console.log(body)
 		appData._dataPost(afteruri, body, (res) =>{
+			console.log(res)
 			if(res){
 				this.setState({
 					visible: false,
@@ -197,7 +171,7 @@ class pointTable extends Component {
 
 					<FormItem
 						{...formItemLayout}
-						label="积分">
+						label="当前积分">
 						{getFieldDecorator('score',{
 							initialValue: this.state.score
 						})(
@@ -207,9 +181,9 @@ class pointTable extends Component {
 
 					<FormItem
 						{...formItemLayout}
-						label="可兑换商品">
-						{getFieldDecorator('changed',{
-							initialValue: this.state.changed
+						label="积分原因">
+						{getFieldDecorator('rule_name',{
+							initialValue: this.state.rule_name
 						})(
 							<Select placeholder="请选择兑换商品" onChange={this._selectChange.bind(this)}>
 								{this.Children}
@@ -219,28 +193,16 @@ class pointTable extends Component {
 
 					<FormItem
 						{...formItemLayout}
-						label="兑换数量">
-						{getFieldDecorator('ch_number',{
-							initialValue: this.state.ch_number
+						label="积分值">
+						{getFieldDecorator('rule_score',{
+							initialValue: this.state.rule_score
 						})(
-							<InputNumber 
-								min = {1}
-								max = {this.state.maxNumber}
-							 	onChange={this._input.bind(this,"ch_number")}/>
-						)}
-					</FormItem>
-
-					<FormItem
-						{...formItemLayout}
-						label="所需积分">
-						{getFieldDecorator('ch_score',{
-							initialValue: this.state.ch_score
-						})(
-							<Input onChange={this._input.bind(this,"ch_score")} disabled/>
+							<InputNumber disabled={this.state.disable} onChange={this._input.bind(this,"rule_score")}/>
 						)}
 					</FormItem>
 
 				</Form>
+
 				<Row type="flex" justify="end" gutter={1} className="printHidden">
 					<Col span={2}>
 						<Button  onClick={() =>this.setState({visible: true})} disabled={this.state.btnAble}>确认</Button>
@@ -256,13 +218,14 @@ class pointTable extends Component {
 					onOk={()=> this._upData()}
 					onCancel={() =>this.setState({visible: false})}
 					okText="提交"
-					cancelText="取消"
-				>
+					cancelText="取消">
 					<Col style={{height: 30}}>所在社区: {this.state.comm_name}</Col>
 					<Col style={{height: 30}}>手机号: {this.state.mobile}</Col>
-					<Col style={{height: 30}}>兑换商品: {this.state.ch_name}</Col>
-					<Col style={{height: 30}}>兑换积分: {this.state.ch_score}</Col>
-					<Col style={{height: 60}}>兑换者签名</Col>
+					<Col style={{height: 30}}>变动类型:  手动积分</Col>
+					<Col style={{height: 30}}>变动内容: {this.state.rule_name}</Col>
+					<Col style={{height: 30}}>积分变动值: {this.state.rule_score}</Col>
+					<Col style={{height: 30}}>剩余积分: {this.state.rule_score + this.choMess.score}</Col>
+					<Col style={{height: 60}}>签名</Col>
 					<Row className="printHidden">
 						<Col>
 							<Button onClick={()=>window.print()}>打印</Button>

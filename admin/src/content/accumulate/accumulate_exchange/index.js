@@ -46,12 +46,6 @@ export default class accumulate_exchange extends Component{
 				<Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>
 					<Row type="flex" justify="space-between" gutter={1}>
 						<Col span={19}>所在社区:{this.state.comm_name}</Col>
-						<Col span={2} className="printHidden">
-								<Button onClick = {()=>this._action('add')}>新增活动</Button>
-						</Col>
-						<Col span={2} className="printHidden">
-								<Button onClick={() => this._print()}>打印</Button>
-						</Col>
 					</Row>
 					<Row>
 						<Col span={8} style={{margin:'10px'}}> </Col>

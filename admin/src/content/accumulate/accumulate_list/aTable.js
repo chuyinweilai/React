@@ -63,7 +63,6 @@ export default class pointTable extends Component {
 				colSpan:2,
 				render: (text, record, index) => {
 					return (
-					this.state.dataSource.length > 0 ?
 					(
 						<Row type="flex" justify="space-around">
 							<Button title="Sure to delete?" onClick={() => this._accuCtrl("add",record)}>
@@ -120,6 +119,7 @@ export default class pointTable extends Component {
 
 	_accuCtrl(type,value){
 		if(type == "add"){
+			this._jump('accumulate_add',value)
 		} else if(type == "del"){
 			this._jump('accumulate_exchange',value)
 		}else if(type == "history"){
@@ -130,7 +130,7 @@ export default class pointTable extends Component {
 	//分页器activity/list?page=num
 	_pageChange(pageNumber){
 		let userMess = this.userMess;
-		let afteruri = 'activity/list?page=' + pageNumber ;
+		let afteruri = 'vcity/listuser?page=' + pageNumber ;
 		let body = {
 			 "comm_code": userMess.comm_code
 		}

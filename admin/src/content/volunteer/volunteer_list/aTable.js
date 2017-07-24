@@ -184,7 +184,7 @@ export default class pointTable extends Component {
 	//分页器activity/list?page=num
 	_pageChange(pageNumber){
 		let userMess = this.userMess;
-		let afteruri = 'activity/list?page=' + pageNumber ;
+		let afteruri = 'activity/listuser?page=' + pageNumber ;
 		let body = {
 			 "comm_code": userMess.comm_code
 		}

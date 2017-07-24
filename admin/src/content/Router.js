@@ -5,6 +5,7 @@ import {
 	Accumulate_history,
 	Accumulate_list,
 	Accumulate_exchange,
+	Accumulate_add,
 } from './accumulate';	
 import{	
 	Activity_add,
@@ -48,6 +49,8 @@ export default class mainPage extends Component{
 			return <Accumulate_list message={this.mess} Router={this.Router}/>
 		else if(name === 'accumulate_exchange')	
 			return <Accumulate_exchange message={this.mess} Router={this.Router}/>
+		else if(name === 'accumulate_add')	
+			return <Accumulate_add message={this.mess} Router={this.Router}/>
 		else return null
 	}
 	render(){

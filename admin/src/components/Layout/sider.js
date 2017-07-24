@@ -35,8 +35,8 @@ export default class siders extends Component{
 					</SubMenu>
 					<SubMenu key='Accumulate' title={<span><Icon type="shake" />兑换商品</span>}>
 						<Menu.Item key="accumulate_list">积分列表</Menu.Item>
-						<Menu.Item key="accumulate_exchange">积分兑换</Menu.Item>
-						<Menu.Item key="accumulate_history">积分历史</Menu.Item>
+						{/* <Menu.Item key="accumulate_exchange">积分兑换</Menu.Item>
+						<Menu.Item key="accumulate_history">积分历史</Menu.Item> */}
 					</SubMenu>
 				</Menu>
 			// </Sider>
