@@ -145,7 +145,7 @@ class pointTable extends Component {
 		let time = adate.getFullYear() + "-" + (adate.getMonth()+1) + "-" + adate.getDate()
 		//  + " " + adate.getHours() + ":" + adate.getMinutes() + ":" + adate.getSeconds()
 		let body = {
-            "comm_code":  this.userMess .comm_code,
+            "comm_code":  this.userMess.comm_code,
             "title":  this.state.theme,
             "detail":  this.state.content,
             "pic_path": "",

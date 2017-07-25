@@ -41,7 +41,11 @@ export default class accumulate_history extends Component{
 	}
 
 	_jump(nextPage,mess){
-		this.Router(nextPage,mess,this.mess.nextPage)
+		if(nextPage == 'back'){
+			this.Router(this.mess.historyPage,mess,this.mess .nextPage)
+		}else {
+			this.Router(nextPage,mess,this.mess.nextPage)
+		}
 	}
 	render(){
 		return (
@@ -53,7 +57,8 @@ export default class accumulate_history extends Component{
 				</Breadcrumb>
 				<Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>
 					<Row type="flex" justify="space-between" gutter={1}>
-						<Col span={19}>
+						<Col span={3}>
+							<Button onClick={()=>this._jump('back')}>返回</Button>
 							<div>
 								所在社区:{this.state.comm_name}
 							</div>

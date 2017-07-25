@@ -16,6 +16,15 @@ body {
     font-family: sans-serif;
 }
 
+.header {
+    background-color: '#efefef';
+}
+
+siders {
+    /* width: 200px; */
+    background-color: '#efefef';
+}
+
 @media print {
     .printHidden {
         visibility: hidden;

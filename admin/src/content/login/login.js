@@ -47,7 +47,7 @@ class Login extends Component {
                         })
                     } else {
                         appData._Storage('set',"userMess",res[0])
-                        this.props.Router('Home')
+                        this.props.Router('home')
 
                     }
                 })

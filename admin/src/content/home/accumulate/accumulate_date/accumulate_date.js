@@ -12,10 +12,11 @@ import {
 	Menu, 
 	Dropdown 
 } from 'antd'
-import '../../../App.css'
-import appData from './../../../assert/Ajax';
+import appData from './../../../../assert/Ajax';
+import '../../../../App.css'
+import './accumulate_date.css'
 
-export default class pointTable extends Component {
+export default class accumulate_date extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -26,28 +27,17 @@ export default class pointTable extends Component {
 			pageSum:1,
 			pageNum:1,
 		};
-		// ID	手机	姓名	性别	当前积分	操作		
 
 		this.columns = [
 			{
-				title: 'ID',
 				colSpan:1,
-				dataIndex: 'ID',
-				render:(text,record,index) => {
-					return(
-						<text>{index}</text>
-					)
-				}
+				title: '姓名',
+				dataIndex: 'name',
 			}, 
 			{
 				colSpan:1,
 				title: '手机',
 				dataIndex: 'mobile',
-			}, 
-			{
-				colSpan:1,
-				title: '姓名',
-				dataIndex: 'name',
 			}, 
 			{
 				colSpan:1,
@@ -59,32 +49,12 @@ export default class pointTable extends Component {
 				title: '当前积分',
 				dataIndex: 'score',
 			},
-			{
-				title: '操作',
-				colSpan:2,
-				render: (text, record, index) => {
-					return (
-					(
-						<Row type="flex" justify="space-around">
-							<Button title="Sure to delete?" onClick={() => this._accuCtrl("add",record)}>
-								 积分+
-							</Button>
-							<Button title="Sure to delete?" onClick={() => this._accuCtrl("del",record)}>
-								积分-
-							</Button>
-							<Button title="Sure to delete?" onClick={() => this._accuCtrl("history",record)}>
-								积分历史
-							</Button>
-						</Row>
-					) : null
-					);
-				},
-			}
 		];
+		
 		this.Router;
 		this.mess = null;
 	}
-	
+
 	componentWillMount(){
 		this.Router = this.props.Router;
 		this.mess = this.props.message;
@@ -97,7 +67,7 @@ export default class pointTable extends Component {
 	_jump(nextPage,mess){
 		this.Router(nextPage,mess,this.mess.nextPage)
 	}
-	
+
 	//获取后台信息
 	_getEvent(){
 		let userMess = this.userMess;
@@ -107,11 +77,7 @@ export default class pointTable extends Component {
 		}
 		appData._dataPost(afteruri,body,(res) => {
 			let pageSum = Math.ceil(res.total/res.per_page)
-
-			let data = res.data
-			data.forEach((value)=>{
-				value.address = value.comm_name + value.apt_info+value.floor+value.room
-			})
+			let data = res.data.slice(0, 5);
 			let len = data.length;
 			this.setState({
 				total:res.total,
@@ -120,21 +86,22 @@ export default class pointTable extends Component {
 			})
 		})
 	}
-
-	_accuCtrl(type,value){
-		if(type == "add"){
-			this._jump('accumulate_add',value)
-		} else if(type == "del"){
-			this._jump('accumulate_exchange',value)
-		}else if(type == "history"){
-			this._jump('accumulate_history',value)
+	
+	//操作栏功能
+	_action(type,mess){
+		if(type=== "sign"){
+			this._jump('activity_sign', mess)
+		} else if(type === "change"){
+			this._jump('activity_add', mess)
+		}else if(type === "refuse"){
+			
 		}
 	}
 
 	//分页器activity/list?page=num
 	_pageChange(pageNumber){
 		let userMess = this.userMess;
-		let afteruri = 'vcity/listuser?page=' + pageNumber ;
+		let afteruri = 'activity/list?page=' + pageNumber ;
 		let body = {
 			 "comm_code": userMess.comm_code
 		}
@@ -155,22 +122,15 @@ export default class pointTable extends Component {
 		const { dataSource } = this.state;
 		let columns = this.columns;
 		return (
-		<div>
-			 <Table 
-			 	bordered 
-				dataSource={dataSource} 
-				columns={columns} 
-				rowKey='key' 
-				pagination={false} 
-				style={{marginBottom: 20}}/> 
-			 <Row type="flex" justify="end">
-			 	<Pagination 
-					showQuickJumper 
-					defaultCurrent={1} 
-					current={this.state.pageNum} 
-					total={this.state.total} 
-					onChange={this._pageChange.bind(this)} />
-			 </Row>
+		<div style={{padding: 5, backgroundColor: '#fff', height: 358}}>
+			<text style={{fontSize: 16,paddingBottom: 5}}>
+				积分到期提醒
+			</text>
+			<Table 
+				style={{ height: 154}}
+				bordered={false}
+				dataSource={this.state.dataSource} 
+				columns={columns} rowKey='key' pagination={false}/>  
 		</div>
 		);
 	}

@@ -13,7 +13,6 @@ import {
 	Dropdown 
 } from 'antd'
 import appData from './../../../assert/Ajax';
-import ACell from './aCell';
 import '../../../App.css'
 
 require('./index.css');
@@ -200,6 +199,7 @@ export default class pointTable extends Component {
 	_pageChange(pageNumber){
 		let userMess = this.userMess;
 		let afteruri = 'activity/list?page=' + pageNumber ;
+		
 		let body = {
 			 "comm_code": userMess.comm_code
 		}
@@ -221,12 +221,19 @@ export default class pointTable extends Component {
 		let columns = this.columns;
 		return (
 		<div>
-			 <Table bordered 
-			 //pagination={{ pageSize: 50 }} scroll={{ y: 600 }} 
-			 dataSource={this.state.dataSource} 
-			 columns={columns} rowKey='key' pagination={false}/> 
+			 <Table 
+				bordered 
+				dataSource={dataSource} 
+				columns={columns} 
+				rowKey='key' 
+				pagination={false}/> 
 			 <Row type="flex" justify="end">
-			 	<Pagination showQuickJumper defaultCurrent={1} current={this.state.pageNum} total={this.state.total} onChange={this._pageChange.bind(this)} />
+			 	<Pagination
+					showQuickJumper 
+					defaultCurrent={1} 
+					current={this.state.pageNum} 
+					total={this.state.total} 
+					onChange={this._pageChange.bind(this)} />
 			 </Row>
 		</div>
 		);

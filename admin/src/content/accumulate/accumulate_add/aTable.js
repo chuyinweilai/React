@@ -130,7 +130,6 @@ class pointTable extends Component {
 
 	_upData(){
 		let afteruri  = 'volunteer/sign2';
-		console.log(this.userMess)
 		let body = {
 			"wx_id": this.choMess.wx_id,
 			"comm_code": this.choMess.comm_code,

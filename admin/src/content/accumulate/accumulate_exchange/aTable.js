@@ -77,8 +77,9 @@ class pointTable extends Component {
 		}
 		appData._dataPost(afteruri,body,(res) => {
 			console.log(res)
-			this.change_mess = res
-			res.forEach((value) => {
+			let data = res.data;
+			this.change_mess = data
+			data.forEach((value) => {
 				this.Children.push(
 					<Option key={value.gift_no}>{value.gift_name}</Option>
 				)
@@ -241,6 +242,7 @@ class pointTable extends Component {
 					</FormItem>
 
 				</Form>
+
 				<Row type="flex" justify="end" gutter={1} className="printHidden">
 					<Col span={2}>
 						<Button  onClick={() =>this.setState({visible: true})} disabled={this.state.btnAble}>确认</Button>
@@ -256,8 +258,7 @@ class pointTable extends Component {
 					onOk={()=> this._upData()}
 					onCancel={() =>this.setState({visible: false})}
 					okText="提交"
-					cancelText="取消"
-				>
+					cancelText="取消">
 					<Col style={{height: 30}}>所在社区: {this.state.comm_name}</Col>
 					<Col style={{height: 30}}>手机号: {this.state.mobile}</Col>
 					<Col style={{height: 30}}>兑换商品: {this.state.ch_name}</Col>

@@ -159,14 +159,15 @@ export default class pointTable extends Component {
 			 "comm_code": userMess.comm_code
 		}
 		appData._dataPost(afteruri,body,(res) => {
-			res.forEach((value)=>{
+			let data = res.data
+			data.forEach((value)=>{
 				value.address = value.comm_name + value.apt_info+value.floor+value.room
 			})
-			let pageSum = Math.ceil(res.length/res.per_page)
-			let len = res.length;
+			let pageSum = Math.ceil(res.total/res.per_page)
+			let len = data.length;
 			this.setState({
-				total:res.length,
-				dataSource: res,
+				total:res.total,
+				dataSource: data,
 				count:len,
 			})
 		})
@@ -184,7 +185,7 @@ export default class pointTable extends Component {
 	//分页器activity/list?page=num
 	_pageChange(pageNumber){
 		let userMess = this.userMess;
-		let afteruri = 'activity/listuser?page=' + pageNumber ;
+		let afteruri = 'vcity/listuser?page=' + pageNumber ;
 		let body = {
 			 "comm_code": userMess.comm_code
 		}
