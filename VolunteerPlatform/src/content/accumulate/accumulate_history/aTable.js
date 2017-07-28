@@ -19,6 +19,7 @@ export default class pointTable extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
+			_visible: false,
 			dataSource: [],
 			count: 0,
 		};
@@ -38,7 +39,7 @@ export default class pointTable extends Component {
 			{
 				colSpan:1,
 				title: '积分変动时间',
-				dataIndex: 'oper_date',
+				dataIndex: 'change_date',
 			}, 
 			{
 				colSpan:1,
@@ -57,7 +58,7 @@ export default class pointTable extends Component {
 			{
 				colSpan:1,
 				title: '积分变动值',
-				dataIndex: 'vld_score',
+				dataIndex: 'change_num',
 			},
 			{
 				colSpan:1,
@@ -75,7 +76,7 @@ export default class pointTable extends Component {
 								详情
 							</Button>
 						</Row>
-					) : null
+					)
 					);
 				},
 			}
@@ -128,8 +129,11 @@ vld_score:150
 
 	_accuCtrl(type,value){
 		if(type == "detail"){
-			let afteruri = "vcity/history"
-
+			console.log(value)
+			// let afteruri = "vcity/history"
+			this.setState({
+				_visible: true
+			})
 		}
 	}
 
@@ -165,10 +169,10 @@ vld_score:150
 			 
 			<Modal
 				title="积分变动"
-				visible={this.state.visible}
-				onOk={()=> this._upData()}
-				onCancel={() =>this.setState({visible: false})}
-				okText="提交"
+				visible={this.state._visible}
+				onOk={() =>this.setState({_visible: false})}
+				onCancel={() =>this.setState({_visible: false})}
+				okText="确认" 
 				cancelText="取消"
 			>
 				<Col style={{height: 30}}>所在社区: {this.state.comm_name}</Col>

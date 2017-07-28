@@ -73,30 +73,32 @@ class Login extends Component {
                 <Form onSubmit={this.handleSubmit.bind(this)} className="login-form"  >
                     <FormItem>
                     {getFieldDecorator('userName', {
-                        rules: [{ required: true, message: 'Please input your username!' }],
+                        rules: [{ required: true, message: '请输入用户名！' }],
                     })(
-                        <Input prefix={<Icon type="user" style={{ fontSize: 13 }} />}className="login-form-input" placeholder="Username" />
+                        <Input prefix={<Icon type="user" style={{ fontSize: 13 }} />}className="login-form-input" placeholder="用户名" />
                     )}
                     </FormItem>
+                    
                     <FormItem>
                     {getFieldDecorator('password', {
-                        rules: [{ required: true, message: 'Please input your Password!' }],
+                        rules: [{ required: true, message: '请输入密码！' }],
                     })(
-                        <Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />} className="login-form-input" type="password" placeholder="Password" />
+                        <Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />} className="login-form-input" type="password" placeholder="密码" />
                     )}
                     </FormItem>
+
                     <FormItem>
-                    {getFieldDecorator('remember', {
+                    {/* {getFieldDecorator('remember', {
                         valuePropName: 'checked',
                         initialValue: true,
                     })(
                         <Checkbox>Remember me</Checkbox>
-                    )}
-                    <a className="login-form-forgot" href="">Forgot password</a>
+                    )} */}
+                    {/* <a className="login-form-forgot" href="">Forgot password</a> */}
                     <Button type="primary" htmlType="submit" className="login-form-button">
-                        Log in
+                        登录
                     </Button>
-                    Or <a href="">register now!</a>
+                    {/* Or <a href="">register now!</a> */}
                     </FormItem>
                     {this._errorInfo()}
                 </Form>

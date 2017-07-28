@@ -16,7 +16,7 @@ const  data = {
 			label: "My First dataset",
 
 			// 边线颜色
-			strokeColor: "#cad5c4",
+			strokeColor: "#49a9ee",
 			
 			// 圆点颜色
 			pointColor: "rgba(220,220,220,1)",

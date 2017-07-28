@@ -7,7 +7,7 @@ import {
 import {
 	Line,
 } from "react-chartjs"
-import "./volunteer_new.css"
+import "./warning_broke.css"
 const  data = {
 	labels: ["January", "February", "March", "April", "May", "June", "July"],
 	datasets: [
@@ -16,7 +16,7 @@ const  data = {
 			label: "My First dataset",
 
 			// 边线颜色
-			strokeColor: "red",
+			strokeColor: "#cad5c4",
 			
 			// 圆点颜色
 			pointColor: "rgba(220,220,220,1)",
@@ -35,27 +35,24 @@ const  data = {
 const options ={
 
 	//网格线属性
-	scaleShowGridLines : false,
-
-	// 两点之间是否弧形显示
-	bezierCurve : false,
+		scaleShowGridLines : false,
 
 	// 每个点的大小
-	pointDotRadius : 0,
+		pointDotRadius : 4,
 
 	// 每个点的宽度
-	pointDotStrokeWidth : 0,
+		pointDotStrokeWidth : 1,
 
 	//每个点的额外半径，即实际触发半径
-	pointHitDetectionRadius : 5,	
+		pointHitDetectionRadius : 5,	
 
 	// 是否为数据集填充颜色
-	datasetFill : false,
+		datasetFill : false,
 }
 
 const device = document.body.offsetWidth
 
-export default class volunteer_new extends Component{
+export default class warning_broke extends Component{
 	constructor(props){
 		super(props);
 		this.state = {
@@ -67,8 +64,7 @@ export default class volunteer_new extends Component{
 
 	render(){
 		return (
-			<div style={{paddingLeft: 10, height: 173, backgroundColor: '#fff'}}>	
-				<text style={{fontSize: 16}}>志愿者新增趋势</text>
+			<div style={{paddingLeft: 10,backgroundColor: '#fff', height: 173}}> 
 				<div style={{marginLeft: 30}}>
 					<Line data={data} options={options} height="136" width={device*0.3}/>
 				</div>

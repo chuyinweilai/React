@@ -75,9 +75,7 @@ class pointTable extends Component {
 		let body = {
 			comm_code: mess.comm_code
 		}
-		appData._dataPost(afteruri,body,(res) => {
-			console.log(res)
-			let data = res.data;
+		appData._dataPost(afteruri,body,(data) => {
 			this.change_mess = data
 			data.forEach((value) => {
 				this.Children.push(
@@ -130,7 +128,7 @@ class pointTable extends Component {
 		this.change_mess.forEach((val)=> {
 			if(value == val.gift_no){
 				let maxNumber = Number(val.change_limit-val.change_cnt)
-					if(this.choMess.score < val.change_score && maxNumber <=0){
+					if(this.choMess.score < val.change_score || maxNumber <=0){
 						this.setState({
 							btnAble: true,
 							maxNumber: 0
@@ -172,6 +170,8 @@ class pointTable extends Component {
 				this.setState({
 					visible: false,
 				})
+			let data = this.userMess;
+			this._getEvents(data)
 				// this._jump('back') 
 			}
 		})

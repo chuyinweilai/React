@@ -70,24 +70,24 @@ export default class pointTable extends Component {
 			}, 
 			{
   				colSpan: 1,
-				title: '地址',
-				dataIndex: 'address',
+				title: '楼栋',
+				dataIndex: 'apt_code',
 			}, 
-			// {
-  			// 	colSpan: 1,
-			// 	title: 'apt_info',
-			// 	dataIndex: 'apt_info',
-			// }, 
-			// {
-  			// 	colSpan: 1,
-			// 	title: 'floor',
-			// 	dataIndex: 'floor',
-			// }, 
-			// {
-  			// 	colSpan: 1,
-			// 	title: 'room',
-			// 	dataIndex: 'room',
-			// }, 
+			{
+  				colSpan: 1,
+				title: '楼层',
+				dataIndex: 'floor',
+			}, 
+			{
+  				colSpan: 1,
+				title: '房间号',
+				dataIndex: 'room',
+			}, 
+			{
+  				colSpan: 1,
+				title: '职业',
+				dataIndex: 'occupation',
+			}, 
 			{
 				colSpan:1,
 				title: 'EMAIL',
@@ -97,23 +97,15 @@ export default class pointTable extends Component {
 				colSpan:1,
 				title: '志愿者类型',
 				dataIndex: 'vol_tag ',
-				// render:(text,record) => {
-				// 	let test = ''
-				// 	if(text === 1 ){
-				// 		test = '社区服务'
-				// 	} else if(text === 2){
-				// 		test = '公益活动'
-				// 	} else if(text === 3){
-				// 		test = '其他'
-				// 	}
-				// 	return <div>{test}</div>
-				// }
+				render:(text,record) => {
+					return <text>{record.vol_tag}</text>
+				}
 			}, 
-			{
-				colSpan:1,
-				title: '志愿者星级',
-				dataIndex: 'score',
-			},
+			// {
+			// 	colSpan:1,
+			// 	title: '志愿者星级',
+			// 	dataIndex: 'score',
+			// },
 			{
 				colSpan:1,
 				title: '注册时间',
@@ -160,9 +152,7 @@ export default class pointTable extends Component {
 		}
 		appData._dataPost(afteruri,body,(res) => {
 			let data = res.data
-			data.forEach((value)=>{
-				value.address = value.comm_name + value.apt_info+value.floor+value.room
-			})
+			console.log(data)
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let len = data.length;
 			this.setState({
@@ -178,7 +168,19 @@ export default class pointTable extends Component {
 		if(type === "change"){
 			this._jump('volunteer_edit', mess)
 		}else if(type === "cancel"){
-			
+			let afteruri = 'vcity/canceluser';
+			let body = {
+				"mobile": mess.mobile,
+				"comm_code": mess.comm_code
+			}
+			appData._dataPost(afteruri,body,(res) => {
+				console.log(res)
+				if(res){
+					this._getEvent()
+				} else {
+					alert('操作失败')
+				}
+			})
 		}
 	}
 

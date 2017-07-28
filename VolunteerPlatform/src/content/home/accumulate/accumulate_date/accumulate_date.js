@@ -14,9 +14,8 @@ import {
 } from 'antd'
 import appData from './../../../../assert/Ajax';
 import '../../../../App.css'
-import './accumulate_date.css'
 
-export default class accumulate_date extends Component {
+export default class accumulate_list extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -33,21 +32,27 @@ export default class accumulate_date extends Component {
 				colSpan:1,
 				title: '姓名',
 				dataIndex: 'name',
+				render: (text)=>(
+					<text style={{color: '#49a9ee'}}>{text}</text>
+				)
 			}, 
 			{
 				colSpan:1,
 				title: '手机',
 				dataIndex: 'mobile',
 			}, 
-			{
-				colSpan:1,
-				title: '性别',
-				dataIndex: 'gender',
-			},
+			// {
+			// 	colSpan:1,
+			// 	title: '性别',
+			// 	dataIndex: 'gender',
+			// },
 			{
 				colSpan:1,
 				title: '当前积分',
 				dataIndex: 'score',
+				render: (text)=>(
+					<text style={{color: 'red'}}>{text}</text>
+				)
 			},
 		];
 		
@@ -71,11 +76,12 @@ export default class accumulate_date extends Component {
 	//获取后台信息
 	_getEvent(){
 		let userMess = this.userMess;
-		let afteruri = 'vcity/listuser';
+		let afteruri = 'wxuser/topscore';
 		let body = {
 			 "comm_code": userMess.comm_code
 		}
 		appData._dataPost(afteruri,body,(res) => {
+			console.log(res)
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let data = res.data.slice(0, 5);
 			let len = data.length;
@@ -124,11 +130,9 @@ export default class accumulate_date extends Component {
 		return (
 		<div style={{padding: 5, backgroundColor: '#fff', height: 358}}>
 			<text style={{fontSize: 16,paddingBottom: 5}}>
-				积分到期提醒
+				积分过期提醒
 			</text>
-			<Table 
-				style={{ height: 154}}
-				bordered={false}
+			<Table bordered={false}
 				dataSource={this.state.dataSource} 
 				columns={columns} rowKey='key' pagination={false}/>  
 		</div>

@@ -67,16 +67,16 @@ export default class pointTable extends Component {
 					(
 						<Row type="flex" justify="space-around">
 							<Button title="Sure to delete?" onClick={() => this._accuCtrl("add",record)}>
-								 积分+
+								 手动积分
 							</Button>
 							<Button title="Sure to delete?" onClick={() => this._accuCtrl("del",record)}>
-								积分-
+								积分兑换
 							</Button>
 							<Button title="Sure to delete?" onClick={() => this._accuCtrl("history",record)}>
 								积分历史
 							</Button>
 						</Row>
-					) : null
+					)
 					);
 				},
 			}
@@ -101,7 +101,7 @@ export default class pointTable extends Component {
 	//获取后台信息
 	_getEvent(){
 		let userMess = this.userMess;
-		let afteruri = 'vcity/listuser';
+		let afteruri = 'vcity/scoresheet';
 		let body = {
 			 "comm_code": userMess.comm_code
 		}

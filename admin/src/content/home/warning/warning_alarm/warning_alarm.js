@@ -7,7 +7,7 @@ import {
 import {
 	Line,
 } from "react-chartjs"
-import "./volunteer_new.css"
+import "./warning_alarm.css"
 const  data = {
 	labels: ["January", "February", "March", "April", "May", "June", "July"],
 	datasets: [
@@ -16,7 +16,7 @@ const  data = {
 			label: "My First dataset",
 
 			// 边线颜色
-			strokeColor: "red",
+			strokeColor: "#cad5c4",
 			
 			// 圆点颜色
 			pointColor: "rgba(220,220,220,1)",
@@ -55,7 +55,7 @@ const options ={
 
 const device = document.body.offsetWidth
 
-export default class volunteer_new extends Component{
+export default class warning_alarm extends Component{
 	constructor(props){
 		super(props);
 		this.state = {
@@ -68,7 +68,7 @@ export default class volunteer_new extends Component{
 	render(){
 		return (
 			<div style={{paddingLeft: 10, height: 173, backgroundColor: '#fff'}}>	
-				<text style={{fontSize: 16}}>志愿者新增趋势</text>
+				<text style={{fontSize: 16}}>志愿者变化趋势</text>
 				<div style={{marginLeft: 30}}>
 					<Line data={data} options={options} height="136" width={device*0.3}/>
 				</div>

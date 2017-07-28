@@ -25,6 +25,7 @@ export default class activity_list extends Component{
 		this.Router;
 		this.mess = null;
 	}
+	
 	componentWillMount(){
 		this.Router = this.props.Router;
 		this.mess = this.props.message;

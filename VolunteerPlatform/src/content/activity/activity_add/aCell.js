@@ -7,7 +7,6 @@ import '../../../App.css'
 
 const FormItem = Form.Item;
 const Option = Select.Option;
-const Children = [];
 
 export default class Selects extends React.Component {
 	constructor(props) {
@@ -16,15 +15,16 @@ export default class Selects extends React.Component {
 			vals:'',
 			type_list:[]
 		};
+		this.Children = [];
 	}
 	componentWillMount(){
 		let num = this.props.value
 		this._login(num)
 		this._select = this.props.SelectCtrl
-
 	}
 		
 	_login(num){
+		this.Children = [];
 		let afteruri = 'vcity/listrule'
 		appData._Storage('get', 'userMess',(res)=>{
 			this.userMess = res;
@@ -50,18 +50,17 @@ export default class Selects extends React.Component {
 							vals : val.rule_name
 						})
 					}
-					Children.push(
+				this.Children.push(
 						<Option key={val.rule_no}>{val.rule_name}</Option>
 					)
 				})
 			})
 		})
 	}
-	
+
 	//选择活动类型，积分
 	_selectChange(index){
 		let type = this.state.type_list;
-		console.log(type)
 		if(index == 0){
 			this._select(index)
 		} else {
@@ -84,7 +83,7 @@ export default class Selects extends React.Component {
 					placeholder="请选择活动类型" 
 					onChange={this._selectChange.bind(this)}
 				>
-					{Children}
+					{this.Children}
 				</Select>
 			</span>
 		);

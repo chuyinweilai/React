@@ -8,7 +8,7 @@ export default class headers extends Component{
 		return (
 		<Header className="header" >
 				<div className="logo"/>
-				<div style={{color: 'white', fontSize: 34}}>上海凡米</div>
+				<h1 style={{color: 'white', }}>景城品雅苑 积分管理系统</h1>
 			<Menu
 				theme="dark"
 				mode="horizontal"

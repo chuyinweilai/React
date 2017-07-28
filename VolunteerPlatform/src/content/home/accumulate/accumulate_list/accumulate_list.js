@@ -32,6 +32,9 @@ export default class accumulate_list extends Component {
 				colSpan:1,
 				title: '姓名',
 				dataIndex: 'name',
+				render: (text)=>(
+					<text style={{color: '#49a9ee'}}>{text}</text>
+				)
 			}, 
 			{
 				colSpan:1,
@@ -47,6 +50,9 @@ export default class accumulate_list extends Component {
 				colSpan:1,
 				title: '当前积分',
 				dataIndex: 'score',
+				render: (text)=>(
+					<text style={{color: 'red'}}>{text}</text>
+				)
 			},
 		];
 		
@@ -70,11 +76,13 @@ export default class accumulate_list extends Component {
 	//获取后台信息
 	_getEvent(){
 		let userMess = this.userMess;
-		let afteruri = 'vcity/listuser';
+		let afteruri = 'wxuser/topscore';
 		let body = {
 			 "comm_code": userMess.comm_code
 		}
+		console.log(body)
 		appData._dataPost(afteruri,body,(res) => {
+			console.log(res)
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let data = res.data.slice(0, 5);
 			let len = data.length;

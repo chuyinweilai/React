@@ -19,6 +19,11 @@ import {
 	Volunteer_new,
 	Volunteer_change,
 } from './Volunteer'
+import {
+	Warning_alarm,
+	Warning_broke,
+} from './warning'
+
 
 
 const { Content } = Layout;
@@ -46,6 +51,15 @@ export default class home extends Component{
 					<Breadcrumb.Item>首页</Breadcrumb.Item>
 				</Breadcrumb>
 				<Content>
+					{/* <Row gutter={16}>
+						<Col span={16}>
+							<Warning_alarm/>
+						</Col>
+						<Col span={9}>
+							<Warning_broke/>
+						</Col>
+					</Row> */}
+
 					<Row gutter={16} style={{marginBottom: 12}}>
 						<Col span={12} >
 								<Accumulate_date/>

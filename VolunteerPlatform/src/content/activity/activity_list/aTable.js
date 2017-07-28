@@ -39,18 +39,24 @@ export default class pointTable extends Component {
 				}
 			},
 			{
+  				colSpan: 1,
+				title: '活动日期',
+				dataIndex: 'open_date',
+				render:(text)=>{
+					let str = text.substring(0,10)
+					return (
+						<text>{str}</text>
+					)
+				}
+			}, 
+			{
 				colSpan:1,
 				title: '活动编号',
 				dataIndex: 'activity_no',
 			},
 			{
-  				colSpan: 1,
-				title: '活动日期',
-				dataIndex: 'open_date',
-			}, 
-			{
 				colSpan:1,
-				title: '活动类型',
+				title: '活动分类',
 				dataIndex: 'type',
 				render:(text,record) => {
 					let test = ''
@@ -101,11 +107,23 @@ export default class pointTable extends Component {
 				colSpan:1,
 				title: '报名开始',
 				dataIndex: 'vld_start',
+				render:(text)=>{
+					let str = text.substring(0,10)
+					return (
+						<text>{str}</text>
+					)
+				}
 			},
 			{
 				colSpan:1,
 				title: '报名截止',
 				dataIndex: 'vld_end',
+				render:(text)=>{
+					let str = text.substring(0,10)
+					return (
+						<text>{str}</text>
+					)
+				}
 			},
 			{
 				colSpan:1,
@@ -113,10 +131,11 @@ export default class pointTable extends Component {
 				dataIndex: 'vld_flag',
 				render:(text,record) => {
 					let test = ''
-
-					if(text === 1 ){
+					if(text == 0 ){
 						test = '有效'
-					} else if(text === 2){
+					} else if(text == 1 ){
+						test = '签到中'
+					} else if(text == 2){
 						test = '无效'
 					}
 					return <div>{test}</div>
@@ -135,13 +154,23 @@ export default class pointTable extends Component {
 			{
 				title:"操作",
 				key:"action",
-  				colSpan: 3,
+  				colSpan: 2,
 				render:(text, record)=>{
+					let disable = false;
+					if(record.vld_flag == 2 || record.join_cnt <= 0){
+						 disable = true;
+					}
 					return (
-						<Row type="flex" justify="space-between">
-							<Button onClick={() =>this._action('sign',record)}>签到</Button>
-							<Button onClick={() =>this._action('change',record)}>修改</Button>
-							<Button onClick={() =>this._action('refuse',record)}>取消</Button>
+						<Row type="flex" gutter={6} justify="center">
+							<Col>
+								<Button onClick={() =>this._action('sign',record)} disabled = {disable}>签到</Button>
+							</Col>
+							<Col>
+								<Button onClick={() =>this._action('change',record)} disabled = {disable}>修改</Button>
+							</Col>
+							<Col>
+								<Button onClick={() =>this._action('cancel',record)} disabled = {disable}>取消</Button>
+							</Col>
 						</Row>
 					)
 				}
@@ -190,8 +219,17 @@ export default class pointTable extends Component {
 			this._jump('activity_sign', mess)
 		} else if(type === "change"){
 			this._jump('activity_add', mess)
-		}else if(type === "refuse"){
-			
+		}else if(type === "cancel"){
+			let afteruri = "activity/cancel"
+			let body ={   
+				"comm_code": mess.comm_code,
+            	"activity_no":  mess.activity_no
+			}
+			appData._dataPost(afteruri,body,(res)=>{
+				if(res){
+					this._getEvent()
+				}
+			})
 		}
 	}
 

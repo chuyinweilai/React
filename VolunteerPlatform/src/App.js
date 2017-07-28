@@ -53,8 +53,8 @@ class App extends Component {
 		} else {
 		return ( 
 			<Layout>
-				<Header className="header printHidden" >
-					<Headers className="header printHidden" >
+				<Header className="header printHidden">
+					<Headers className="header printHidden">
 					</Headers>
 				</Header>
 				<Layout>

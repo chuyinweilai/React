@@ -18,21 +18,6 @@ import appData from './../../../assert/Ajax'
 import '../../../App.css'
 
 const { Column, ColumnGroup } = Table;
-
-
-
-// const data = [
-// 	{
-// 		name:'Miku',	
-// 		id:1,
-// 		num:'1',
-// 		room:'2',
-// 		cardID:3,
-// 		startData:'2017/7/14',
-// 		endData:'2017/7/15',
-// 		root: '1,2,3,4,5,',
-// 	}
-// ];
 export default class pointTable extends Component {
 	constructor(props) {
 		super(props);
@@ -51,75 +36,102 @@ export default class pointTable extends Component {
 		this.columns = [
 			{
 				title: '编号',
-				dataIndex: 'name',
 				colSpan:1,
+				dataIndex: 'id',
+				render:(text,record,index)=>{
+					console.log(text,index,record)
+					return (
+						<text>{index}</text>
+					)
+				}
 			},
 			{
 				title: '手机',
 				colSpan:1,
-				dataIndex: 'id',
+				dataIndex: 'mobile',
 			}, 
 			{
 				title: '姓名',
 				colSpan:1,
-				dataIndex: 'num',
+				dataIndex: 'name',
 			}, 
 			{
 				title: '性别',
 				colSpan:1,
-				dataIndex: 'room',
+				dataIndex: 'gender',
 			},
 			{
 				title: 'IC卡号',
 				colSpan:1,
-				dataIndex: 'cardID',
+				dataIndex: 'ic_card',
 			},
 			{
 				title: '职业',
 				colSpan:1,
-				dataIndex: 'startData',
+				dataIndex: 'occupation',
 			},
 			{
 				title: '业主/租客',
 				colSpan:1,
-				dataIndex: 'endData',
+				dataIndex: 'type',
+				render:(text)=>{
+					let type = ''
+					if(text == "Y"){
+						type="业主"
+					} else if(text = "Z"){
+						type="租客"
+					}
+					return (
+						<text>{type}</text>
+					)
+				}
 			},
 			{
 				colSpan:1,
 				title:"操作",
 				key:"action",
-				render:(text, record)=>(
-					<span>
-						<Button>签到</Button>
-					</span>
-				)
+				render:(text, record)=>{
+					let state = '签到';
+					let disable = false;
+					 if(record.status_flag == 1){
+						state = "已签到"
+						disable = "true"
+					}
+					return(
+						<span>
+							<Button disabled={disable} onClick={()=>this._volSign(text)}>{state}</Button>
+						</span>
+					)
+				}
 			},
 		];
 		this.activeMess = null;
+		this.userMess = null;
 	}
 
 	componentWillMount(){
 		let mess = this.props.message.message
 		this.activeMess = mess;
 		this.setState({
-			// comm_name: mess.comm_name,
 			activity_no:  mess.activity_no,
 			title: mess.title,
 		})
 		appData._Storage('get','userMess',(res) => {
+			this.userMess = res;
 			this._login(res,mess)
 			this.setState({
 				comm_name: res.comm_name,
 			})
 		})
 	}
-
+	
 	_login(data,mess){
 		let afteruri = 'activity/check'
 		let body = {
 			comm_code: mess.comm_code,
 			activity_no:mess.activity_no,
 		}
+
 		appData._dataPost(afteruri, body, (res) =>{
 			console.log(res)
 			let pageSum = Math.ceil(res.length/res.per_page)
@@ -127,7 +139,7 @@ export default class pointTable extends Component {
 			this.setState({
 				pageCtrl: true,
 				dataSource: res,
-				total:res.length,
+				total: len,
 				count:len,
 			})
 		})
@@ -147,6 +159,20 @@ export default class pointTable extends Component {
 		} else {
 
 		}
+	}
+
+	_volSign(obj){
+		let body ={
+			"wx_id": obj.wx_id,
+			"activity_no": Number(this.activeMess.activity_no),
+			"comm_code": this.activeMess.comm_code,
+		}
+		let afteruri = 'volunteer/sign'
+		appData._dataPost(afteruri,body,(res)=>{
+			if(res){
+				this._login(this.userMess,this.activeMess)
+			}
+		} )
 	}
 
 	//分页器activity/list?page=num
@@ -177,10 +203,10 @@ export default class pointTable extends Component {
 					<Col span={8}>活动编号：{this.state.activity_no}</Col>
 					<Col span={8}>活动主题：{this.state.title}</Col>
 				</Row>
-				<Table bordered columns={this.columns} dataSource={this.state.dataSource} pagination={false}/>
-				<Row type="flex" justify="end">
-					<Pagination showQuickJumper defaultCurrent={1} current={this.state.pageNum} total={this.state.total} onChange={this._pageChange.bind(this)} />
-				</Row>
+				<Table bordered columns={this.columns} dataSource={this.state.dataSource}/>
+				{/* <Row type="flex" justify="end"> */}
+					{/* <Pagination showQuickJumper defaultCurrent={1} current={this.state.pageNum} total={this.state.total} onChange={this._pageChange.bind(this)} /> */}
+				{/* </Row> */}
 			</div>
 		);
 	}

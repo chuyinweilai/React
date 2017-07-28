@@ -39,13 +39,6 @@ export default class volunteer_list extends Component{
 		this.Router(nextPage,mess,this.mess.nextPage)
 	}
 
-	//顶部操作功能
-	_action(type){
-		if(type=== "add"){
-			this._jump('activity_add')
-		}
-	}
-
 	_print(){
 		window.print();
 	}
@@ -60,9 +53,6 @@ export default class volunteer_list extends Component{
 				<Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>
 					<Row type="flex" justify="space-between" gutter={1}>
 						<Col span={19}>所在社区:{this.state.comm_name}</Col>
-						<Col span={2} className="printHidden">
-								<Button onClick = {()=>this._action('add')}>新增活动</Button>
-						</Col>
 						<Col span={2} className="printHidden">
 								<Button onClick={() => this._print()}>打印</Button>
 						</Col>

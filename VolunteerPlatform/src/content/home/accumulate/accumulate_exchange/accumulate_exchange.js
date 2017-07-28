@@ -12,11 +12,11 @@ import {
 	Menu, 
 	Dropdown 
 } from 'antd'
-import appData from './../../../assert/Ajax';
-import '../../../App.css'
-import './active.css'
+import appData from './../../../../assert/Ajax';
+import '../../../../App.css'
+import './accumulate_exchange.css'
 
-export default class pointTable extends Component {
+export default class accumulate_exchange extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -31,27 +31,32 @@ export default class pointTable extends Component {
 		this.columns = [
 			{
 				colSpan:1,
-				title: '姓名',
-				height: 20,
-				dataIndex: 'name',
+				title: '名称',
+				dataIndex: 'gift_name',
+				render: (text)=>(
+					<text style={{color: '#49a9ee'}}>{text}</text>
+				)
 			}, 
 			{
 				colSpan:1,
-				title: '手机',
-				height: 20,
-				dataIndex: 'mobile',
+				title: '兑换积分',
+				dataIndex: 'change_score',
+				render: (text)=>(
+					<text style={{color: 'red'}}>{text}</text>
+				)
 			}, 
 			{
 				colSpan:1,
-				title: '性别',
-				height: 20,
-				dataIndex: 'gender',
+				title: '已兑换数量',
+				dataIndex: 'change_cnt',
+				render: (text)=>(
+					<text style={{color: '#FF8C00'}}>{text}</text>
+				)
 			},
 			{
 				colSpan:1,
-				title: '当前积分',
-				height: 20,
-				dataIndex: 'score',
+				title: '总数量',
+				dataIndex: 'change_limit',
 			},
 		];
 		
@@ -75,13 +80,14 @@ export default class pointTable extends Component {
 	//获取后台信息
 	_getEvent(){
 		let userMess = this.userMess;
-		let afteruri = 'vcity/listuser';
+		let afteruri = 'gift/list';
 		let body = {
 			 "comm_code": userMess.comm_code
 		}
 		appData._dataPost(afteruri,body,(res) => {
-			let pageSum = Math.ceil(res.total/res.per_page)
-			let data = res.data.slice(0, 5);
+			console.log(res)
+			// let pageSum = Math.ceil(res.total/res.per_page)
+			let data = res.slice(0, 5);
 			let len = data.length;
 			this.setState({
 				total:res.total,
@@ -128,9 +134,11 @@ export default class pointTable extends Component {
 		return (
 		<div style={{padding: 5, backgroundColor: '#fff', height: 358}}>
 			<text style={{fontSize: 16,paddingBottom: 5}}>
-				活动列表
+				兑换热度表
 			</text>
-			<Table bordered={false}
+			<Table 
+				style={{ height: 154}}
+				bordered={false}
 				dataSource={this.state.dataSource} 
 				columns={columns} rowKey='key' pagination={false}/>  
 		</div>
