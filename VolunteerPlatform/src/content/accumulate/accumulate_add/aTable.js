@@ -20,6 +20,7 @@ import {
 import appData from './../../../assert/Ajax'
 import moment from 'moment';
 import '../../../App.css'
+import '../../../index.css'
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -156,7 +157,13 @@ class pointTable extends Component {
 			wrapperCol: { span: 7 },
 		};
 		return (
-			<div>
+			<div className="table-box">
+				<Row type="flex" justify="space-between" gutter={1}>
+					<Col span={19}>所在社区:{this.state.comm_name}</Col>
+				</Row>
+				<Row>
+					<Col span={8} style={{margin:'10px'}}> </Col>
+				</Row>
 				<Form style={{paddingTop: '50px'}}  className="printHidden">
 					<FormItem
 						{...formItemLayout}

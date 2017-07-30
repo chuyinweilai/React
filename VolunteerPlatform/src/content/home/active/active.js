@@ -108,7 +108,7 @@ export default class active extends Component {
 		const { dataSource } = this.state;
 		let columns = this.columns;
 		return (
-		<div style={{padding: 5, backgroundColor: '#fff', height: 358}}>
+		<div style={{padding: 5, backgroundColor: '#fff', minHeight: 358}}>
 			<div>
 				<text style={{ height: 20, fontSize: 16,paddingBottom: 5}}>
 					活动列表

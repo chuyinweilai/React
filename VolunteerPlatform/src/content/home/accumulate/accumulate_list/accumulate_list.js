@@ -80,9 +80,7 @@ export default class accumulate_list extends Component {
 		let body = {
 			 "comm_code": userMess.comm_code
 		}
-		console.log(body)
 		appData._dataPost(afteruri,body,(res) => {
-			console.log(res)
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let data = res.data.slice(0, 5);
 			let len = data.length;
@@ -129,7 +127,7 @@ export default class accumulate_list extends Component {
 		const { dataSource } = this.state;
 		let columns = this.columns;
 		return (
-		<div style={{padding: 5, backgroundColor: '#fff', height: 358}}>
+		<div style={{padding: 5, backgroundColor: '#fff', minHeight: 358}}>
 			<text style={{fontSize: 16,paddingBottom: 5}}>
 				积分排名
 			</text>

@@ -32,7 +32,7 @@ export default class pointTable extends Component {
 				dataIndex: 'ID',
 				render:(text,record,index) => {
 					return(
-						<text>{index}</text>
+						<text>{index+1}</text>
 					)
 				}
 			}, 
@@ -58,7 +58,7 @@ export default class pointTable extends Component {
 			{
 				colSpan:1,
 				title: '积分变动值',
-				dataIndex: 'change_num',
+				dataIndex: 'used_score',
 			},
 			{
 				colSpan:1,
@@ -72,7 +72,7 @@ export default class pointTable extends Component {
 					return (
 					(
 						<Row type="flex" justify="space-around">
-							<Button title="Sure to delete?" onClick={() => this._accuCtrl("detail",record)}>
+							<Button onClick={() => this._accuCtrl("detail",record)}>
 								详情
 							</Button>
 						</Row>
@@ -88,29 +88,31 @@ export default class pointTable extends Component {
 		this.Router = this.props.Router;
 		this.mess = this.props.message;
 		appData._Storage('get',"userMess",(res) =>{
+			this.setState({
+				comm_name: res.comm_name,
+				mobile: this.mess.message.mobile,
+				name: this.mess.message.name,
+			})
 			this.userMess = res
 			this._getEvent()
 		})
 	}
 
 	_jump(nextPage,mess){
-		this.Router(nextPage,mess,this.mess.nextPage)
+		if(nextPage == 'back'){
+			this.Router(this.mess.historyPage,mess,this.mess .nextPage)
+		}else {
+			this.Router(nextPage,mess,this.mess.nextPage)
+		}
 	}
 	
 	//获取后台信息
-	/**
-address:NaN
-oper_date:"2017-07-24 17:57:53"
-operator:"root"
-score_type:1
-vld_score:150
-	 */
 	_getEvent(){
 		let userMess = this.mess.message;
 		let afteruri = 'vcity/scorelist';
 		let body = {
 			"wx_id": userMess.wx_id,
-			 "comm_code": userMess.comm_code
+			"comm_code": userMess.comm_code,
 		}
 		appData._dataPost(afteruri,body,(res) => {
 			let data = res.data
@@ -128,10 +130,10 @@ vld_score:150
 	}
 
 	_accuCtrl(type,value){
+		console.log(value)
 		if(type == "detail"){
-			console.log(value)
-			// let afteruri = "vcity/history"
 			this.setState({
+				used_score: value.used_score,
 				_visible: true
 			})
 		}
@@ -161,7 +163,27 @@ vld_score:150
 		const { dataSource } = this.state;
 		let columns = this.columns;
 		return (
-		<div>
+		<div style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>
+			<Row type="flex" justify="space-between" gutter={1}>
+				<Col>
+					<Button onClick={()=>this._jump('back')}>返回</Button>
+					<div>
+						所在社区:{this.state.comm_name}
+					</div>
+					<div>
+						手机:{this.state.mobile}
+					</div>
+					<div>
+						姓名:{this.state.name}
+					</div>
+				</Col>
+				<Col span={2} className="printHidden">
+						<Button onClick={() => this._print()}>打印</Button>
+				</Col>
+			</Row>
+			<Row>
+				<Col span={8} style={{margin:'10px'}}> </Col>
+			</Row>
 			<Table bordered dataSource={dataSource} columns={columns} rowKey='key' pagination={false} style={{marginBottom: 20}}/> 
 			<Row type="flex" justify="end">
 			 	<Pagination showQuickJumper defaultCurrent={1} current={this.state.pageNum} total={this.state.total} onChange={this._pageChange.bind(this)} />
@@ -178,7 +200,7 @@ vld_score:150
 				<Col style={{height: 30}}>所在社区: {this.state.comm_name}</Col>
 				<Col style={{height: 30}}>手机号: {this.state.mobile}</Col>
 				<Col style={{height: 30}}>兑换商品: {this.state.ch_name}</Col>
-				<Col style={{height: 30}}>兑换积分: {this.state.ch_score}</Col>
+				<Col style={{height: 30}}>兑换积分: {this.state.used_score}</Col>
 				<Col style={{height: 60}}>兑换者签名</Col>
 				<Row className="printHidden">
 					<Col>

@@ -50,16 +50,7 @@ export default class volunteer_list extends Component{
 					<Breadcrumb.Item>志愿者活动</Breadcrumb.Item>
 					<Breadcrumb.Item>活动管理</Breadcrumb.Item>
 				</Breadcrumb>
-				<Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>
-					<Row type="flex" justify="space-between" gutter={1}>
-						<Col span={19}>所在社区:{this.state.comm_name}</Col>
-						<Col span={2} className="printHidden">
-								<Button onClick={() => this._print()}>打印</Button>
-						</Col>
-					</Row>
-					<Row>
-						<Col span={8} style={{margin:'10px'}}> </Col>
-					</Row>
+				<Content>
 					<ATable  message={this.mess} Router={this.Router}/>
 				</Content>
 			</Layout>

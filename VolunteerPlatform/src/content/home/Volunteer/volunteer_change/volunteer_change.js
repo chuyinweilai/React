@@ -65,7 +65,7 @@ export default class volunteer_change extends Component{
 
 	render(){
 		return (
-			<div style={{paddingLeft: 10,backgroundColor: '#fff', height: 173}}>	
+			<div style={{paddingLeft: 10,backgroundColor: '#fff', minHeight: 173}}>	
 				<text style={{fontSize: 16}}>志愿者变化趋势</text>
 				<div style={{marginLeft: 30}}>
 					<Line data={data} options={options} height="136" width={device*0.3}/>

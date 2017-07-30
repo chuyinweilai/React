@@ -27,6 +27,7 @@ export default class pointTable extends Component {
 			listMess:{},
 			pageSum:1,
 			pageNum:1,
+			comm_name:'',
 		};
 
 		this.columns = [
@@ -35,7 +36,7 @@ export default class pointTable extends Component {
 				title: 'ID',
 				render:(text,record,index) => {
 					return(
-						<text>{index}</text>
+						<text>{index+1}</text>
 					)
 				}
 			},
@@ -53,6 +54,11 @@ export default class pointTable extends Component {
   				colSpan: 1,
 				title: '性别',
 				dataIndex: 'gender',
+			}, 
+			{
+  				colSpan: 1,
+				title: 'IC卡',
+				dataIndex: 'ic_card',
 			}, 
 			{
   				colSpan: 1,
@@ -134,6 +140,9 @@ export default class pointTable extends Component {
 		this.Router = this.props.Router;
 		this.mess = this.props.message;
 		appData._Storage('get',"userMess",(res) =>{
+			this.setState({
+				comm_name: res.comm_name
+			})
 			this.userMess = res
 			this._getEvent()
 		})
@@ -208,11 +217,20 @@ export default class pointTable extends Component {
 		const { dataSource } = this.state;
 		let columns = this.columns;
 		return (
-		<div>
-			 <Table bordered dataSource={this.state.dataSource} columns={columns} rowKey='key' pagination={false} style={{marginBottom: 20}}/> 
-			 <Row type="flex" justify="end">
-			 	<Pagination showQuickJumper defaultCurrent={1} current={this.state.pageNum} total={this.state.total} onChange={this._pageChange.bind(this)} />
-			 </Row>
+		<div style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>
+			<Row type="flex" justify="space-between" gutter={1}>
+				<Col span={19}>所在社区:{this.state.comm_name}</Col>
+				<Col span={2} className="printHidden">
+						<Button onClick={() => this._print()}>打印</Button>
+				</Col>
+			</Row>
+			<Row>
+				<Col span={8} style={{margin:'10px'}}> </Col>
+			</Row>
+			<Table bordered dataSource={this.state.dataSource} columns={columns} rowKey='key' pagination={false} style={{marginBottom: 20}}/> 
+			<Row type="flex" justify="end">
+			<Pagination showQuickJumper defaultCurrent={1} current={this.state.pageNum} total={this.state.total} onChange={this._pageChange.bind(this)} />
+			</Row>
 		</div>
 		);
 	}

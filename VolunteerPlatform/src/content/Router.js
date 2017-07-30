@@ -16,6 +16,7 @@ import{
 	Volunteer_edit,
 	Volunteer_list,
 } from './volunteer'
+import Cancel from './cancel'
 
 export default class mainPage extends Component{
 	constructor(props){
@@ -50,7 +51,9 @@ export default class mainPage extends Component{
 		else if(name === 'accumulate_exchange')	
 			return <Accumulate_exchange message={this.mess} Router={this.Router}/>
 		else if(name === 'accumulate_add')	
-			return <Accumulate_add message={this.mess} Router={this.Router}/>
+			return <Accumulate_exchange message={this.mess} Router={this.Router}/>
+		else if(name === 'cancel')	
+			return <Cancel message={this.mess} Router={this.Router}/>
 		else return null
 	}
 	render(){

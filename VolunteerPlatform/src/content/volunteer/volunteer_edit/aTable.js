@@ -45,6 +45,8 @@ class pointTable extends Component {
 			email: 0,
 			occupation: '',
 			ic_card: '',
+
+			disable: true,
 		};
 		this.userMess;
 		this.Router;
@@ -118,9 +120,17 @@ class pointTable extends Component {
 				ic_card: value
 			})
 		} else if(name === 'email'){
-			this.setState({
-				email: value
-			})
+			let reg = /^[a-zA-Z0-9_-]+@[a-zA-Z0-9_-]+(\.[a-zA-Z0-9_-]+)+$/;
+			if(reg.test(value)){
+				this.setState({
+					disable: false,
+					email: value
+				})
+			} else {
+				this.setState({
+					disable: true
+				})
+			}
 		}
 	}
 
@@ -154,8 +164,6 @@ class pointTable extends Component {
 			"ic_card": this.state.ic_card,
 			"email": this.state.email,
 		}
-		console.log(body)
-		// return null
 		appData._dataPost(afteruri, body, (res) =>{
 			if(res >= 0 ){
 				this._jump('back')
@@ -172,7 +180,7 @@ class pointTable extends Component {
 			wrapperCol: { span: 7 },
 		};
 		return (
-			<div>
+			<div style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>
 				<Form style={{paddingTop: '50px'}}>
 					<FormItem
 						{...formItemLayout}
@@ -226,7 +234,7 @@ class pointTable extends Component {
 						{getFieldDecorator('vol_tag',{
 							initialValue: this.state.vol_tag
 						})(
-							<Select onChange={this._selectChange.bind(this,'vol_tag')}>
+							<Select onChange={this._selectChange.bind(this,'vol_tag')} disabled>
 								<Option key="0">普通志愿者</Option>
 								<Option key="1">楼组长</Option>
 							</Select>
@@ -257,9 +265,14 @@ class pointTable extends Component {
 						{...formItemLayout}
 						label="email">
 						{getFieldDecorator('email',{
+							rules: [{
+								type: 'email', message: 'The input is not valid E-mail!',
+							}, {
+								required: true, message: 'Please input your E-mail!',
+							}],
 							initialValue: this.state.email
 						})(
-							<Input onChange={this._input.bind(this,'email')}  />
+							<Input onChange={this._input.bind(this,'email')}/>
 						)}
 					</FormItem>
 
@@ -267,7 +280,7 @@ class pointTable extends Component {
 
 				<Row type="flex" justify="end" gutter={1} >
 					<Col span={2}>
-						<Button  onClick={() => this._add_active()}>提交</Button>
+						<Button  onClick={() => this._add_active()} disabled={this.state.disable}>提交</Button>
 					</Col>
 					<Col span={2}>
 						<Button onClick={()=>this._jump('back')}>取消</Button>

@@ -48,6 +48,7 @@ class pointTable extends Component {
 			vld_end: 0,
 			thumbUrl:'',
 			pic_path:'',
+			address: '',
 
 			disable: false,
 		};
@@ -72,6 +73,7 @@ class pointTable extends Component {
 			})
 		})
 		if(mess !== undefined){
+			console.log(mess)
 			let typeVal = ''
 			if(mess.type == 1){
 				typeVal= '社区服务'
@@ -133,6 +135,10 @@ class pointTable extends Component {
 		} else if(name === 'limite'){
 			this.setState({
 				limite: e
+			})
+		} else if(name === 'address'){
+			this.setState({
+				address: e
 			})
 		}
 	}
@@ -278,8 +284,8 @@ class pointTable extends Component {
 	render() { 
 		const { getFieldDecorator, } = this.props.form;
 		const formItemLayout = {
-			labelCol: { span: 4 },
-			wrapperCol: { span: 20 },
+			labelCol: { span: 6 },
+			wrapperCol: { span: 18 },
 		};
 
 		return (
@@ -350,6 +356,17 @@ class pointTable extends Component {
 								)}
 							</FormItem>
 						</Col>
+						 <Col span={8}>
+							<FormItem
+								{...formItemLayout}
+								label="活动地点">
+								{getFieldDecorator('address',{
+									initialValue: this.state.address
+								})(
+									<Input placeholder="活动地点" onChange={this._input.bind(this,'address')} />
+								)}
+							</FormItem>
+						</Col> 
 						<Col span={8}>
 							<FormItem
 								{...formItemLayout}

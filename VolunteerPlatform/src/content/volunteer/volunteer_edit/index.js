@@ -34,7 +34,7 @@ export default class volunteer_edit extends Component{
 				 <Breadcrumb.Item>活动管理</Breadcrumb.Item>
 				<Breadcrumb.Item>新增（修改）活动</Breadcrumb.Item> 
 				</Breadcrumb>
-				<Content style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>
+				<Content>
 					<ATable message={this.mess} Router={this.Router}/>
 				</Content>
 			</Layout>

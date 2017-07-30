@@ -39,9 +39,8 @@ export default class pointTable extends Component {
 				colSpan:1,
 				dataIndex: 'id',
 				render:(text,record,index)=>{
-					console.log(text,index,record)
 					return (
-						<text>{index}</text>
+						<text>{index+1}</text>
 					)
 				}
 			},
@@ -124,6 +123,11 @@ export default class pointTable extends Component {
 			})
 		})
 	}
+
+	_print(){
+		window.print();
+	}
+
 	
 	_login(data,mess){
 		let afteruri = 'activity/check'
@@ -133,7 +137,6 @@ export default class pointTable extends Component {
 		}
 
 		appData._dataPost(afteruri, body, (res) =>{
-			console.log(res)
 			let pageSum = Math.ceil(res.length/res.per_page)
 			let len = res.length;
 			this.setState({
@@ -197,8 +200,17 @@ export default class pointTable extends Component {
 
 	render() {
 		return (
-			<div>
-				<Row style={{marginBottom: 20}}>
+			<div style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>
+				<Row type="flex" justify="space-between" gutter={1}>
+					<Col span={2} className="printHidden">
+						<Button style={{marginBottom: 20}} onClick={()=>this._jump('back')}>返回</Button>
+					</Col>
+
+					<Col span={2} className="printHidden">
+							<Button onClick={() => this._print()}>打印</Button>
+					</Col>
+				</Row>
+				<Row  style={{marginBottom: 20}}>
 					<Col span={8}>所在社区：{this.state.comm_name}</Col>
 					<Col span={8}>活动编号：{this.state.activity_no}</Col>
 					<Col span={8}>活动主题：{this.state.title}</Col>

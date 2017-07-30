@@ -55,6 +55,9 @@ let appData  = {
 				data(json)
 			// }
 		}
+		if(type === 'del'){
+			localStorage.removeItem(id)
+		}
 	}
 }
 module.exports = appData;

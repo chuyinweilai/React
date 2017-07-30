@@ -35,7 +35,7 @@ export default class pointTable extends Component {
 				dataIndex: 'ID',
 				render:(text,record,index) => {
 					return(
-						<text>{index}</text>
+						<text>{index+1}</text>
 					)
 				}
 			}, 
@@ -66,13 +66,13 @@ export default class pointTable extends Component {
 					return (
 					(
 						<Row type="flex" justify="space-around">
-							<Button title="Sure to delete?" onClick={() => this._accuCtrl("add",record)}>
+							<Button onClick={() => this._accuCtrl("add",record)}>
 								 手动积分
 							</Button>
-							<Button title="Sure to delete?" onClick={() => this._accuCtrl("del",record)}>
+							<Button onClick={() => this._accuCtrl("del",record)}>
 								积分兑换
 							</Button>
-							<Button title="Sure to delete?" onClick={() => this._accuCtrl("history",record)}>
+							<Button onClick={() => this._accuCtrl("history",record)}>
 								积分历史
 							</Button>
 						</Row>
@@ -89,6 +89,9 @@ export default class pointTable extends Component {
 		this.Router = this.props.Router;
 		this.mess = this.props.message;
 		appData._Storage('get',"userMess",(res) =>{
+			this.setState({
+				comm_name: res.comm_name
+			})
 			this.userMess = res
 			this._getEvent()
 		})
@@ -136,7 +139,7 @@ export default class pointTable extends Component {
 		let userMess = this.userMess;
 		let afteruri = 'vcity/listuser?page=' + pageNumber ;
 		let body = {
-			 "comm_code": userMess.comm_code
+			 "comm_code": userMess.comm_code,
 		}
 		appData._dataPost(afteruri,body,(res) => {
 			let pageSum = Math.ceil(res.total/res.per_page)
@@ -151,26 +154,39 @@ export default class pointTable extends Component {
 		})
 	}
 
+	_print(){
+		window.print();
+	}
+
 	render() {
 		const { dataSource } = this.state;
 		let columns = this.columns;
 		return (
-		<div>
-			 <Table 
-			 	bordered 
-				dataSource={dataSource} 
-				columns={columns} 
-				rowKey='key' 
-				pagination={false} 
-				style={{marginBottom: 20}}/> 
-			 <Row type="flex" justify="end">
-			 	<Pagination 
-					showQuickJumper 
-					defaultCurrent={1} 
-					current={this.state.pageNum} 
-					total={this.state.total} 
-					onChange={this._pageChange.bind(this)} />
-			 </Row>
+		<div style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>
+			<Row type="flex" justify="space-between" gutter={1}>
+				<Col span={19}>所在社区:{this.state.comm_name}</Col>
+				<Col span={2} className="printHidden">
+						<Button onClick={() => this._print()}>打印</Button>
+				</Col>
+			</Row>
+			<Row>
+				<Col span={8} style={{margin:'10px'}}> </Col>
+			</Row>
+			<Table 
+			bordered 
+			dataSource={dataSource} 
+			columns={columns} 
+			rowKey='key' 
+			pagination={false} 
+			style={{marginBottom: 20}}/> 
+			<Row type="flex" justify="end">
+			<Pagination 
+				showQuickJumper 
+				defaultCurrent={1} 
+				current={this.state.pageNum} 
+				total={this.state.total} 
+				onChange={this._pageChange.bind(this)} />
+			</Row>
 		</div>
 		);
 	}
