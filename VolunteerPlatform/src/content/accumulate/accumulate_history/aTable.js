@@ -168,9 +168,6 @@ export default class pointTable extends Component {
 				<Col>
 					<Button onClick={()=>this._jump('back')}>返回</Button>
 					<div>
-						所在社区:{this.state.comm_name}
-					</div>
-					<div>
 						手机:{this.state.mobile}
 					</div>
 					<div>

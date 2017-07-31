@@ -158,7 +158,21 @@ export default class pointTable extends Component {
   				colSpan: 2,
 				render:(text, record)=>{
 					let disable = false;
-					if(record.vld_flag == 2 || record.join_cnt <= 0){
+					if(record.vld_flag == 2){
+						return (
+							<Row type="flex" gutter={6} justify="center">
+								<Col>
+									<Button onClick={() =>this._action('sign',record)} disabled = {true}>签到</Button>
+								</Col>
+								<Col>
+									<Button onClick={() =>this._action('change',record)} disabled = {true}>修改</Button>
+								</Col>
+								<Col>
+									<Button onClick={() =>this._action('cancel',record)} disabled = {true}>取消</Button>
+								</Col>
+							</Row>
+						)
+					} else if(record.sign_cnt == 0 && record.join_cnt == 0 ){
 						return (
 							<Row type="flex" gutter={6} justify="center">
 								<Col>
@@ -288,7 +302,6 @@ export default class pointTable extends Component {
 		return (
 		<div style={{background: '#fff',padding: 24,margin: 0,minHeight: 80}}>
 			<Row type="flex" justify="space-between" gutter={1}>
-				<Col span={19}>所在社区:{this.state.comm_name}</Col>
 				<Col span={2} className="printHidden">
 						<Button onClick = {()=>this._addAct('add')}>新增活动</Button>
 				</Col>

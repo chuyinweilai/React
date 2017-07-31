@@ -211,7 +211,6 @@ export default class pointTable extends Component {
 					</Col>
 				</Row>
 				<Row  style={{marginBottom: 20}}>
-					<Col span={8}>所在社区：{this.state.comm_name}</Col>
 					<Col span={8}>活动编号：{this.state.activity_no}</Col>
 					<Col span={8}>活动主题：{this.state.title}</Col>
 				</Row>

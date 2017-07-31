@@ -158,12 +158,6 @@ class pointTable extends Component {
 		};
 		return (
 			<div className="table-box">
-				<Row type="flex" justify="space-between" gutter={1}>
-					<Col span={19}>所在社区:{this.state.comm_name}</Col>
-				</Row>
-				<Row>
-					<Col span={8} style={{margin:'10px'}}> </Col>
-				</Row>
 				<Form style={{paddingTop: '50px'}}  className="printHidden">
 					<FormItem
 						{...formItemLayout}
@@ -225,7 +219,6 @@ class pointTable extends Component {
 					onCancel={() =>this.setState({visible: false})}
 					okText="提交"
 					cancelText="取消">
-					<Col style={{height: 30}}>所在社区: {this.state.comm_name}</Col>
 					<Col style={{height: 30}}>手机号: {this.state.mobile}</Col>
 					<Col style={{height: 30}}>变动类型:  手动积分</Col>
 					<Col style={{height: 30}}>变动内容: {this.state.rule_name}</Col>

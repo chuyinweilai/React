@@ -67,7 +67,7 @@ export default class active extends Component {
 	}
 	
 	_listView(data){
-		let peruri = 'http://cloudapi.famesmart.com'
+		let peruri = 'http://cloudapi.famesmart.com/storage/'
 		let ss = data.pic_path;
 		let arr = ss.split(",");
 		let typeText = ''
@@ -80,7 +80,9 @@ export default class active extends Component {
 		}
 		return (
 			<li className="box">
-				<img className="imagebox" src={peruri+ arr[0]}/>  
+				<div className="imagebox" >
+					<img className="image" src={peruri+ arr[0]}/>  
+				</div>
 				<div>
 					<span style={{fontSize: 16,fontWeight: 'bold', marginRight: 20}}>{data.title}</span>
 					<span style={{color: "#fdac41", fontSize: 16,}}>#{typeText}#</span>

@@ -50,6 +50,7 @@ class pointTable extends Component {
 			pic_path:'',
 			address: '',
 
+			pic_list:[],
 			disable: false,
 		};
 		this.userMess;
@@ -73,7 +74,6 @@ class pointTable extends Component {
 			})
 		})
 		if(mess !== undefined){
-			console.log(mess)
 			let typeVal = ''
 			if(mess.type == 1){
 				typeVal= '社区服务'
@@ -83,6 +83,7 @@ class pointTable extends Component {
 				typeVal= '其他'
 			}
 			this.setState({
+				open_add:mess.open_add,
 				point: mess.comm_name,
 				rule_sorce: mess.score,
 				rule_no: mess.score_type,
@@ -95,6 +96,7 @@ class pointTable extends Component {
 				vld_start: mess.vld_start,
 				vld_end: mess.vld_end,
 				activity_no:  mess.activity_no,
+				pic_path:mess.pic_path,
 			})
 		} else {
 			let adate = new Date()
@@ -137,8 +139,9 @@ class pointTable extends Component {
 				limite: e
 			})
 		} else if(name === 'address'){
+			let value = e.target.value;
 			this.setState({
-				address: e
+				open_add: value
 			})
 		}
 	}
@@ -148,7 +151,6 @@ class pointTable extends Component {
 		if(value){
 			let adate = value._d
 			let time = adate.getFullYear() + "-" + (adate.getMonth()+1) + "-" + adate.getDate()
-			//  + " " + adate.getHours() + ":" + adate.getMinutes() + ":" + adate.getSeconds() 
 			if(name === 'open_date'){
 				this.setState({
 					open_date: time
@@ -197,9 +199,24 @@ class pointTable extends Component {
 	//图片上传
 	_imgUp(){
 		let that = this
+		let arr = []
+		let ss = this.activeMess.pic_path;
+		console.log(ss)
+		if(ss !== '' && ss!== undefined){
+			ss.split(",").forEach((value,index)=>{
+				arr.push({
+					uid: index,
+					name: index,
+					status: 'done',
+					url: 'http://cloudapi.famesmart.com/storage/' + value,
+				});
+			})
+		}
 		const props = {
-			action: 'http://cloudapi.famesmart.com/api/gift/filesave',
+			action: 'http://cloudapi.famesmart.com/api/activity/filesave',
 			listType: 'picture',
+			defaultFileList : arr,	
+			onRemove :false,
 			beforeUpload:(file, fileList)=>{
 				this.setState({
 					disable: true,
@@ -224,7 +241,7 @@ class pointTable extends Component {
 		$.ajax({
 			"async": true,
 			"crossDomain": true,
-			"url": "http://cloudapi.famesmart.com/api/gift/filesave",
+			"url": "http://cloudapi.famesmart.com/api/activity/filesave",
 			"method": "POST",
 			"headers": {
 				"cache-control": "no-cache",
@@ -237,6 +254,7 @@ class pointTable extends Component {
 		}).done(function(response) {
 			let json = JSON.parse(response);
 			let pic_paths = that.state.pic_path;
+			console.log(pic_paths)
 			if(pic_paths.length){
 				pic_paths +=( "," + json.path);
 			} else {
@@ -252,28 +270,47 @@ class pointTable extends Component {
 	//提交创建新活动
 	_add_active(){
 		let afteruri  = '';
-		if(this.activeMess == undefined){
- 				afteruri  = 'activity/add';
-		} else {
- 				afteruri  = 'activity/update';
-		}
+		let body  = {}
 		let adate = new Date()
 		let time = adate.getFullYear() + "-" + (adate.getMonth()+1) + "-" + adate.getDate()
-		let body = {
-            "comm_code":  this.userMess.comm_code,
-            "title":  this.state.theme,
-            "detail":  this.state.content,
-            "pic_path": this.state.pic_path,
-            "join_limit": this.state.limite,
-            "type": this.state.type,
-            "score_type": this.state.rule_no,
-            "score": this.state.rule_sorce,
-            "pub_date": time,
-            "open_date": this.state.open_date,
-            "vld_start":  this.state.vld_start,
-            "vld_end":  this.state.vld_end
+		if(this.activeMess == undefined){
+ 				afteruri  = 'activity/add';
+				body = {
+					"comm_code":  this.userMess.comm_code,
+					"title":  this.state.theme,
+					"detail":  this.state.content,
+					"pic_path": this.state.pic_path,
+					"join_limit": this.state.limite,
+					"type": this.state.type,
+					"score_type": this.state.rule_no,
+					"score": this.state.rule_sorce,
+					"pub_date": time,
+					"open_date": this.state.open_date,
+					"vld_start":  this.state.vld_start,
+					"vld_end":  this.state.vld_end,
+					"open_add": this.state.open_add,
+				}
+		} else {
+				afteruri  = 'activity/update';
+				body= {
+					"comm_code":  this.userMess.comm_code,
+					"title":  this.state.theme,
+					"detail":  this.state.content,
+					"pic_path": this.state.pic_path,
+					"join_limit": this.state.limite,
+					"type": this.state.type,
+					"score_type": this.state.rule_no,
+					"score": this.state.rule_sorce,
+					"pub_date": time,
+					"open_date": this.state.open_date,
+					"vld_start":  this.state.vld_start,
+					"vld_end":  this.state.vld_end,
+					"activity_no": this.activeMess.activity_no,
+					"join_cnt": this.activeMess.join_cnt,
+					"sign_cnt": this.activeMess.sign_cnt,
+					"open_add": this.state.open_add,
+				}
 		}
-		console.log(body)
 		appData._dataPost(afteruri, body, (res) =>{
 			if(res){
 				this._jump('back')
@@ -293,17 +330,6 @@ class pointTable extends Component {
 				 {/* <input type="file" onChange={this._updataDone.bind(this)}/>  */}
 				<Form>
 					<Row gutter={40}>
-						<Col span={8}>
-							<FormItem
-								{...formItemLayout}
-								label="所在社区">
-								{getFieldDecorator('point',{
-									initialValue: this.state.point
-								})(
-									<Input placeholder={this.state.comm_name} disabled={true}/>
-								)}
-							</FormItem>
-						</Col>
 						<Col span={8}>
 							<FormItem
 								{...formItemLayout}
@@ -361,7 +387,7 @@ class pointTable extends Component {
 								{...formItemLayout}
 								label="活动地点">
 								{getFieldDecorator('address',{
-									initialValue: this.state.address
+									initialValue: this.state.open_add
 								})(
 									<Input placeholder="活动地点" onChange={this._input.bind(this,'address')} />
 								)}

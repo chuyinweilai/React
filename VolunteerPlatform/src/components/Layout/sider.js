@@ -27,10 +27,10 @@ export default class siders extends Component{
 					onSelect = {this._click.bind(this)}
 				>
 					<Menu.Item key="home"><Icon type="home" />首页</Menu.Item>
-						<Menu.Item key="activity_list"><Icon type="home" />活动管理</Menu.Item>
-						<Menu.Item key="accumulate_list"><Icon type="home" />积分管理</Menu.Item>
-						<Menu.Item key="volunteer_list"><Icon type="home" />志愿者管理</Menu.Item>
-						<Menu.Item key="cancel"><Icon type="home"/>注销</Menu.Item>
+					<Menu.Item key="activity_list"><Icon type="star-o" />活动管理</Menu.Item>
+					<Menu.Item key="accumulate_list"><Icon type="heart-o" />积分管理</Menu.Item>
+					<Menu.Item key="volunteer_list"><Icon type="user" />志愿者管理</Menu.Item>
+					<Menu.Item key="cancel"><Icon type="close-circle-o"/>注销</Menu.Item>
 				</Menu>
 			// </Sider>
 		)
