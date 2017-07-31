@@ -6,7 +6,7 @@ body,
     height: 100%;
 }
 
-.ant-layout {
+.ant-layout .ant-layout-content {
     height: 100%;
 }
 
@@ -14,4 +14,17 @@ body {
     margin: 0;
     padding: 0;
     font-family: sans-serif;
+}
+
+.table-box {
+    background: '#fff';
+    padding: 24;
+    margin: 0;
+    min-height: 80
+}
+
+@media print {
+    .printHidden {
+        visibility: hidden;
+    }
 }

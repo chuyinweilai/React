@@ -51,7 +51,7 @@ export default class mainPage extends Component{
 		else if(name === 'accumulate_exchange')	
 			return <Accumulate_exchange message={this.mess} Router={this.Router}/>
 		else if(name === 'accumulate_add')	
-			return <Accumulate_exchange message={this.mess} Router={this.Router}/>
+			return <Accumulate_add message={this.mess} Router={this.Router}/>
 		else if(name === 'cancel')	
 			return <Cancel message={this.mess} Router={this.Router}/>
 		else return null

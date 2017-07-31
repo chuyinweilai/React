@@ -1,8 +1,5 @@
 
-import Headers from './header'
-import Siders from './sider'
+import Header from './header'
+import Sider from './sider'
+import MainPage from './mainPage'
 
-export {
-	Headers,
-	Siders
-}

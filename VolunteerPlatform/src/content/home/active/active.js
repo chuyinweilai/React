@@ -71,6 +71,7 @@ export default class active extends Component {
 		let ss = data.pic_path;
 		let arr = ss.split(",");
 		let typeText = ''
+		console.log(data)
 		if(data.type === 1 ){
 			typeText = '社区服务'
 		} else if(data.type === 2){
@@ -88,8 +89,8 @@ export default class active extends Component {
 					<span style={{color: "#fdac41", fontSize: 16,}}>#{typeText}#</span>
 				</div>
 				<div>
-					<span style={{fontSize: 12,fontWeight: 'bold', marginRight: 20}}>报名26</span>
-					<span style={{fontSize: 12,fontWeight: 'bold', marginRight: 20}}>签到14</span>
+					<span style={{fontSize: 12,fontWeight: 'bold', marginRight: 20}}>报名{data.join_cnt}</span>
+					<span style={{fontSize: 12,fontWeight: 'bold', marginRight: 20}}>签到{data.sign_cnt}</span>
 				</div>
 			</li>
 		)

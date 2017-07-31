@@ -41,11 +41,11 @@ export default class home extends Component{
 
 	render(){
 		return (
-			<Layout className="gutter-example">
-				<Breadcrumb style={{ margin: '12px 0' }}>
+			<Layout style={{ padding: '0 24px 24px' }}>
+				<Breadcrumb style={{ margin: '12px 0' }}className="printHidden">
 					<Breadcrumb.Item>首页</Breadcrumb.Item>
 				</Breadcrumb>
-				<Content>
+				<Content style={{ margin: 0 }}>
 					<Row gutter={16} style={{marginBottom:16}}>
 						<Col span = {12}>
 							 <Accumulate_list/> 

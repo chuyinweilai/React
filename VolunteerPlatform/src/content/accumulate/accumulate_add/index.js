@@ -40,7 +40,6 @@ export default class accumulate_add extends Component{
 			<Layout style={{ padding: '0 24px 24px' }}>
 				<Breadcrumb style={{ margin: '12px 0' }} className="printHidden">
 				<Breadcrumb.Item>活动积分</Breadcrumb.Item>
-				<Breadcrumb.Item>积分列表</Breadcrumb.Item>
 				<Breadcrumb.Item>积分兑换</Breadcrumb.Item>
 				</Breadcrumb>
 				<Content>

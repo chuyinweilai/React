@@ -82,6 +82,11 @@ class pointTable extends Component {
 			} else if(mess.type == 3){
 				typeVal= '其他'
 			}
+			if(mess.pic_path !== "" ){
+				this.setState({
+					pic_list: mess.pic_path.split(",")
+				})
+			}
 			this.setState({
 				open_add:mess.open_add,
 				point: mess.comm_name,
@@ -167,7 +172,6 @@ class pointTable extends Component {
 		}
 	}
 
-
 	//选择活动类型，积分
 	_selectChange(value, type){
 		if(type == 'rule_no'){
@@ -200,23 +204,35 @@ class pointTable extends Component {
 	_imgUp(){
 		let that = this
 		let arr = []
-		let ss = this.activeMess.pic_path;
-		console.log(ss)
-		if(ss !== '' && ss!== undefined){
-			ss.split(",").forEach((value,index)=>{
-				arr.push({
-					uid: index,
-					name: index,
-					status: 'done',
-					url: 'http://cloudapi.famesmart.com/storage/' + value,
-				});
-			})
+		if(this.activeMess !== undefined){
+			let ss = this.activeMess.pic_path;
+			if( ss!== undefined || ss !== ''){
+				ss.split(",").forEach((value,index)=>{
+					arr.push({
+						uid: index,
+						name: index,
+						status: 'done',
+						url: 'http://cloudapi.famesmart.com/storage/' + value,
+					});
+				})
+			}
 		}
 		const props = {
 			action: 'http://cloudapi.famesmart.com/api/activity/filesave',
 			listType: 'picture',
 			defaultFileList : arr,	
-			onRemove :false,
+			onRemove :(file)=>{
+				let arr = this.state.pic_list;
+				let aurl = file.url;
+				arr.forEach((val,index)=>{
+					if('http://cloudapi.famesmart.com/storage/' + val == aurl){
+						arr.splice(index,1);
+					}
+				})
+				this.setState({
+					pic_list:arr,
+				})
+			},
 			beforeUpload:(file, fileList)=>{
 				this.setState({
 					disable: true,
@@ -253,15 +269,17 @@ class pointTable extends Component {
 			"data": form
 		}).done(function(response) {
 			let json = JSON.parse(response);
-			let pic_paths = that.state.pic_path;
-			console.log(pic_paths)
-			if(pic_paths.length){
-				pic_paths +=( "," + json.path);
-			} else {
-				pic_paths += json.path;
-			}
+			let pic_list = that.state.pic_list;
+			pic_list.push( json.path)
+			// let pic_paths = that.state.pic_path;
+			// if(pic_paths.length){
+			// 	pic_paths +=( "," + json.path);
+			// } else {
+			// 	pic_paths += json.path;
+			// }
 			that.setState({
-				pic_path: pic_paths,
+				// pic_path: pic_paths,
+				pic_list: pic_list,
 				disable: false,
 			})
 		});
@@ -273,13 +291,23 @@ class pointTable extends Component {
 		let body  = {}
 		let adate = new Date()
 		let time = adate.getFullYear() + "-" + (adate.getMonth()+1) + "-" + adate.getDate()
+
+		let pic_list = this.state.pic_list;
+		let pic_path = '';
+		pic_list.forEach((val, index)=>{
+			if(index){
+				pic_path += "," + val;
+			}else {
+				pic_path = val;
+			}
+		})
 		if(this.activeMess == undefined){
  				afteruri  = 'activity/add';
 				body = {
 					"comm_code":  this.userMess.comm_code,
 					"title":  this.state.theme,
 					"detail":  this.state.content,
-					"pic_path": this.state.pic_path,
+					"pic_path":pic_path,
 					"join_limit": this.state.limite,
 					"type": this.state.type,
 					"score_type": this.state.rule_no,
@@ -296,7 +324,7 @@ class pointTable extends Component {
 					"comm_code":  this.userMess.comm_code,
 					"title":  this.state.theme,
 					"detail":  this.state.content,
-					"pic_path": this.state.pic_path,
+					"pic_path": pic_path,
 					"join_limit": this.state.limite,
 					"type": this.state.type,
 					"score_type": this.state.rule_no,
@@ -311,6 +339,7 @@ class pointTable extends Component {
 					"open_add": this.state.open_add,
 				}
 		}
+			console.log(body)
 		appData._dataPost(afteruri, body, (res) =>{
 			if(res){
 				this._jump('back')
@@ -327,7 +356,6 @@ class pointTable extends Component {
 
 		return (
 			<div style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>
-				 {/* <input type="file" onChange={this._updataDone.bind(this)}/>  */}
 				<Form>
 					<Row gutter={40}>
 						<Col span={8}>
@@ -349,7 +377,7 @@ class pointTable extends Component {
 								{getFieldDecorator('type',{
 									initialValue: this.state.typeVals
 								})(
-									<Select SelectCtrl={(index)=>this._selectChange(index,"type")}>
+									<Select onChange={(index)=>this._selectChange(index,"type")}>
 										<Option key="1">社区服务</Option>
 										<Option key="2">公益活动</Option>
 										<Option key="3">其他</Option>

@@ -15,8 +15,8 @@ export default class siders extends Component{
 		this.props.Router(e.key)
 	}
 
-	_setMenu(){
-		return (
+	render(){
+		return (	// <Sider width={200} style={{ background: '#fff' }}>
 				<Menu
 					mode="inline"
 					collapsible = 'true'
@@ -26,32 +26,13 @@ export default class siders extends Component{
 					style={{ height: '100%',borderRight: 0 }}
 					onSelect = {this._click.bind(this)}
 				>
-					<Menu.Item key="home">option1</Menu.Item>
-					<SubMenu key="sub1" title={<span><Icon type="user" />subnav 1</span>}>
-						<Menu.Item key="2">option2</Menu.Item>
-						<Menu.Item key="3">option3</Menu.Item>
-						<Menu.Item key="4">option4</Menu.Item>
-					</SubMenu>
-					<SubMenu key="sub2" title={<span><Icon type="laptop" />subnav 2</span>}>
-						<Menu.Item key="5">option5</Menu.Item>
-						<Menu.Item key="6">option6</Menu.Item>
-						<Menu.Item key="7">option7</Menu.Item>
-						<Menu.Item key="8">option8</Menu.Item>
-					</SubMenu>
-					<SubMenu key="sub3" title={<span><Icon type="notification" />志愿者</span>}>
-						<Menu.Item key="point">积分管理（列表打印）</Menu.Item>
-						<Menu.Item key="active">活动发布（列表+From表单）</Menu.Item>
-						{/* <Menu.Item key="11">签到</Menu.Item> */}
-						<Menu.Item key="12">积分兑换</Menu.Item>
-					</SubMenu>
+					<Menu.Item key="home"><Icon type="home" />首页</Menu.Item>
+					<Menu.Item key="activity_list"><Icon type="star-o" />活动管理</Menu.Item>
+					<Menu.Item key="accumulate_list"><Icon type="heart-o" />积分管理</Menu.Item>
+					<Menu.Item key="volunteer_list"><Icon type="user" />志愿者管理</Menu.Item>
+					<Menu.Item key="cancel"><Icon type="close-circle-o"/>注销</Menu.Item>
 				</Menu>
-		)
-	}
-	render(){
-		return (
-			<Sider width={200} style={{ background: '#fff' }}>
-					{this._setMenu()}
-			</Sider>
+			// </Sider>
 		)
 	}
 }
