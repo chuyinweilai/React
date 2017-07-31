@@ -123,11 +123,6 @@ export default class pointTable extends Component {
 			})
 		})
 	}
-
-	_print(){
-		window.print();
-	}
-
 	
 	_login(data,mess){
 		let afteruri = 'activity/check'
@@ -169,6 +164,7 @@ export default class pointTable extends Component {
 			"wx_id": obj.wx_id,
 			"activity_no": Number(this.activeMess.activity_no),
 			"comm_code": this.activeMess.comm_code,
+			"operator":this.userMess.user_id,
 		}
 		let afteruri = 'volunteer/sign'
 		appData._dataPost(afteruri,body,(res)=>{
@@ -200,19 +196,28 @@ export default class pointTable extends Component {
 
 	render() {
 		return (
-			<div style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>
+			<div style={{padding: 24, margin: 0, minHeight: 80 }}>
 				<Row type="flex" justify="space-between" gutter={1}>
-					<Col span={2} className="printHidden">
-						<Button style={{marginBottom: 20}} onClick={()=>this._jump('back')}>返回</Button>
+					<Col  className="printHidden">
+						<text style={{fontSize: 24, color: '#aaa'}}>活动管理/</text>
+						<text style={{fontSize: 24, color: '#1e8fe6'}}>签到</text>
 					</Col>
-
-					<Col span={2} className="printHidden">
-							<Button onClick={() => this._print()}>打印</Button>
+					<Col className="printHidden">
+							<Button  style={{height: 32}} onClick={() => window.print()}>打印</Button>
 					</Col>
 				</Row>
-				<Row  style={{marginBottom: 20}}>
-					<Col span={8}>活动编号：{this.state.activity_no}</Col>
-					<Col span={8}>活动主题：{this.state.title}</Col>
+				<Row>
+					<Col>
+						<Button style={{height: 32, margin: 10}} onClick={()=>this._jump('back')}>返回</Button>
+						<div>
+							<Col span={5} style={{margin:'10px'}}> 
+								活动编号：{this.state.activity_no}
+							</Col>
+							<Col span={5} style={{margin:'10px'}}> 
+								活动主题：{this.state.title}
+							</Col>
+						</div>
+					</Col>
 				</Row>
 				<Table bordered columns={this.columns} dataSource={this.state.dataSource}/>
 				{/* <Row type="flex" justify="end"> */}

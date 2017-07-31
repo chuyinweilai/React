@@ -32,9 +32,9 @@ export default class accumulate_list extends Component {
 				colSpan:1,
 				title: '姓名',
 				dataIndex: 'name',
-				render: (text)=>(
-					<text style={{color: '#49a9ee'}}>{text}</text>
-				)
+				render: (text)=>{
+					return <text style={{color:  '#1e8fe6'}}>{text}</text>
+				}
 			}, 
 			{
 				colSpan:1,
@@ -51,7 +51,7 @@ export default class accumulate_list extends Component {
 				title: '当前积分',
 				dataIndex: 'score',
 				render: (text)=>(
-					<text style={{color: 'red'}}>{text}</text>
+					<text style={{color: '#ea7c6b'}}>{text}</text>
 				)
 			},
 		];
@@ -127,11 +127,13 @@ export default class accumulate_list extends Component {
 		const { dataSource } = this.state;
 		let columns = this.columns;
 		return (
-		<div style={{ padding: 5, backgroundColor: '#fff', minHeight: 358}}>
-			<text style={{fontSize: 16,paddingBottom: 5}}>
+		<div style={{ padding: 15, backgroundColor: '#fff', minHeight: 358}}>
+			<text style={{fontSize: 16,paddingBottom: 5, fontWeight: "bold"}}>
 				积分过期提醒
 			</text>
-			<Table bordered={false}
+			<Table
+				style={{ height: 154}}
+				bordered={true}
 				dataSource={this.state.dataSource} 
 				columns={columns} rowKey='key' pagination={false}/>  
 		</div>

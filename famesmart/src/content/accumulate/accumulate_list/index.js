@@ -42,13 +42,8 @@ export default class accumulate_detail extends Component{
 	
 	render(){
 		return (
-			<Layout style={{ padding: '0 24px 24px' }}>
-				<Breadcrumb style={{ margin: '12px 0' }} className="printHidden">
-				<Breadcrumb.Item>积分列表</Breadcrumb.Item>
-				</Breadcrumb>
-				<Content>
-					<ATable  message={this.mess} Router={this.Router}/>
-				</Content>
+			<Layout style={{ padding: '0 24px 24px' , background: '#fff',}}>
+				<ATable  message={this.mess} Router={this.Router}/>
 			</Layout>
 		)
 	}

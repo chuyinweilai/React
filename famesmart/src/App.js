@@ -39,7 +39,6 @@ class App extends Component {
 	}
 
 	onCollapse(collapsed) {
-		console.log(collapsed);
 		this.setState({ collapsed });
 	}
 

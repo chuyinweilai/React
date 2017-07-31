@@ -37,15 +37,8 @@ export default class accumulate_add extends Component{
 	}
 	render(){
 		return (
-			<Layout style={{ padding: '0 24px 24px' }}>
-				<Breadcrumb style={{ margin: '12px 0' }} className="printHidden">
-				<Breadcrumb.Item>活动积分</Breadcrumb.Item>
-				<Breadcrumb.Item>积分兑换</Breadcrumb.Item>
-				</Breadcrumb>
-				<Content>
-
+			<Layout style={{ padding: '0 24px 24px', background: '#fff', }}>
  					<ATable  message={this.mess} Router={this.Router}/> 
-				</Content>
 			</Layout>
 		)
 	}

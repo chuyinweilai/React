@@ -130,7 +130,6 @@ export default class pointTable extends Component {
 	}
 
 	_accuCtrl(type,value){
-		console.log(value)
 		if(type == "detail"){
 			this.setState({
 				used_score: value.used_score,
@@ -163,23 +162,28 @@ export default class pointTable extends Component {
 		const { dataSource } = this.state;
 		let columns = this.columns;
 		return (
-		<div style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>
+		<div style={{padding: 24, margin: 0, minHeight: 80 }}>
 			<Row type="flex" justify="space-between" gutter={1}>
-				<Col>
-					<Button onClick={()=>this._jump('back')}>返回</Button>
-					<div>
-						手机:{this.state.mobile}
-					</div>
-					<div>
-						姓名:{this.state.name}
-					</div>
+				<Col className="printHidden">
+					<text style={{fontSize: 24, color: '#aaa'}}>积分管理/</text>
+					<text style={{fontSize: 24, color: '#1e8fe6'}}>兑换历史</text>
 				</Col>
 				<Col span={2} className="printHidden">
-						<Button onClick={() => this._print()}>打印</Button>
+						<Button style={{height: 32}}  onClick={() => window.print()}>打印</Button>
 				</Col>
 			</Row>
 			<Row>
-				<Col span={8} style={{margin:'10px'}}> </Col>
+				<Col>
+					<Button style={{height: 32, margin: 10}} onClick={()=>this._jump('back')}>返回</Button>
+					<div>
+						<Col span={5} style={{margin:'10px'}}> 
+							姓名:{this.state.name}
+						</Col>
+						<Col span={5} style={{margin:'10px'}}> 
+							手机:{this.state.mobile}
+						</Col>
+					</div>
+				</Col>
 			</Row>
 			<Table bordered dataSource={dataSource} columns={columns} rowKey='key' pagination={false} style={{marginBottom: 20}}/> 
 			<Row type="flex" justify="end">

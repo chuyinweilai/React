@@ -157,7 +157,7 @@ export default class pointTable extends Component {
 				key:"action",
   				colSpan: 2,
 				render:(text, record)=>{
-					let disable = false;
+					let disable = [];
 					if(record.vld_flag == 2){
 						return (
 							<Row type="flex" gutter={6} justify="center">
@@ -226,10 +226,6 @@ export default class pointTable extends Component {
 		if(type=== "add"){
 			this._jump('activity_add')
 		}
-	}
-	
-	_print(){
-		window.print();
 	}
 
 	_jump(nextPage,mess){
@@ -302,14 +298,18 @@ export default class pointTable extends Component {
 		return (
 		<div style={{background: '#fff',padding: 24,margin: 0,minHeight: 80}}>
 			<Row type="flex" justify="space-between" gutter={1}>
-				<Col span={2} className="printHidden">
-						<Button onClick = {()=>this._addAct('add')}>新增活动</Button>
+				<Col  className="printHidden">
+					<text style={{fontSize: 24, color: '#1e8fe6'}}>活动管理</text>
 				</Col>
-				<Col span={2} className="printHidden">
-						<Button onClick={() => this._print()}>打印</Button>
+				<Col className="printHidden">
+				<span style={{ marginRight: 10}}>
+						<Button style={{height: 32, backgroundColor: '#1e8fe6', color: 'white'}}  onClick = {()=>this._addAct('add')}>新增活动</Button>
+				</span>
+				<span>
+						<Button  style={{height: 32}} onClick={() => window.print()}>打印</Button>
+				</span>
 				</Col>
 			</Row>
-
 			<Row>
 				<Col span={8} style={{margin:'10px'}}> </Col>
 			</Row>

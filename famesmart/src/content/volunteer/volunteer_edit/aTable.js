@@ -15,7 +15,6 @@ import {
 	InputNumber,
 	AutoComplete 
 } from 'antd';
-// import Selects from './aCell';
 import appData from './../../../assert/Ajax'
 import moment from 'moment';
 import '../../../App.css'
@@ -24,8 +23,6 @@ const FormItem = Form.Item;
 const Option = Select.Option;
 const AutoCompleteOption = AutoComplete.Option;
 const { TextArea } = Input;
-// const dateFormat = 'YYYY-MM-DD h:mm:ss';
-// moment().format('MMMM Do YYYY, h:mm:ss a');
 
 
 class pointTable extends Component {
@@ -46,7 +43,7 @@ class pointTable extends Component {
 			occupation: '',
 			ic_card: '',
 
-			disable: true,
+			disable: false,
 		};
 		this.userMess;
 		this.Router;
@@ -180,7 +177,14 @@ class pointTable extends Component {
 			wrapperCol: { span: 7 },
 		};
 		return (
-			<div style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>
+			<div style={{ padding: 24, margin: 0, minHeight: 80 }}>
+				<Row type="flex" justify="space-between" gutter={1}>
+					<Col className="printHidden">
+						<text style={{fontSize: 24, color: '#aaa'}}>志愿者管理/</text>
+						<text style={{fontSize: 24, color: '#1e8fe6'}}>修改志愿者</text>
+					</Col>
+				</Row>
+
 				<Form style={{paddingTop: '50px'}}>
 					<FormItem
 						{...formItemLayout}
@@ -280,7 +284,7 @@ class pointTable extends Component {
 
 				<Row type="flex" justify="end" gutter={1} >
 					<Col span={2}>
-						<Button  onClick={() => this._add_active()} disabled={this.state.disable}>提交</Button>
+						<Button style={this.state.disable ?{}: {backgroundColor:'#1e8fe6', color :'white'}}  onClick={() => this._add_active()} disabled={this.state.disable}>提交</Button>
 					</Col>
 					<Col span={2}>
 						<Button onClick={()=>this._jump('back')}>取消</Button>

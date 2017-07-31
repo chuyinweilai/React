@@ -27,7 +27,7 @@ export default class headers extends Component{
 			<Row type="flex" justify="space-between">
 				<Col>
 					<image className="logo"/>
-					<h1 style={{color: 'white', }}>社区积分管理系统</h1>
+					<h1 style={{color: 'white', }}>社区志愿者管理系统</h1>
 				</Col>
 				<Col>
 					<span style={{color: 'white', marginRight: 20}}>所在社区：{this.state.comm_name}</span>

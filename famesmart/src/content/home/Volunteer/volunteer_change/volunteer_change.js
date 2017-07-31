@@ -17,6 +17,9 @@ const  data = {
 
 			// 边线颜色
 			strokeColor: "#49a9ee",
+						
+			// 填充颜色
+			fillColor: "rgba(73,169,238,0.45)",
 			
 			// 圆点颜色
 			pointColor: "rgba(220,220,220,1)",
@@ -34,21 +37,42 @@ const  data = {
 
 
 const options ={
+			//网格线属性
+				///Boolean - Whether grid lines are shown across the chart
+				scaleShowGridLines : true,
 
-	//网格线属性
-		scaleShowGridLines : false,
+				//String - Colour of the grid lines
+				scaleGridLineColor : "rgba(0,0,0,.05)",
 
-	// 每个点的大小
-		pointDotRadius : 4,
+				//Number - Width of the grid lines
+				scaleGridLineWidth : 1,
 
-	// 每个点的宽度
-		pointDotStrokeWidth : 1,
+				//Boolean - Whether to show horizontal lines (except X axis)
+				scaleShowHorizontalLines: true,
 
-	//每个点的额外半径，即实际触发半径
-		pointHitDetectionRadius : 5,	
+				//Boolean - Whether to show vertical lines (except Y axis)
+				scaleShowVerticalLines: true,
 
-	// 是否为数据集填充颜色
-		datasetFill : false,
+				// 两点之间是否弧形显示
+				bezierCurve : false,
+
+				// 每个点的大小
+				pointDotRadius : 0,
+
+				// 每个点的宽度
+				pointDotStrokeWidth : 0,
+
+				//每个点的额外半径，即实际触发半径
+				pointHitDetectionRadius : 5,	
+
+				// 是否为数据集填充颜色
+				datasetFill : true,
+
+				//是否在网格中心标注标签和点
+				offsetGridLines : false,
+
+				//每个点的额外半径，即实际触发半径
+				pointHitDetectionRadius : 0,
 }
 
 const device = document.body.offsetWidth
@@ -65,8 +89,8 @@ export default class volunteer_change extends Component{
 
 	render(){
 		return (
-			<div style={{paddingLeft: 10,backgroundColor: '#fff', minHeight: 173}}>	
-				<text style={{fontSize: 16}}>志愿者变化趋势</text>
+			<div style={{padding: 15, height: 173 , backgroundColor: '#fff'}}>	
+				<text style={{fontSize: 16,paddingBottom: 5, fontWeight: "bold"}}>志愿者变化趋势</text>
 				<div style={{marginLeft: 30}}>
 					<Line data={data} options={options} height="136" width={device*0.3}/>
 				</div>

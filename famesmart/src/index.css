@@ -28,3 +28,16 @@ body {
         visibility: hidden;
     }
 }
+
+.ant-table-tbody>tr>td {
+    text-align: left
+}
+
+.ant-table-thead>tr>th {
+    background-color: #1e8fe6
+}
+
+.ant-table-thead>tr>th {
+    background-color: #1e8fe6;
+    color: white
+}

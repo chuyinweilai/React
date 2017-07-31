@@ -33,18 +33,15 @@ export default class accumulate_exchange extends Component {
 				colSpan:1,
 				title: '名称',
 				dataIndex: 'gift_name',
-				render: (text)=>(
-					<text style={{color: '#49a9ee'}}>{text}</text>
-				)
+				render: (text)=>{
+					return <text style={{color:  '#1e8fe6'}}>{text}</text>
+				}
 			}, 
 			{
 				colSpan:1,
-				title: '兑换积分',
-				dataIndex: 'change_score',
-				render: (text)=>(
-					<text style={{color: 'red'}}>{text}</text>
-				)
-			}, 
+				title: '总数量',
+				dataIndex: 'change_limit',
+			},
 			{
 				colSpan:1,
 				title: '已兑换数量',
@@ -55,9 +52,12 @@ export default class accumulate_exchange extends Component {
 			},
 			{
 				colSpan:1,
-				title: '总数量',
-				dataIndex: 'change_limit',
-			},
+				title: '兑换积分',
+				dataIndex: 'change_score',
+				render: (text)=>(
+					<text style={{color: '#ea7c6b'}}>{text}</text>
+				)
+			}, 
 		];
 		
 		this.Router;
@@ -85,8 +85,6 @@ export default class accumulate_exchange extends Component {
 			 "comm_code": userMess.comm_code
 		}
 		appData._dataPost(afteruri,body,(res) => {
-			console.log(res)
-			// let pageSum = Math.ceil(res.total/res.per_page)
 			let data = res.slice(0, 5);
 			let len = data.length;
 			this.setState({
@@ -132,13 +130,13 @@ export default class accumulate_exchange extends Component {
 		const { dataSource } = this.state;
 		let columns = this.columns;
 		return (
-		<div style={{padding: 5, backgroundColor: '#fff', minHeight: 358}}>
-			<text style={{fontSize: 16,paddingBottom: 5}}>
+		<div style={{ padding: 15, backgroundColor: '#fff', minHeight: 358}}>
+			<text style={{fontSize: 16,paddingBottom: 5, fontWeight: "bold"}}>
 				兑换热度表
 			</text>
 			<Table 
 				style={{ height: 154}}
-				bordered={false}
+				bordered={true}
 				dataSource={this.state.dataSource} 
 				columns={columns} rowKey='key' pagination={false}/>  
 		</div>

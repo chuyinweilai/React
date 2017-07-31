@@ -13,3 +13,7 @@
 .upload-list-inline .ant-upload-animate-leave {
     animation-name: uploadAnimateInlineOut;
 }
+
+.ant-upload-list {
+    margin: 20px
+}
