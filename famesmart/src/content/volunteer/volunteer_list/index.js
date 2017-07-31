@@ -47,8 +47,7 @@ export default class volunteer_list extends Component{
 		return (
 			<Layout style={{ padding: '0 24px 24px' }}>
 				<Breadcrumb style={{ margin: '12px 0' }} className="printHidden">
-					<Breadcrumb.Item>志愿者活动</Breadcrumb.Item>
-					<Breadcrumb.Item>活动管理</Breadcrumb.Item>
+					<Breadcrumb.Item>志愿者管理</Breadcrumb.Item>
 				</Breadcrumb>
 				<Content>
 					<ATable  message={this.mess} Router={this.Router}/>

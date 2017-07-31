@@ -47,13 +47,12 @@ export default class active extends Component {
 	//获取后台信息
 	_getEvent(){
 		let userMess = this.userMess;
-		let afteruri = 'activity/list';
+		let afteruri = 'activity/soon';
 		let body = {
 			 "comm_code": userMess.comm_code
 		}
 		appData._dataPost(afteruri,body,(res) => {
-			let pageSum = Math.ceil(res.total/res.per_page)
-			let data = res.data[0];
+			let data =res.activity;
 			// let arr = [];
 			// data.forEach((value) =>{
 			// 	let obj = this._listView(value);
@@ -71,7 +70,6 @@ export default class active extends Component {
 		let ss = data.pic_path;
 		let arr = ss.split(",");
 		let typeText = ''
-		console.log(data)
 		if(data.type === 1 ){
 			typeText = '社区服务'
 		} else if(data.type === 2){
@@ -95,17 +93,6 @@ export default class active extends Component {
 			</li>
 		)
 	}
-	
-	//操作栏功能
-	_action(type,mess){
-		if(type=== "sign"){
-			this._jump('activity_sign', mess)
-		} else if(type === "change"){
-			this._jump('activity_add', mess)
-		}else if(type === "refuse"){
-			
-		}
-	}
 
 	render() {
 		const { dataSource } = this.state;
@@ -114,7 +101,7 @@ export default class active extends Component {
 		<div style={{padding: 5, backgroundColor: '#fff', minHeight: 358}}>
 			<div>
 				<text style={{ height: 20, fontSize: 16,paddingBottom: 5}}>
-					活动列表
+					即将开始
 				</text>
 			</div>
 			<ul style={{float:'left'}}>
