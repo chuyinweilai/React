@@ -185,6 +185,12 @@ class pointTable extends Component {
 		};
 		return (
 			<div style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>
+				<Row type="flex" justify="space-between" gutter={1}>
+					<Col className="printHidden">
+						<text style={{fontSize: 24, color: '#aaa'}}>积分管理/</text>
+						<text style={{fontSize: 24, color: '#1e8fe6'}}>积分兑换</text>
+					</Col>
+				</Row>
 
 				<Form style={{paddingTop: '50px'}}  className="printHidden">
 					<FormItem
@@ -246,7 +252,7 @@ class pointTable extends Component {
 
 				<Row type="flex" justify="end" gutter={1} className="printHidden">
 					<Col span={2}>
-						<Button  onClick={() =>this.setState({visible: true})} disabled={this.state.btnAble}>确认</Button>
+						<Button style={{backgroundColor:'#1e8fe6', color: 'white'}} onClick={() =>this.setState({visible: true})} disabled={this.state.btnAble}>确认</Button>
 					</Col>
 					<Col span={2}>
 						<Button onClick={()=>this._jump('back')}>取消</Button>

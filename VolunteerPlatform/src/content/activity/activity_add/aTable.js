@@ -242,11 +242,15 @@ class pointTable extends Component {
 			className:'upload-list-inline',
 		}
 		return (
-			<Upload {...props}>
-			<Button>
-				<Icon type="upload" /> upload
-			</Button>
-			</Upload>
+			<Row gutter={40} style={{ padding: 10}}>
+				<Col span={8}>
+					<Upload {...props}>
+					<Button>
+						<Icon type="upload" /> 图片上传
+					</Button>
+					</Upload>
+				</Col>
+			</Row>
 		)
 	}
 
@@ -339,7 +343,6 @@ class pointTable extends Component {
 					"open_add": this.state.open_add,
 				}
 		}
-			console.log(body)
 		appData._dataPost(afteruri, body, (res) =>{
 			if(res){
 				this._jump('back')
@@ -355,8 +358,12 @@ class pointTable extends Component {
 		};
 
 		return (
-			<div style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>
-				<Form>
+			<div style={{ padding: 24, margin: 0, minHeight: 80 }}>
+				<Col  className="printHidden">
+					<text style={{fontSize: 24, color: '#aaa'}}>活动管理/</text>
+					<text style={{fontSize: 24, color: '#1e8fe6'}}>新增（修改）活动</text>
+				</Col>
+				<Form  style={{paddingTop: '50px'}}>
 					<Row gutter={40}>
 						<Col span={8}>
 							<FormItem
@@ -385,9 +392,6 @@ class pointTable extends Component {
 								)}
 							</FormItem> 
 						</Col>
-					</Row>
-					
-					<Row gutter={40}>
 						<Col span={8}>
 							<FormItem
 								{...formItemLayout}
@@ -399,6 +403,9 @@ class pointTable extends Component {
 								)}
 							</FormItem>
 						</Col>
+					</Row>
+					
+					<Row gutter={40}>
 						<Col span={8}>
 							<FormItem
 								{...formItemLayout}
@@ -489,7 +496,7 @@ class pointTable extends Component {
 
 				<Row type="flex" justify="end" gutter={1} >
 					<Col span={2}>
-						<Button  onClick={() => this._add_active('add')} disabled={this.state.disable}>提交</Button>
+						<Button style={{backgroundColor:'#1e8fe6', color: 'white'}}  onClick={() => this._add_active('add')} disabled={this.state.disable}>提交</Button>
 					</Col>
 					<Col span={2}>
 						<Button onClick={()=>this._jump('back')}>取消</Button>

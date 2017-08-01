@@ -1,20 +1,35 @@
-.gutter-example {
+#home-box {
+    padding: 24px;
+    background-color: white;
+}
+
+#home-box .gutter-example {
     padding: 12px;
 }
 
-.gutter-div {
+#home-box .gutter-div {
     background: #00A0E9;
     padding: 5px 0;
     height: 194px;
 }
 
-.gutter-div1 {
+#home-box .gutter-div1 {
     background: #00A0E9;
     padding: 5px 0;
     height: 150px;
     width: 352px;
 }
 
-.gutter-Row2 {
+#home-box .gutter-Row2 {
     padding: 5px 0;
+}
+
+#home-box .ant-table-thead>tr>th>span {
+    font-size: 14px;
+    font-weight: 'bold',
+}
+
+#home-box .ant-table-tbody>tr>td {
+    padding: 14px 4px;
+    text-align: center;
 }

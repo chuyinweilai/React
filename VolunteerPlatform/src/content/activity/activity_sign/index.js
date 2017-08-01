@@ -40,14 +40,8 @@ export default class activity_sign extends Component{
 
 	render(){
 		return (
-			<Layout style={{ padding: '0 24px 24px' }}>
-				<Breadcrumb className="printHidden" style={{ margin: '12px 0' }}>
-				<Breadcrumb.Item>活动管理</Breadcrumb.Item>
-				<Breadcrumb.Item>签到</Breadcrumb.Item>
-				</Breadcrumb>
-				<Content>
+			<Layout style={{ padding: '0 24px 24px', backgroundColor: 'white' }}>
 					<ATable  message={this.mess} Router={this.Router}/>
-				</Content>
 			</Layout>
 		)
 	}

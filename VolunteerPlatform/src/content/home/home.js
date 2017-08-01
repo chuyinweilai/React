@@ -41,11 +41,14 @@ export default class home extends Component{
 
 	render(){
 		return (
-			<Layout style={{ padding: '0 24px 24px' }}>
-				<Breadcrumb style={{ margin: '12px 0' }}className="printHidden">
-					<Breadcrumb.Item>首页</Breadcrumb.Item>
-				</Breadcrumb>
-				<Content style={{ margin: 0 }}>
+			<Layout id="home-box">
+				<Row type="flex" justify="space-between" gutter={1}>
+					<Col  className="printHidden">
+						<text style={{fontSize: 24, color: '#1e8fe6', padding:'24px'}}>首页</text>
+					</Col>
+				</Row>
+
+				<Content style={{ padding: "9px" }}>
 					<Row gutter={16} style={{marginBottom:16}}>
 						<Col span = {12}>
 							 <Accumulate_list/> 

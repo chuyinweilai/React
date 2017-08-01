@@ -13,7 +13,6 @@ import {
 	Dropdown 
 } from 'antd'
 import appData from './../../../assert/Ajax';
-import ACell from './aCell';
 import  '../../../App.css'
 
 require('./index.css');
@@ -49,6 +48,11 @@ export default class pointTable extends Component {
   				colSpan: 1,
 				title: '姓名',
 				dataIndex: 'name',
+				render:(text) => {
+					return(
+						<text style={{color: '#1e8fe6',}}>{text}</text>
+					)
+				}
 			}, 
 			{
   				colSpan: 1,
@@ -107,11 +111,6 @@ export default class pointTable extends Component {
 					return <text>{record.vol_tag}</text>
 				}
 			}, 
-			// {
-			// 	colSpan:1,
-			// 	title: '志愿者星级',
-			// 	dataIndex: 'score',
-			// },
 			{
 				colSpan:1,
 				title: '注册时间',
@@ -161,7 +160,6 @@ export default class pointTable extends Component {
 		}
 		appData._dataPost(afteruri,body,(res) => {
 			let data = res.data
-			console.log(data)
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let len = data.length;
 			this.setState({
@@ -183,9 +181,11 @@ export default class pointTable extends Component {
 				"comm_code": mess.comm_code
 			}
 			appData._dataPost(afteruri,body,(res) => {
-				console.log(res)
 				if(res){
 					this._getEvent()
+					this.setState({
+						pageNum: 1
+					})
 				} else {
 					alert('操作失败')
 				}
@@ -217,10 +217,13 @@ export default class pointTable extends Component {
 		const { dataSource } = this.state;
 		let columns = this.columns;
 		return (
-		<div style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>
+		<div style={{ padding: 24, margin: 0, minHeight: 80 }}>
 			<Row type="flex" justify="space-between" gutter={1}>
-				<Col span={2} className="printHidden">
-						<Button onClick={() => this._print()}>打印</Button>
+				<Col  className="printHidden">
+					<text style={{fontSize: 24, color: '#1e8fe6'}}>志愿者管理</text>
+				</Col>
+				<Col className="printHidden">
+					<Button style={{height: 32}} onClick={()=>window.print()}>打印</Button>
 				</Col>
 			</Row>
 			<Row>

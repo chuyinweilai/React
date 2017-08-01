@@ -10,7 +10,8 @@ import {
 	Popconfirm, 
 	Pagination,
 	Menu, 
-	Dropdown 
+	Dropdown,
+	Breadcrumb, 
 } from 'antd'
 import '../../../App.css'
 import appData from './../../../assert/Ajax';
@@ -48,6 +49,11 @@ export default class pointTable extends Component {
 				colSpan:1,
 				title: '姓名',
 				dataIndex: 'name',
+				render:(text) => {
+					return(
+						<text style={{color: '#1e8fe6',}}>{text}</text>
+					)
+				}
 			}, 
 			{
 				colSpan:1,
@@ -58,6 +64,11 @@ export default class pointTable extends Component {
 				colSpan:1,
 				title: '当前积分',
 				dataIndex: 'score',
+				render:(text) => {
+					return(
+						<text style={{color: '#ea7c6b',}}>{text}</text>
+					)
+				}
 			},
 			{
 				title: '操作',
@@ -154,18 +165,17 @@ export default class pointTable extends Component {
 		})
 	}
 
-	_print(){
-		window.print();
-	}
-
 	render() {
 		const { dataSource } = this.state;
 		let columns = this.columns;
 		return (
-		<div style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>
+		<div style={{ padding: 24, margin: 0, minHeight: 80 }}>
 			<Row type="flex" justify="space-between" gutter={1}>
-				<Col span={2} className="printHidden">
-						<Button onClick={() => this._print()}>打印</Button>
+				<Col className="printHidden">
+					<text style={{fontSize: 24, color: '#1e8fe6'}}>积分管理</text>
+				</Col>
+				<Col className="printHidden">
+					<Button style={{height: 32}} onClick={() =>  window.print()}>打印</Button>
 				</Col>
 			</Row>
 			<Row>

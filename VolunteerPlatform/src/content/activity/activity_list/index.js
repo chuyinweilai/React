@@ -42,13 +42,8 @@ export default class activity_list extends Component{
 
 	render(){
 		return (
-			<Layout style={{ padding: '0 24px 24px' }}>
-				<Breadcrumb style={{ margin: '12px 0' }} className="printHidden">
-					<Breadcrumb.Item>活动管理</Breadcrumb.Item>
-				</Breadcrumb>
-				<Content>
+			<Layout style={{ padding: '0 24px 24px' , backgroundColor: 'white'}}>
 					<ATable  message={this.mess} Router={this.Router}/>
-				</Content>
 			</Layout>
 		)
 	}

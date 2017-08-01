@@ -87,8 +87,14 @@ export default class active extends Component {
 					<span style={{color: "#fdac41", fontSize: 16,}}>#{typeText}#</span>
 				</div>
 				<div>
-					<span style={{fontSize: 12,fontWeight: 'bold', marginRight: 20}}>报名{data.join_cnt}</span>
-					<span style={{fontSize: 12,fontWeight: 'bold', marginRight: 20}}>签到{data.sign_cnt}</span>
+					<span style={{fontSize: 14,fontWeight: 'bold', marginRight: 20}}>
+						<Icon type="user" style={{ fontSize: 16}} />
+						报名{data.join_cnt}
+					</span>
+					<span style={{fontSize: 14,fontWeight: 'bold', marginRight: 20}}>
+						<Icon type="heart-o" style={{ fontSize: 16}} />
+						签到{data.sign_cnt}
+					</span>
 				</div>
 			</li>
 		)
@@ -98,9 +104,9 @@ export default class active extends Component {
 		const { dataSource } = this.state;
 		let columns = this.columns;
 		return (
-		<div style={{padding: 5, backgroundColor: '#fff', minHeight: 358}}>
+		<div style={{ padding: 15, backgroundColor: '#fff', minHeight: 358}}>
 			<div>
-				<text style={{ height: 20, fontSize: 16,paddingBottom: 5}}>
+			<text style={{fontSize: 16,paddingBottom: 5, fontWeight: "bold"}}>
 					即将开始
 				</text>
 			</div>

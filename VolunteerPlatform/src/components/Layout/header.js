@@ -24,12 +24,14 @@ export default class headers extends Component{
 	render(){
 		return (
 		<Header className="header" >
-			<Row type="flex" justify="space-between">
-				<Col>
-					<image className="logo"/>
-					<h1 style={{color: 'white', }}>社区积分管理系统</h1>
+			<Row>
+				<Col span={4}>
+					 <img style={{margin:10,width: '80%', height: 40, display:'inline-block'}} className="logo" src="./icon/LOGO.jpg"/> 
 				</Col>
-				<Col>
+				<Col span={13}>
+					<text style={{color: 'white', fontSize: 30, display:'inline-block'}}>社区志愿者管理系统</text> 
+				</Col>
+				<Col span={5}>
 					<span style={{color: 'white', marginRight: 20}}>所在社区：{this.state.comm_name}</span>
 					<span style={{color: 'white', marginRight: 20}}>操作员：{this.state.user_id}</span>
 				</Col>
