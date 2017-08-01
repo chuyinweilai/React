@@ -239,8 +239,8 @@ class pointTable extends Component {
 							initialValue: this.state.vol_tag
 						})(
 							<Select onChange={this._selectChange.bind(this,'vol_tag')} disabled>
-								<Option key="0">普通志愿者</Option>
-								<Option key="1">楼组长</Option>
+								<Option key="普通志愿者">普通志愿者</Option>
+								<Option key="楼组长">楼组长</Option>
 							</Select>
 						)}
 					</FormItem>

@@ -1,21 +1,12 @@
 import React,{Component} from 'react';
 import Home from './home/home'
 import Login from './login/login'
-import {
-	Accumulate_history,
-	Accumulate_list,
-	Accumulate_exchange,
-	Accumulate_add,
-} from './accumulate';	
-import{	
-	Activity_add,
-	Activity_list,
-	Activity_sign,
-}from './activity'
-import{
-	Volunteer_edit,
-	Volunteer_list,
-} from './volunteer'
+import { Accumulate_history, Accumulate_list, Accumulate_exchange, Accumulate_add, } from './accumulate';	
+
+import { Activity_add, Activity_list, Activity_sign, }from './activity'
+
+import { Volunteer_edit, Volunteer_list, } from './volunteer'
+import { QRcode_record,} from './QRcode'
 import Cancel from './cancel'
 
 export default class mainPage extends Component{
@@ -52,6 +43,8 @@ export default class mainPage extends Component{
 			return <Accumulate_exchange message={this.mess} Router={this.Router}/>
 		else if(name === 'accumulate_add')	
 			return <Accumulate_add message={this.mess} Router={this.Router}/>
+		else if(name === 'QRcode_record')	
+			return <QRcode_record message={this.mess} Router={this.Router}/>
 		else if(name === 'cancel')	
 			return <Cancel message={this.mess} Router={this.Router}/>
 		else return null

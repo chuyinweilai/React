@@ -171,10 +171,10 @@ export default class pointTable extends Component {
 		return (
 		<div style={{ padding: 24, margin: 0, minHeight: 80 }}>
 			<Row type="flex" justify="space-between" gutter={1}>
-				<Col span={2} className="printHidden">
+				<Col className="printHidden">
 					<text style={{fontSize: 24, color: '#1e8fe6'}}>积分管理</text>
 				</Col>
-				<Col span={2} className="printHidden">
+				<Col className="printHidden">
 					<Button style={{height: 32}} onClick={() =>  window.print()}>打印</Button>
 				</Col>
 			</Row>

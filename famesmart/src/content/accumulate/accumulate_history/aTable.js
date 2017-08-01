@@ -20,10 +20,14 @@ export default class pointTable extends Component {
 		super(props);
 		this.state = {
 			_visible: false,
+			comm_name: '',
+			mobile:0 ,
+			name: "",
+			used_score:0,
 			dataSource: [],
 			count: 0,
+			detail_val:{}
 		};
-
 
 		this.columns = [
 			{
@@ -38,7 +42,7 @@ export default class pointTable extends Component {
 			}, 
 			{
 				colSpan:1,
-				title: '积分変动时间',
+				title: '积分变动时间',
 				dataIndex: 'change_date',
 			}, 
 			{
@@ -59,10 +63,17 @@ export default class pointTable extends Component {
 				colSpan:1,
 				title: '积分变动值',
 				dataIndex: 'used_score',
+				render:(text,record)=>{
+						if(record.score_type == 1){
+							return <text> - {record.used_score}</text>
+						} else {
+							return <text> + {record.activity_score}</text>
+						}
+				}
 			},
 			{
 				colSpan:1,
-				title: '操作员·',
+				title: '操作员',
 				dataIndex: 'operator',
 			},
 			{
@@ -131,8 +142,9 @@ export default class pointTable extends Component {
 
 	_accuCtrl(type,value){
 		if(type == "detail"){
+			console.log(value)
 			this.setState({
-				used_score: value.used_score,
+				detail_val:value,
 				_visible: true
 			})
 		}
@@ -158,6 +170,78 @@ export default class pointTable extends Component {
 		})
 	}
 
+	_modal(){
+		if(this.state._visible){
+			let aValue = this.state.detail_val;
+			let type =''
+			let score = 0
+			if(aValue.score_type == 1){
+				type ='礼品兑换';
+				score =  "-" + aValue.used_score
+			}else if(aValue.score_type == 2) {
+				type ='签到积分'
+				score = "+" + aValue.activity_score
+			}else if(aValue.score_type == 3) {
+				type ='手动积分'
+				score =  "+" + aValue.activity_score
+			}
+			return (
+				<Modal
+					title="积分变动"
+					visible={this.state._visible}
+					onOk={()=>window.print()}
+					onCancel={() =>this.setState({_visible: false})}
+					okText="打印" 
+					cancelText="确认"
+				>
+					<Col style={{height: 30}}>
+						<text style={{display:'inline-block', width: 100, textAlign:"right", marginRight: 30}}>	
+							所在社区:
+						</text>
+						<text>	
+							{this.state.comm_name}
+						</text>
+					</Col>
+					<Col style={{height: 30}}>
+						<text style={{display:'inline-block', width: 100, textAlign:"right", marginRight: 30}}>	
+							手机号: 
+						</text>
+						<text>	
+							{this.state.mobile}
+						</text>
+					</Col>
+					<Col style={{height: 30}}>
+						<text style={{display:'inline-block', width: 100, textAlign:"right", marginRight: 30}}>	
+							积分时间: 
+						</text>
+						<text>	
+							{aValue.change_date}
+						</text>
+					</Col>
+					<Col style={{height: 30}}>
+						<text style={{display:'inline-block', width: 100, textAlign:"right", marginRight: 30}}>	
+							积分类型:
+						</text>
+						<text>	
+							{type}
+						</text>
+					</Col>
+					<Col style={{height: 30}}>
+						<text style={{display:'inline-block', width: 100, textAlign:"right", marginRight: 30}}>	
+							积分分值:
+						</text>
+						<text>	
+							{score}
+						</text>
+					</Col>
+					<Col style={{height: 60}}>
+					兑换者签名
+					</Col>
+				</Modal>
+			)
+		}
+	}
+
 	render() {
 		const { dataSource } = this.state;
 		let columns = this.columns;
@@ -166,7 +250,7 @@ export default class pointTable extends Component {
 			<Row type="flex" justify="space-between" gutter={1}>
 				<Col className="printHidden">
 					<text style={{fontSize: 24, color: '#aaa'}}>积分管理/</text>
-					<text style={{fontSize: 24, color: '#1e8fe6'}}>兑换历史</text>
+					<text style={{fontSize: 24, color: '#1e8fe6'}}>积分历史</text>
 				</Col>
 				<Col span={2} className="printHidden">
 						<Button style={{height: 32}}  onClick={() => window.print()}>打印</Button>
@@ -190,25 +274,7 @@ export default class pointTable extends Component {
 			 	<Pagination showQuickJumper defaultCurrent={1} current={this.state.pageNum} total={this.state.total} onChange={this._pageChange.bind(this)} />
 			 </Row>
 			 
-			<Modal
-				title="积分变动"
-				visible={this.state._visible}
-				onOk={() =>this.setState({_visible: false})}
-				onCancel={() =>this.setState({_visible: false})}
-				okText="确认" 
-				cancelText="取消"
-			>
-				<Col style={{height: 30}}>所在社区: {this.state.comm_name}</Col>
-				<Col style={{height: 30}}>手机号: {this.state.mobile}</Col>
-				<Col style={{height: 30}}>兑换商品: {this.state.ch_name}</Col>
-				<Col style={{height: 30}}>兑换积分: {this.state.used_score}</Col>
-				<Col style={{height: 60}}>兑换者签名</Col>
-				<Row className="printHidden">
-					<Col>
-						<Button onClick={()=>window.print()}>打印</Button>
-					</Col>
-				</Row>
-			</Modal>
+			 {this._modal()}
 		</div>
 		);
 	}

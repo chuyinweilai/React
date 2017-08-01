@@ -5,6 +5,7 @@ import styles from "./login.css";
 import appData from "../../assert/Ajax";
 import {
     Row,
+    Col,
     Form,
     Icon, 
     Input, 
@@ -69,40 +70,43 @@ class Login extends Component {
     render() {
         const { getFieldDecorator } = this.props.form;
         return (
-            <Row type="flex" justify='center' align="center" className="login-box">
-                <Form onSubmit={this.handleSubmit.bind(this)} className="login-form"  >
-                    <FormItem>
-                    {getFieldDecorator('userName', {
-                        rules: [{ required: true, message: '请输入用户名！' }],
-                    })(
-                        <Input prefix={<Icon type="user" style={{ fontSize: 13 }} />}className="login-form-input" placeholder="用户名" />
-                    )}
-                    </FormItem>
-                    
-                    <FormItem>
-                    {getFieldDecorator('password', {
-                        rules: [{ required: true, message: '请输入密码！' }],
-                    })(
-                        <Input prefix={<Icon type="lock" style={{ fontSize: 13 }} />} className="login-form-input" type="password" placeholder="密码" />
-                    )}
-                    </FormItem>
+            <div className="login-box">
+                <h1 style={{textAlign: 'center', fontSize: 34, color: 'white'}}>品雅苑志愿者管理平台</h1>
+                <Row type="flex" justify='center' align="center">
+                    <Form onSubmit={this.handleSubmit.bind(this)} className="login-form"  >
+                        <FormItem>
+                        {getFieldDecorator('userName', {
+                            rules: [{ required: true, message: '请输入用户名！' }],
+                        })(
+                            <Input prefix={<Icon type="user" style={{ fontSize: 18 }} />}className="login-form-input" placeholder="用户名" />
+                        )}
+                        </FormItem>
+                        
+                        <FormItem>
+                        {getFieldDecorator('password', {
+                            rules: [{ required: true, message: '请输入密码！' }],
+                        })(
+                            <Input prefix={<Icon type="lock" style={{ fontSize: 18 }} />} className="login-form-input" type="password" placeholder="密码" />
+                        )}
+                        </FormItem>
 
-                    <FormItem>
-                    {/* {getFieldDecorator('remember', {
-                        valuePropName: 'checked',
-                        initialValue: true,
-                    })(
-                        <Checkbox>Remember me</Checkbox>
-                    )} */}
-                    {/* <a className="login-form-forgot" href="">Forgot password</a> */}
-                    <Button type="primary" htmlType="submit" className="login-form-button">
-                        登录
-                    </Button>
-                    {/* Or <a href="">register now!</a> */}
-                    </FormItem>
-                    {this._errorInfo()}
-                </Form>
-        </Row>
+                        <FormItem>
+                        {/* {getFieldDecorator('remember', {
+                            valuePropName: 'checked',
+                            initialValue: true,
+                        })(
+                            <Checkbox>Remember me</Checkbox>
+                        )} */}
+                        {/* <a className="login-form-forgot" href="">Forgot password</a> */}
+                        <Button type="primary" htmlType="submit" className="login-form-button">
+                            登录
+                        </Button>
+                        {/* Or <a href="">register now!</a> */}
+                        </FormItem>
+                        {this._errorInfo()}
+                    </Form>
+                </Row>
+            </div>
         );
     }
 }

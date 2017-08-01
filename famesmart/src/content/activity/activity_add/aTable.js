@@ -246,7 +246,7 @@ class pointTable extends Component {
 				<Col span={8}>
 					<Upload {...props}>
 					<Button>
-						<Icon type="upload" /> upload
+						<Icon type="upload" /> 图片上传
 					</Button>
 					</Upload>
 				</Col>

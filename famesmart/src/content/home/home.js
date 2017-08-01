@@ -43,7 +43,7 @@ export default class home extends Component{
 		return (
 			<Layout id="home-box">
 				<Row type="flex" justify="space-between" gutter={1}>
-					<Col span={2} className="printHidden">
+					<Col  className="printHidden">
 						<text style={{fontSize: 24, color: '#1e8fe6', padding:'24px'}}>首页</text>
 					</Col>
 				</Row>

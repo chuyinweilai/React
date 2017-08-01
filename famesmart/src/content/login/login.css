@@ -1,16 +1,15 @@
 .login-box {
     flex: 1;
-    /* padding: 0 50%; */
-    background-color: #fff;
-    justify-content: center;
-    align-items: center;
+    padding-top: 17%;
+    vertical-align: middle;
+    background-color: #3a3e40;
 }
 
 .login-form {
-    width: 300px;
-    padding: 40px 30px 20px;
+    width: 400px;
+    padding: 10px;
     border-radius: 20px;
-    background-color: #ececec;
+    /* background-color: #ececec; */
 }
 
 .login-form-forgot {
@@ -19,4 +18,13 @@
 
 .login-form-button {
     width: 100%;
+    height: 41px;
+    font-size: 20px;
+    font-weight: bold
+}
+
+.login-form input {
+    height: 41px;
+    font-size: 16px;
+    padding: 0 90px;
 }

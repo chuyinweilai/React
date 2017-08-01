@@ -160,11 +160,13 @@ export default class pointTable extends Component {
 	}
 
 	_volSign(obj){
+		// this.activeMess = mess;
 		let body ={
 			"wx_id": obj.wx_id,
 			"activity_no": Number(this.activeMess.activity_no),
 			"comm_code": this.activeMess.comm_code,
 			"operator":this.userMess.user_id,
+			"activity_score": this.activeMess.score,
 		}
 		let afteruri = 'volunteer/sign'
 		appData._dataPost(afteruri,body,(res)=>{
@@ -210,10 +212,10 @@ export default class pointTable extends Component {
 					<Col>
 						<Button style={{height: 32, margin: 10}} onClick={()=>this._jump('back')}>返回</Button>
 						<div>
-							<Col span={5} style={{margin:'10px'}}> 
+							<Col style={{margin:'10px'}}> 
 								活动编号：{this.state.activity_no}
 							</Col>
-							<Col span={5} style={{margin:'10px'}}> 
+							<Col style={{margin:'10px'}}> 
 								活动主题：{this.state.title}
 							</Col>
 						</div>

@@ -188,7 +188,7 @@ class pointTable extends Component {
 				<Row type="flex" justify="space-between" gutter={1}>
 					<Col className="printHidden">
 						<text style={{fontSize: 24, color: '#aaa'}}>积分管理/</text>
-						<text style={{fontSize: 24, color: '#1e8fe6'}}>兑换历史</text>
+						<text style={{fontSize: 24, color: '#1e8fe6'}}>积分兑换</text>
 					</Col>
 				</Row>
 

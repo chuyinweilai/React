@@ -183,6 +183,9 @@ export default class pointTable extends Component {
 			appData._dataPost(afteruri,body,(res) => {
 				if(res){
 					this._getEvent()
+					this.setState({
+						pageNum: 1
+					})
 				} else {
 					alert('操作失败')
 				}
