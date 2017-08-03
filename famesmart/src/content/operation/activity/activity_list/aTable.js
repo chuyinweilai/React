@@ -9,13 +9,12 @@ import {
 	Col,
 	Popconfirm, 
 	Pagination,
-	Menu,
-	Modal, 
+	Menu, 
 	Dropdown 
 } from 'antd'
-import appData from './../../../assert/Ajax';
-import '../../../App.css'
-import '../../../index.css'
+import appData from './../../../../assert/Ajax';
+import '../../../../App.css'
+import '../../../../index.css'
 
 require('./index.css');
 export default class pointTable extends Component {
@@ -28,9 +27,6 @@ export default class pointTable extends Component {
 			listMess:{},
 			pageSum:1,
 			pageNum:1,
-
-			record:{},
-			_visible:false,
 		};
 
 		this.columns = [
@@ -134,7 +130,7 @@ export default class pointTable extends Component {
 				colSpan:1,
 				title: '活动状态',
 				dataIndex: 'vld_flag',
-				render:(text,  ) => {
+				render:(text,record) => {
 					let test = ''
 					if(text == 0 ){
 						test = '有效'
@@ -172,7 +168,7 @@ export default class pointTable extends Component {
 									<Button onClick={() =>this._action('change',record)} disabled = {true}>修改</Button>
 								</Col>
 								<Col>
-									<Button onClick={() =>this.setState({	record: record,	_visible:true,})} disabled = {true}>取消</Button>
+									<Button onClick={() =>this._action('cancel',record)} disabled = {true}>取消</Button>
 								</Col>
 							</Row>
 						)
@@ -257,7 +253,6 @@ export default class pointTable extends Component {
 	
 	//操作栏功能
 	_action(type,mess){
-		console.log(type, mess)
 		if(type=== "sign"){
 			this._jump('activity_sign', mess)
 		} else if(type === "change"){
@@ -270,9 +265,6 @@ export default class pointTable extends Component {
 			}
 			appData._dataPost(afteruri,body,(res)=>{
 				if(res){
-					this.setState({
-						_visible: false,
-					})
 					this._getEvent()
 				}
 			})
@@ -307,6 +299,7 @@ export default class pointTable extends Component {
 		<div style={{background: '#fff',padding: 24,margin: 0,minHeight: 80}}>
 			<Row type="flex" justify="space-between" gutter={1}>
 				<Col  className="printHidden">
+					<text style={{fontSize: 24, color: '#aaa'}}>米社运维/</text>
 					<text style={{fontSize: 24, color: '#1e8fe6'}}>活动管理</text>
 				</Col>
 				<Col className="printHidden">
@@ -336,15 +329,6 @@ export default class pointTable extends Component {
 				total={this.state.total} 
 				onChange={this._pageChange.bind(this)} />
 			</Row>
-			
-			 <Modal
-				visible={this.state._visible}
-				title="活动取消"
-				onCancel={() => this.setState({_visible: false})}
-				onOk={() =>this._action('cancel',this.state.record)}
-			>
-				<span>是否取消？</span>
-			</Modal> 
 		</div>
 		);
 	}
