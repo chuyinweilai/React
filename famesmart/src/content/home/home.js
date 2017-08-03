@@ -12,6 +12,13 @@ import "./home.css"
 
 import Active from './active/active.js'
 import {
+	Warning,
+	Transgress,
+} from './warning'
+import {
+	Record,
+} from './IOrecord'
+import {
 	Accumulate_list,
 	Accumulate_date,
 	Accumulate_exchange,
@@ -42,27 +49,41 @@ export default class home extends Component{
 	render(){
 		return (
 			<Layout id="home-box">
-				<Row type="flex" justify="space-between" gutter={1}>
-					<Col  className="printHidden">
-						<text style={{fontSize: 24, color: '#1e8fe6', padding:'24px'}}>首页</text>
-					</Col>
-				</Row>
+				<Content>
+					 <Row type="flex" justify="space-between" gutter={1}>
+						<Col  className="printHidden">
+							<text style={{fontSize: 24, color: '#1e8fe6'}}>首页</text>
+						</Col>
+					</Row>
 
-				<Content style={{ padding: "9px" }}>
+					<Row style={{ height: 428 }} gutter={16} style={{marginBottom:16}}>
+						<Col span = {16}>
+								<Warning/> 
+						</Col>
+						<Col span = {8}>
+								 <Transgress/>   
+						</Col>
+					</Row> 
+
+					<Row >
+						<Col span={24}>
+							 <Record/> 
+						</Col>
+					</Row>
 					<Row gutter={16} style={{marginBottom:16}}>
 						<Col span = {12}>
-							 <Accumulate_list/> 
+								<Accumulate_list/> 
 						</Col>
 						<Col span = {12}>
-							  <Accumulate_exchange/>  
+								<Accumulate_exchange/>  
 						</Col>
 					</Row>
 
 					<Row gutter={16}>
 						<Col span={7} >
-								 <Active/> 
+									<Active/> 
 						</Col>
-						<Col span={10}>
+						 <Col span={10}>
 								<Row gutter={16} style={{height: 358,}}>
 									<div style={{marginBottom: 12}}>
 										<Volunteer_change/>
@@ -71,7 +92,7 @@ export default class home extends Component{
 										<Volunteer_new/>
 									</div>
 								</Row>
-						</Col>
+						</Col> 
 						<Col span={7}>
 							<Accumulate_date/>
 						</Col>

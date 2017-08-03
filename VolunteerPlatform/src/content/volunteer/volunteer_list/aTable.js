@@ -7,6 +7,7 @@ import {
 	Button, 
 	Row,
 	Col,
+	Modal,
 	Popconfirm, 
 	Pagination,
 	Menu, 
@@ -27,6 +28,9 @@ export default class pointTable extends Component {
 			pageSum:1,
 			pageNum:1,
 			comm_name:'',
+
+			record:{},
+			_visible:false,
 		};
 
 		this.columns = [
@@ -124,7 +128,7 @@ export default class pointTable extends Component {
 					return (
 						<Row type="flex" justify="space-between">
 							<Button onClick={() =>this._action('change',record)}>编辑</Button>
-							<Button onClick={() =>this._action('cancel',record)}>注销</Button>
+							<Button onClick={() =>this.setState({	record: record,	_visible:true,})}>注销</Button>
 						</Row>
 					)
 				}
@@ -184,7 +188,8 @@ export default class pointTable extends Component {
 				if(res){
 					this._getEvent()
 					this.setState({
-						pageNum: 1
+						pageNum: 1,
+						_visible: false,
 					})
 				} else {
 					alert('操作失败')
@@ -231,8 +236,19 @@ export default class pointTable extends Component {
 			</Row>
 			<Table bordered dataSource={this.state.dataSource} columns={columns} rowKey='key' pagination={false} style={{marginBottom: 20}}/> 
 			<Row type="flex" justify="end">
-			<Pagination showQuickJumper defaultCurrent={1} current={this.state.pageNum} total={this.state.total} onChange={this._pageChange.bind(this)} />
+				<Pagination showQuickJumper defaultCurrent={1} current={this.state.pageNum} total={this.state.total} onChange={this._pageChange.bind(this)} />
 			</Row>
+
+			 <Modal
+				visible={this.state._visible}
+				title="注销志愿者"
+				onCancel={() => this.setState({_visible: false})}
+				onOk={() =>this._action('cancel',this.state.record)}
+			>
+				<span>是否注销？</span>
+			</Modal> 
+
+
 		</div>
 		);
 	}

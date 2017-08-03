@@ -16,16 +16,15 @@ import appData from './../../../assert/Ajax';
 import '../../../App.css'
 import '../../../index.css'
 
-export default class QRcode_record extends Component {
+export default class room_record extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			dataSource: [
 				{
-					apt_code: 1,
-					apt_info: 2,
-					floors: 3,
-					rooms: 4,
+					floor: 3,
+					room: 4,
+					mobile:123456,
 					user_num: 5,
 					qr_sum: 6,
 					qr_used: 7,
@@ -38,6 +37,9 @@ export default class QRcode_record extends Component {
 			pageSum:1,
 			pageNum:1,
 		};
+		this.Router;
+		this.mess = null;
+		this.activeMess;
 
 		this.columns = [
 			{
@@ -48,29 +50,19 @@ export default class QRcode_record extends Component {
 				)
 			},
 			{
-				title:'楼栋编号',
 				colSpan: 1,
-				dataIndex:'apt_code',
+				title:'楼层',
+				dataIndex:'floor',
 			},
 			{
 				colSpan: 1,
-				title:'楼栋信息',
-				dataIndex:'apt_info',
+				title:'房间',
+				dataIndex:'room',
 			},
 			{
 				colSpan: 1,
-				title:'楼层数',
-				dataIndex:'floors',
-			},
-			{
-				colSpan: 1,
-				title:'每层住户',
-				dataIndex:'rooms',
-			},
-			{
-				colSpan: 1,
-				title:'总户数',
-				dataIndex:'user_num',
+				title:'户主手机',
+				dataIndex:'mobile',
 			},
 			{
 				colSpan: 1,
@@ -95,14 +87,13 @@ export default class QRcode_record extends Component {
 				)
 			}
 		];
-		
-		this.Router;
-		this.mess = null;
 	}
 
 	componentWillMount(){
 		this.Router = this.props.Router;
 		this.mess = this.props.message;
+		let mess = this.props.message.message
+		this.activeMess = mess;
 		appData._Storage('get',"userMess",(res) =>{
 			this.setState({
 				comm_name: res.comm_name
@@ -113,20 +104,20 @@ export default class QRcode_record extends Component {
 	}
 
 	//顶部操作功能
-	_addAct(type){
-		if(type=== "add"){
-			this._jump('activity_add')
+	_addAct(type, mess){
+		if(type=== "detail"){
+			// this._jump('activity_add')
 		}
 	}
 
 	_jump(nextPage,mess){
-		this.Router(nextPage,mess,this.mess.nextPage)
+		this.props.Router(nextPage,mess,this.props.message.nextPage)
 	}
 
 	//获取后台信息
 	_getEvent(){
 		let userMess = this.userMess;
-		let afteruri = 'cards/aptlist';
+		let afteruri = 'cards/unitlist';
 		let body = {
 			"comm_code": userMess.comm_code,
 		}
@@ -145,7 +136,7 @@ export default class QRcode_record extends Component {
 	//操作栏功能
 	_action(type,mess,e){
 		if(type === "detail"){
-			this._jump('unitlist_record', mess)
+			// this._jump('activity_sign', mess)
 		}
 	}
 
@@ -184,7 +175,17 @@ export default class QRcode_record extends Component {
 				</Col>
 			</Row>
 			<Row>
-				<Col span={8} style={{margin:'10px'}}> </Col>
+					<Col>
+						<Button style={{height: 32, margin: 10}} onClick={()=>this._jump('unitlist_record')}>返回</Button>
+						<Row>
+							<Col span={8} style={{margin:'10px'}}> 
+								活动编号：{this.state.activity_no}
+							</Col>
+							<Col span={8} style={{margin:'10px'}}> 
+								活动主题：{this.state.title}
+							</Col>
+						</Row>
+					</Col>
 			</Row>
 			<Table 
 			bordered 

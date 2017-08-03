@@ -1,0 +1,33 @@
+#trans-box {
+    padding: 15;
+    height: 430;
+}
+
+#trans-box .chart-pie {
+    display: flex;
+    padding-top: 50px;
+    justify-content: center;
+    align-items: center;
+}
+
+#trans-box .chart-text {
+    display: flex;
+    /* justify-content: center; */
+    /* align-items: center; */
+}
+
+#trans-box .chart-text ul {
+    width: 100%;
+    padding-top: 20px;
+    height: 140px;
+}
+
+#trans-box .chart-text ul li {
+    display: flex;
+    float: left;
+    width: 50%;
+    height: 30px;
+    /* text-align: center; */
+    justify-content: center;
+    align-items: center;
+}

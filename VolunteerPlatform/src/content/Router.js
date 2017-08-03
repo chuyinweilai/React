@@ -1,21 +1,11 @@
 import React,{Component} from 'react';
 import Home from './home/home'
 import Login from './login/login'
-import {
-	Accumulate_history,
-	Accumulate_list,
-	Accumulate_exchange,
-	Accumulate_add,
-} from './accumulate';	
-import{	
-	Activity_add,
-	Activity_list,
-	Activity_sign,
-}from './activity'
-import{
-	Volunteer_edit,
-	Volunteer_list,
-} from './volunteer'
+import { Accumulate_history, Accumulate_list, Accumulate_exchange, Accumulate_add, } from './accumulate';	
+
+import { Activity_add, Activity_list, Activity_sign, }from './activity'
+
+import { Volunteer_edit, Volunteer_list, } from './volunteer'
 import Cancel from './cancel'
 
 export default class mainPage extends Component{

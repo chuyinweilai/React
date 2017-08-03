@@ -1,0 +1,33 @@
+#record-box {
+    /* margin-top: 20px; */
+    padding: 15px;
+    height: 430;
+    background-color: '#fff';
+}
+
+#record-box .chart-text {
+    display: flex;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+}
+
+#record-box .chart-text li {
+    cursor: default;
+    font-size: 14px
+}
+
+#record-box ul li {
+    display: flex;
+    float: left;
+    width: 160px;
+    height: 50px;
+    /* text-align: center; */
+    justify-content: center;
+    align-items: center;
+}
+
+
+/* a {
+    text-decoration: none
+} */

@@ -211,14 +211,14 @@ export default class pointTable extends Component {
 				<Row>
 					<Col>
 						<Button style={{height: 32, margin: 10}} onClick={()=>this._jump('back')}>返回</Button>
-						<div>
-							<Col style={{margin:'10px'}}> 
+						<Row>
+							<Col span={8} style={{margin:'10px'}}> 
 								活动编号：{this.state.activity_no}
 							</Col>
-							<Col style={{margin:'10px'}}> 
+							<Col span={8} style={{margin:'10px'}}> 
 								活动主题：{this.state.title}
 							</Col>
-						</div>
+						</Row>
 					</Col>
 				</Row>
 				<Table bordered columns={this.columns} dataSource={this.state.dataSource}/>

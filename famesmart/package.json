@@ -5,13 +5,11 @@
     "dependencies": {
         "antd": "^2.12.0",
         "babel-plugin-import": "^1.2.1",
-        "chart.js": "^1.1.1",
-        "chartjs": "^0.3.24",
         "react": "^15.6.1",
-        "react-chartjs": "^0.8.0",
         "react-dom": "^15.6.1",
         "react-router-dom": "^4.1.1",
-        "react-scripts": "1.0.10"
+        "react-scripts": "1.0.10",
+        "recharts": "^1.0.0-alpha.2"
     },
     "scripts": {
         "start": "react-scripts start",

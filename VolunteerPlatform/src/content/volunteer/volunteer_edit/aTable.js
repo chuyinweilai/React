@@ -141,9 +141,9 @@ class pointTable extends Component {
 			this.setState({
 				type: value
 			})
-		} else if(type == "vol_tag"){
+		} else if(type == "vol_type"){
 			this.setState({
-				vol_tag: value
+				vol_type: value
 			})
 		}
 	}
@@ -238,8 +238,8 @@ class pointTable extends Component {
 						{getFieldDecorator('vol_tag',{
 							initialValue: this.state.vol_tag
 						})(
-							<Select onChange={this._selectChange.bind(this,'vol_tag')} >
-								<Option key="普通">普通</Option>
+							<Select onChange={this._selectChange.bind(this,'vol_tag')} disabled>
+								<Option key="普通志愿者">普通志愿者</Option>
 								<Option key="楼组长">楼组长</Option>
 							</Select>
 						)}

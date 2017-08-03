@@ -6,7 +6,7 @@ import { Accumulate_history, Accumulate_list, Accumulate_exchange, Accumulate_ad
 import { Activity_add, Activity_list, Activity_sign, }from './activity'
 
 import { Volunteer_edit, Volunteer_list, } from './volunteer'
-import { QRcode_record,} from './QRcode'
+import { QRcode_record, Unitlist_record, Room_record, } from './QRcode'
 import Cancel from './cancel'
 
 export default class mainPage extends Component{
@@ -45,6 +45,10 @@ export default class mainPage extends Component{
 			return <Accumulate_add message={this.mess} Router={this.Router}/>
 		else if(name === 'QRcode_record')	
 			return <QRcode_record message={this.mess} Router={this.Router}/>
+		else if(name === 'unitlist_record')	
+			return <Unitlist_record message={this.mess} Router={this.Router}/>
+		else if(name === 'room_record')	
+			return <Room_record message={this.mess} Router={this.Router}/>
 		else if(name === 'cancel')	
 			return <Cancel message={this.mess} Router={this.Router}/>
 		else return null

@@ -9,7 +9,8 @@ import {
 	Col,
 	Popconfirm, 
 	Pagination,
-	Menu, 
+	Menu,
+	Modal, 
 	Dropdown 
 } from 'antd'
 import appData from './../../../assert/Ajax';
@@ -27,6 +28,9 @@ export default class pointTable extends Component {
 			listMess:{},
 			pageSum:1,
 			pageNum:1,
+
+			record:{},
+			_visible:false,
 		};
 
 		this.columns = [
@@ -168,7 +172,7 @@ export default class pointTable extends Component {
 									<Button onClick={() =>this._action('change',record)} disabled = {true}>修改</Button>
 								</Col>
 								<Col>
-									<Button onClick={() =>this._action('cancel',record)} disabled = {true}>取消</Button>
+									<Button onClick={() =>this.setState({	record: record,	_visible:true,})} disabled = {true}>取消</Button>
 								</Col>
 							</Row>
 						)
@@ -253,6 +257,7 @@ export default class pointTable extends Component {
 	
 	//操作栏功能
 	_action(type,mess){
+		console.log(type, mess)
 		if(type=== "sign"){
 			this._jump('activity_sign', mess)
 		} else if(type === "change"){
@@ -265,6 +270,9 @@ export default class pointTable extends Component {
 			}
 			appData._dataPost(afteruri,body,(res)=>{
 				if(res){
+					this.setState({
+						_visible: false,
+					})
 					this._getEvent()
 				}
 			})
@@ -328,6 +336,15 @@ export default class pointTable extends Component {
 				total={this.state.total} 
 				onChange={this._pageChange.bind(this)} />
 			</Row>
+			
+			 <Modal
+				visible={this.state._visible}
+				title="活动取消"
+				onCancel={() => this.setState({_visible: false})}
+				onOk={() =>this._action('cancel',this.state.record)}
+			>
+				<span>是否取消？</span>
+			</Modal> 
 		</div>
 		);
 	}

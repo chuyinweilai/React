@@ -106,7 +106,7 @@ export default class active extends Component {
 		return (
 		<div style={{ padding: 15, backgroundColor: '#fff', minHeight: 358}}>
 			<div>
-			<text style={{fontSize: 16,paddingBottom: 5, fontWeight: "bold"}}>
+			<text style={{fontSize: 20,paddingBottom: 5,}}>
 					即将开始
 				</text>
 			</div>

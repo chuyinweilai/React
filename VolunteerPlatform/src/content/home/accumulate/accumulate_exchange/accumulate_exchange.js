@@ -131,7 +131,7 @@ export default class accumulate_exchange extends Component {
 		let columns = this.columns;
 		return (
 		<div style={{ padding: 15, backgroundColor: '#fff', minHeight: 358}}>
-			<text style={{fontSize: 16,paddingBottom: 5, fontWeight: "bold"}}>
+			<text style={{fontSize: 20,paddingBottom: 5, }}>
 				兑换热度表
 			</text>
 			<Table 
