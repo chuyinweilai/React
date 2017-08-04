@@ -34,12 +34,11 @@ class App extends Component {
 		message: mess
 		}
 		this.setState({
-		message: obj
+			message: obj
 		})
 	}
 
 	onCollapse(collapsed) {
-		console.log(collapsed);
 		this.setState({ collapsed });
 	}
 

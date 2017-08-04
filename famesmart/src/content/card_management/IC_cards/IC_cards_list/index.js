@@ -7,16 +7,16 @@ import {
 	Button, 
 	Row,
 	Col,
-	Layout,
 	Popconfirm, 
 	Pagination,
 	Menu, 
+	Layout,
 	Dropdown 
 } from 'antd'
 import appData from './../../../../assert/Ajax';
 import  '../../../../App.css'
 
-export default class QRCode_list extends Component {
+export default class IC_cards_list extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -221,7 +221,7 @@ export default class QRCode_list extends Component {
 				<Row type="flex" justify="space-between" gutter={1}>
 					<Col  className="printHidden">
 						<text style={{fontSize: 24, color: '#aaa'}}>发卡管理/</text>
-						<text style={{fontSize: 24, color: '#1e8fe6'}}>二维码发卡列表</text>
+						<text style={{fontSize: 24, color: '#1e8fe6'}}>IC卡</text>
 					</Col>
 					<Col className="printHidden">
 						<Button style={{height: 32}} onClick={()=>window.print()}>打印</Button>

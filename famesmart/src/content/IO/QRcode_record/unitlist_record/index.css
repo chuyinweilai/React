@@ -1,0 +1,24 @@
+.QRrecord-Collapse .ant-collapse-content {
+    background: #eee
+}
+
+.CollapseUl {
+    overflow: hidden;
+}
+
+.CollapseUl li {
+    float: left;
+    width: 15%;
+    margin: 10px 0;
+    text-align: center;
+}
+
+.CollapseUl li button {
+    width: 30%;
+    min-width: 60px;
+    background: white;
+    border: 1px solid #eee;
+    border-radius: 3px;
+    padding: 5px 10px;
+    /* color: #333; */
+}

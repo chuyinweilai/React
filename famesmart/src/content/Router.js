@@ -1,7 +1,10 @@
 import React,{Component} from 'react';
 import Home from './home/home'
 import Login from './login/login'
-import { QRcode_record, Unitlist_record, Room_record, } from './QRcode'
+import { 
+	QRcode_record, 
+	Unitlist_record, 
+} from './IO'
 
 import {
 	Accumulate_history,
@@ -18,10 +21,9 @@ import {
 } from './operation';	
 
 import{
-	Cards_device_list,
 	IC_cards_list,
 	QRCode_list,
-} from './distribute'
+} from './card_management'
 
 import{
 	Community_resident_list,
@@ -57,17 +59,13 @@ export default class mainPage extends Component{
 		else if(name === 'login')	
 			return <Login message={this.mess} Router={this.Router}/>
 
-		//二维码分享记录
+		//出入管理
 		else if(name === 'QRcode_record')	
 			return <QRcode_record message={this.mess} Router={this.Router}/>
 		else if(name === 'unitlist_record')	
 			return <Unitlist_record message={this.mess} Router={this.Router}/>
-		else if(name === 'room_record')	
-			return <Room_record message={this.mess} Router={this.Router}/>
 
-		//发卡管理
-		else if(name === 'cards_device_list')	
-			return <Cards_device_list message={this.mess} Router={this.Router}/>
+		//卡片管理
 		else if(name === 'IC_cards_list')	
 			return <IC_cards_list message={this.mess} Router={this.Router}/>
 		else if(name === 'QRCode_list')	

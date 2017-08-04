@@ -7,16 +7,22 @@ import {
 	Button, 
 	Row,
 	Col,
+	Radio,
+	Collapse,
 	Popconfirm, 
 	Pagination,
 	Menu, 
 	Dropdown 
 } from 'antd'
-import appData from './../../../assert/Ajax';
-import '../../../App.css'
-import '../../../index.css'
-
-export default class room_record extends Component {
+import appData from './../../../../assert/Ajax';
+import '../../../../App.css'
+import '../../../../index.css'
+import './index.css'
+import {Filters} from './../../../../components/filter'
+const Panel = Collapse.Panel;
+const RadioButton = Radio.Button;
+const RadioGroup = Radio.Group;
+export default class unitlist_record extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
@@ -36,6 +42,8 @@ export default class room_record extends Component {
 			listMess:{},
 			pageSum:1,
 			pageNum:1,
+			select_list_1:['1-1' , '1-2' , '1-3' , '1-4' , '1-5' ,],
+			select_list_2:['2-1' , '2-2' , '2-3' , '2-4' , '2-5' ,],
 		};
 		this.Router;
 		this.mess = null;
@@ -78,14 +86,15 @@ export default class room_record extends Component {
 				colSpan: 1,
 				title:'使用比例',
 				dataIndex:'qr_percent',
-			},{
-				colSpan: 1,
-				title:'操作',
-				dataIndex:'action',
-				render:(text,record)=>(
-					<Button onClick={()=>this._action('detail',record)}>详细</Button>
-				)
-			}
+			},
+			// {
+			// 	colSpan: 1,
+			// 	title:'操作',
+			// 	dataIndex:'action',
+			// 	render:(text,record)=>(
+			// 		<Button onClick={()=>this._action('detail',record)}>详细2</Button>
+			// 	)
+			// }
 		];
 	}
 
@@ -106,7 +115,7 @@ export default class room_record extends Component {
 	//顶部操作功能
 	_addAct(type, mess){
 		if(type=== "detail"){
-			// this._jump('activity_add')
+			// this._jump('activity_sign', mess)
 		}
 	}
 
@@ -136,7 +145,7 @@ export default class room_record extends Component {
 	//操作栏功能
 	_action(type,mess,e){
 		if(type === "detail"){
-			// this._jump('activity_sign', mess)
+			this._jump('room_record',mess)
 		}
 	}
 
@@ -161,6 +170,12 @@ export default class room_record extends Component {
 		})
 	}
 
+	//折叠面板
+	_selected(val,index){
+		console.log(index)
+		console.log(val)
+	}
+	
 	render() {
 		const { dataSource } = this.state;
 		let columns = this.columns;
@@ -175,17 +190,21 @@ export default class room_record extends Component {
 				</Col>
 			</Row>
 			<Row>
-					<Col>
-						<Button style={{height: 32, margin: 10}} onClick={()=>this._jump('unitlist_record')}>返回</Button>
-						<Row>
-							<Col span={8} style={{margin:'10px'}}> 
-								活动编号：{this.state.activity_no}
+				<Col>
+					<Button style={{height: 32, margin: 10}} onClick={()=>this._jump('QRcode_record')}>返回</Button>
+					<Row>
+							<Col>
+								<Collapse className="QRrecord-Collapse">
+									<Panel key="1">
+										<Filters data={this.state.select_list_1} className="CollapseUl" onChange={(value,index)=>this._selected(value,index)}/>
+									</Panel>
+									<Panel key="2">
+										<Filters data={this.state.select_list_2} className="CollapseUl" onChange={(value,index)=>this._selected(value,index)}/>
+									</Panel>
+								</Collapse>
 							</Col>
-							<Col span={8} style={{margin:'10px'}}> 
-								活动主题：{this.state.title}
-							</Col>
-						</Row>
-					</Col>
+					</Row>
+				</Col>
 			</Row>
 			<Table 
 			bordered 

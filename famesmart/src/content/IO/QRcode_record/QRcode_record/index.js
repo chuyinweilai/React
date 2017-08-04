@@ -12,9 +12,9 @@ import {
 	Menu, 
 	Dropdown 
 } from 'antd'
-import appData from './../../../assert/Ajax';
-import '../../../App.css'
-import '../../../index.css'
+import appData from './../../../../assert/Ajax';
+import '../../../../App.css'
+import '../../../../index.css'
 
 export default class QRcode_record extends Component {
 	constructor(props) {

@@ -38,17 +38,33 @@ export default class siders extends Component{
 					onSelect = {this._click.bind(this)}
 				>
 					<Menu.Item key="home"><Icon type="home" />首页</Menu.Item>
-					<Menu.Item key="QRcode_record"><Icon type="user" />二维码分享记录</Menu.Item>
 
-					<SubMenu key = "distribute" title={<span><Icon type="credit-card" /><span>发卡管理</span></span>}>
-						<Menu.Item key="IC_cards_list"><Icon type="key" />IC卡</Menu.Item>
-						<Menu.Item key="QRCode_list"><Icon type="barcode" />二维码</Menu.Item>
-						<Menu.Item key="cards_device_list"><Icon type="sync" />卡号设备同步</Menu.Item>
+					<Menu.Item key="1"><Icon type="user" />五违管理</Menu.Item>
+					<Menu.Item key="2"><Icon type="user" />文明管理</Menu.Item>
+					<Menu.Item key="3"><Icon type="user" />报警汇总</Menu.Item>
+
+					<SubMenu key = "IO" title={<span><Icon type="credit-card" /><span>出入管理</span></span>}>
+						<Menu.Item key="cards_record"><Icon type="key" />实时记录</Menu.Item>
+						<Menu.Item key="cards_record_1"><Icon type="key" />统计记录</Menu.Item>
+					</SubMenu>
+					
+					<SubMenu key = "5" title={<span><Icon type="credit-card" /><span>巡更管理</span></span>}>
+						<Menu.Item key="5_1"><Icon type="key" />巡更计划</Menu.Item>
+						<Menu.Item key="5_2"><Icon type="key" />巡更记录</Menu.Item>
 					</SubMenu>
 
+					<SubMenu key = "card_management" title={<span><Icon type="credit-card" /><span>卡片管理</span></span>}>
+						<Menu.Item key="IC_cards_list"><Icon type="barcode" />居民IC卡</Menu.Item>
+						<Menu.Item key="IC_cards_list_1"><Icon type="barcode" />巡更IC卡</Menu.Item>
+						<Menu.Item key="QRCode_list"><Icon type="barcode" />电子钥匙</Menu.Item>
+						<Menu.Item key="QRcode_record"><Icon type="user" />电子钥匙分享记录</Menu.Item>
+					</SubMenu>
+					
+					{/* my */}
 					<SubMenu key = "resident" title={<span><Icon type="database" /><span>用户管理</span></span>}>
 						<Menu.Item key="platform_user_list"><Icon type="smile-o" />平台用户管理</Menu.Item>
 						<Menu.Item key="community_resident_list"><Icon type="usergroup-add" />社区居民管理</Menu.Item>
+						<Menu.Item key="patrol_user_list"><Icon type="usergroup-add" />巡更用户管理</Menu.Item>
 					</SubMenu>
 
 					<SubMenu key = "operation" title={<span><Icon type="appstore" /><span>米社运维</span></span>}>
@@ -59,7 +75,7 @@ export default class siders extends Component{
 
 					<SubMenu key = "system" title={<span><Icon type="tool" /><span>系统功能</span></span>}>
 						<Menu.Item key="device_online_list"><Icon type="shake" />设备在线情况</Menu.Item>
-						<Menu.Item key="white_list"><Icon type="solution" />设备白名单</Menu.Item>
+						{/* <Menu.Item key="white_list"><Icon type="solution" />设备白名单</Menu.Item> */}
 						<Menu.Item key="root_group_list"><Icon type="fork" />权限常用组</Menu.Item>
 						<Menu.Item key="device_root_list"><Icon type="setting" />权限管理</Menu.Item>
 					</SubMenu>
