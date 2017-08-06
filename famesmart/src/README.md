@@ -12,24 +12,22 @@
 	|--	app.js		主页面
 	|-- assert		全局变量
 	|--	components		组件
-		|--	Layout		页面布局
+		|--	filter		多级筛选组件
+		|--	Layout		页面布局相关组件
 	|-- content		页面内容
 		|--	Router.js		路由配置页
 		|--	cancel.js		注销页面
 		|--	login		登录
 		|--	home		主页
-		|--	accumulate		积分管理
-			|--	accumulate_list		积分列表
-			|--	accumulate_add		积分编辑
-			|--	accumulate_exchange		积分兑换
-			|--	accumulate_history		兑换历史
-		|--	activity		活动管理
-			|--	activity_list		活动列表
-			|--	activity_add		活动编辑
-			|--	activity_sign		活动签到
-		|--	volunteer		志愿者管理
-			|--	volunteer_list		志愿者列表
-			|--	volunteer_edit		志愿者编辑
+		|--	operation		米社运维
+			|--	accumulate		积分管理
+			|--	activity		活动管理
+			|--	volunteer		志愿者管理
+		|--	card_management		卡片管理
+			|--	IC_cards_resident		居民IC卡
+			|--	IC_cards_patrol		巡更IC卡
+			|--	QRCode		电子钥匙
+			|--	QRcode_record		电子钥匙分享记录
 
 
 ##项目运行

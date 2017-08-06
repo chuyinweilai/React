@@ -44,8 +44,8 @@ export default class siders extends Component{
 					<Menu.Item key="3"><Icon type="user" />报警汇总</Menu.Item>
 
 					<SubMenu key = "IO" title={<span><Icon type="credit-card" /><span>出入管理</span></span>}>
-						<Menu.Item key="cards_record"><Icon type="key" />实时记录</Menu.Item>
-						<Menu.Item key="cards_record_1"><Icon type="key" />统计记录</Menu.Item>
+						<Menu.Item key="realtime_record_list"><Icon type="key" />实时记录</Menu.Item>
+						<Menu.Item key="statistics_record_list"><Icon type="key" />统计记录</Menu.Item>
 					</SubMenu>
 					
 					<SubMenu key = "5" title={<span><Icon type="credit-card" /><span>巡更管理</span></span>}>
@@ -54,8 +54,8 @@ export default class siders extends Component{
 					</SubMenu>
 
 					<SubMenu key = "card_management" title={<span><Icon type="credit-card" /><span>卡片管理</span></span>}>
-						<Menu.Item key="IC_cards_list"><Icon type="barcode" />居民IC卡</Menu.Item>
-						<Menu.Item key="IC_cards_list_1"><Icon type="barcode" />巡更IC卡</Menu.Item>
+						<Menu.Item key="IC_cards_resident_list"><Icon type="barcode" />居民IC卡</Menu.Item>
+						<Menu.Item key="IC_cards_patrol_list"><Icon type="barcode" />巡更IC卡</Menu.Item>
 						<Menu.Item key="QRCode_list"><Icon type="barcode" />电子钥匙</Menu.Item>
 						<Menu.Item key="QRcode_record"><Icon type="user" />电子钥匙分享记录</Menu.Item>
 					</SubMenu>
@@ -77,7 +77,7 @@ export default class siders extends Component{
 						<Menu.Item key="device_online_list"><Icon type="shake" />设备在线情况</Menu.Item>
 						{/* <Menu.Item key="white_list"><Icon type="solution" />设备白名单</Menu.Item> */}
 						<Menu.Item key="root_group_list"><Icon type="fork" />权限常用组</Menu.Item>
-						<Menu.Item key="device_root_list"><Icon type="setting" />权限管理</Menu.Item>
+						{/* <Menu.Item key="device_root_list"><Icon type="setting" />权限管理</Menu.Item> */}
 					</SubMenu>
 
 					<Menu.Item key="cancel"><Icon type="close-circle-o"/>注销</Menu.Item>

@@ -1,7 +1,7 @@
-import QRcode_record from './QRcode_record/QRcode_record'
-import Unitlist_record from './QRcode_record/unitlist_record'
+import Realtime_record_list from './realtime_record/realtime_record_list'
+import Statistics_record_list from './statistics_record/statistics_record_list'
 
 export{
-	QRcode_record,
-	Unitlist_record,
+	Statistics_record_list,
+	Realtime_record_list,
 }

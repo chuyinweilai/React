@@ -1,9 +1,9 @@
 import React,{Component} from 'react';
 import Home from './home/home'
 import Login from './login/login'
-import { 
-	QRcode_record, 
-	Unitlist_record, 
+import{
+	Statistics_record_list,
+	Realtime_record_list,
 } from './IO'
 
 import {
@@ -21,13 +21,21 @@ import {
 } from './operation';	
 
 import{
+	IC_cards_resident_list,
+
+	IC_cards_patrol_list,
+
 	IC_cards_list,
 	QRCode_list,
+	
+	QRcode_record,
+	Unitlist_record,
 } from './card_management'
 
 import{
 	Community_resident_list,
 	Platform_user_list,
+	Patrol_user_list,
 } from './resident'
 
 import {
@@ -60,16 +68,23 @@ export default class mainPage extends Component{
 			return <Login message={this.mess} Router={this.Router}/>
 
 		//出入管理
+		else if(name === 'statistics_record_list')	
+			return <Statistics_record_list message={this.mess} Router={this.Router}/>
+		else if(name === 'realtime_record_list')	
+			return <Realtime_record_list message={this.mess} Router={this.Router}/>
+
+		//卡片管理
+		else if(name === 'IC_cards_resident_list')	
+			return <IC_cards_resident_list message={this.mess} Router={this.Router}/>
+		else if(name === 'IC_cards_patrol_list')	
+			return <IC_cards_patrol_list message={this.mess} Router={this.Router}/>
+		else if(name === 'QRCode_list')	
+			return <QRCode_list message={this.mess} Router={this.Router}/>
+
 		else if(name === 'QRcode_record')	
 			return <QRcode_record message={this.mess} Router={this.Router}/>
 		else if(name === 'unitlist_record')	
 			return <Unitlist_record message={this.mess} Router={this.Router}/>
-
-		//卡片管理
-		else if(name === 'IC_cards_list')	
-			return <IC_cards_list message={this.mess} Router={this.Router}/>
-		else if(name === 'QRCode_list')	
-			return <QRCode_list message={this.mess} Router={this.Router}/>
 
 		//米社运维
 		else if(name === 'accumulate_history')	
@@ -98,6 +113,8 @@ export default class mainPage extends Component{
 			return <Platform_user_list message={this.mess} Router={this.Router}/>
 		else if(name === 'community_resident_list')	
 			return <Community_resident_list message={this.mess} Router={this.Router}/>
+		else if(name === 'patrol_user_list')	
+			return <Patrol_user_list message={this.mess} Router={this.Router}/>
 
 		//系统功能
 		else if(name === 'device_online_list')	

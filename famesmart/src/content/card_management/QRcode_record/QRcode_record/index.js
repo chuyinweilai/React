@@ -7,8 +7,6 @@ import {
 	Button, 
 	Row,
 	Col,
-	Radio,
-	Collapse,
 	Popconfirm, 
 	Pagination,
 	Menu, 
@@ -17,20 +15,17 @@ import {
 import appData from './../../../../assert/Ajax';
 import '../../../../App.css'
 import '../../../../index.css'
-import './index.css'
-import {Filters} from './../../../../components/filter'
-const Panel = Collapse.Panel;
-const RadioButton = Radio.Button;
-const RadioGroup = Radio.Group;
-export default class unitlist_record extends Component {
+
+export default class QRcode_record extends Component {
 	constructor(props) {
 		super(props);
 		this.state = {
 			dataSource: [
 				{
-					floor: 3,
-					room: 4,
-					mobile:123456,
+					apt_code: 1,
+					apt_info: 2,
+					floors: 3,
+					rooms: 4,
 					user_num: 5,
 					qr_sum: 6,
 					qr_used: 7,
@@ -42,12 +37,7 @@ export default class unitlist_record extends Component {
 			listMess:{},
 			pageSum:1,
 			pageNum:1,
-			select_list_1:['1-1' , '1-2' , '1-3' , '1-4' , '1-5' ,],
-			select_list_2:['2-1' , '2-2' , '2-3' , '2-4' , '2-5' ,],
 		};
-		this.Router;
-		this.mess = null;
-		this.activeMess;
 
 		this.columns = [
 			{
@@ -58,24 +48,39 @@ export default class unitlist_record extends Component {
 				)
 			},
 			{
+				title:'楼栋编号',
 				colSpan: 1,
-				title:'楼层',
-				dataIndex:'floor',
+				dataIndex:'apt_code',
 			},
 			{
 				colSpan: 1,
-				title:'房间',
-				dataIndex:'room',
+				title:'楼栋信息',
+				dataIndex:'apt_info',
 			},
 			{
 				colSpan: 1,
-				title:'户主手机',
-				dataIndex:'mobile',
+				title:'楼层数',
+				dataIndex:'floors',
+			},
+			{
+				colSpan: 1,
+				title:'每层住户',
+				dataIndex:'rooms',
+			},
+			{
+				colSpan: 1,
+				title:'总户数',
+				dataIndex:'user_num',
+				render:(text,record) =>{
+					return (
+						<text>{record.floors *record.rooms}</text>
+					)
+				}
 			},
 			{
 				colSpan: 1,
 				title:'二维码总数',
-				dataIndex:'qr_sum',
+				dataIndex:'qr_total',
 			},
 			{
 				colSpan: 1,
@@ -86,47 +91,52 @@ export default class unitlist_record extends Component {
 				colSpan: 1,
 				title:'使用比例',
 				dataIndex:'qr_percent',
-			},
-			// {
-			// 	colSpan: 1,
-			// 	title:'操作',
-			// 	dataIndex:'action',
-			// 	render:(text,record)=>(
-			// 		<Button onClick={()=>this._action('detail',record)}>详细2</Button>
-			// 	)
-			// }
+				render:(text,record) =>{
+					return (
+						<text>{record.qr_used/record.qr_total}</text>
+					)
+				}
+			},{
+				colSpan: 1,
+				title:'操作',
+				dataIndex:'action',
+				render:(text,record)=>(
+					<Button onClick={()=>this._action('detail',record)}>详细</Button>
+				)
+			}
 		];
+		
+		this.Router;
+		this.mess = null;
 	}
 
 	componentWillMount(){
 		this.Router = this.props.Router;
 		this.mess = this.props.message;
-		let mess = this.props.message.message
-		this.activeMess = mess;
 		appData._Storage('get',"userMess",(res) =>{
 			this.setState({
 				comm_name: res.comm_name
 			})
 			this.userMess = res
-			// this._getEvent()
+			this._getEvent()
 		})
 	}
 
 	//顶部操作功能
-	_addAct(type, mess){
-		if(type=== "detail"){
-			// this._jump('activity_sign', mess)
+	_addAct(type){
+		if(type=== "add"){
+			this._jump('activity_add')
 		}
 	}
 
 	_jump(nextPage,mess){
-		this.props.Router(nextPage,mess,this.props.message.nextPage)
+		this.Router(nextPage,mess,this.mess.nextPage)
 	}
 
 	//获取后台信息
 	_getEvent(){
 		let userMess = this.userMess;
-		let afteruri = 'cards/unitlist';
+		let afteruri = 'cards/qr/list';
 		let body = {
 			"comm_code": userMess.comm_code,
 		}
@@ -145,7 +155,7 @@ export default class unitlist_record extends Component {
 	//操作栏功能
 	_action(type,mess,e){
 		if(type === "detail"){
-			this._jump('room_record',mess)
+			this._jump('unitlist_record', mess)
 		}
 	}
 
@@ -170,41 +180,22 @@ export default class unitlist_record extends Component {
 		})
 	}
 
-	//折叠面板
-	_selected(val,index){
-		console.log(index)
-		console.log(val)
-	}
-	
 	render() {
 		const { dataSource } = this.state;
 		let columns = this.columns;
 		return (
 		<div style={{background: '#fff', flex: 1,padding: 24,margin: 0,minHeight: 80}}>
-			<Row type="flex" justify="space-between" gutter={1}>
-				<Col  className="printHidden"> 
-					<text style={{fontSize: 24, color: '#1e8fe6'}}>二维码分享记录</text>
+			<Row className="printHidden" type="flex" justify="space-between" gutter={1}>
+				<Col> 
+					<text style={{fontSize: 24, color: '#aaa'}}>卡片管理/</text>
+					<text style={{fontSize: 24, color: '#1e8fe6'}}>电子钥匙分享记录</text>
 				</Col>
-				<Col className="printHidden">
+				<Col>
 						<Button  style={{height: 32}} onClick={() => window.print()}>打印</Button>
 				</Col>
 			</Row>
 			<Row>
-				<Col>
-					<Button style={{height: 32, margin: 10}} onClick={()=>this._jump('QRcode_record')}>返回</Button>
-					<Row>
-							<Col>
-								<Collapse className="QRrecord-Collapse">
-									<Panel key="1">
-										<Filters data={this.state.select_list_1} className="CollapseUl" onChange={(value,index)=>this._selected(value,index)}/>
-									</Panel>
-									<Panel key="2">
-										<Filters data={this.state.select_list_2} className="CollapseUl" onChange={(value,index)=>this._selected(value,index)}/>
-									</Panel>
-								</Collapse>
-							</Col>
-					</Row>
-				</Col>
+				<Col span={8} style={{margin:'10px'}}> </Col>
 			</Row>
 			<Table 
 			bordered 
