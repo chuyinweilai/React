@@ -14,7 +14,6 @@ export default class siders extends Component{
 	}
 	componentWillMount(){
 		appData._Storage('get',"userMess",(res)=>{
-			console.log(res.user_group)
 			this.setState({
 				user_group: res.user_group
 			})
@@ -26,7 +25,12 @@ export default class siders extends Component{
 	}
 
 	_siderList(){
-		if("A" == "A"){
+		let LoginType = 'server'
+		appData._Storage('get',"LoginType",(res)=>{
+			LoginType = res
+		})
+
+		if(LoginType == "cloude"){
 			return (
 				<Menu
 					mode="inline"
@@ -37,11 +41,16 @@ export default class siders extends Component{
 					style={{ height: '100%',borderRight: 0 }}
 					onSelect = {this._click.bind(this)}
 				>
-					<Menu.Item key="home"><Icon type="home" />首页</Menu.Item>
+					<Menu.Item key="home"><Icon type="home" />首页</Menu.Item> 
 
 					<Menu.Item key="1"><Icon type="user" />五违管理</Menu.Item>
 					<Menu.Item key="2"><Icon type="user" />文明管理</Menu.Item>
 					<Menu.Item key="3"><Icon type="user" />报警汇总</Menu.Item>
+
+					<SubMenu key = "card_management" title={<span><Icon type="credit-card" /><span>卡片管理</span></span>}>
+						<Menu.Item key="QRCode_list"><Icon type="barcode" />电子钥匙</Menu.Item>
+						<Menu.Item key="QRcode_record"><Icon type="user" />电子钥匙分享记录</Menu.Item>
+					</SubMenu>
 
 					<SubMenu key = "IO" title={<span><Icon type="credit-card" /><span>出入管理</span></span>}>
 						<Menu.Item key="realtime_record_list"><Icon type="key" />实时记录</Menu.Item>
@@ -53,24 +62,34 @@ export default class siders extends Component{
 						<Menu.Item key="5_2"><Icon type="key" />巡更记录</Menu.Item>
 					</SubMenu>
 
+						<SubMenu key = "operation" title={<span><Icon type="appstore" /><span>米社运维</span></span>}>
+							<Menu.Item key="activity_list"><Icon type="star-o" />活动管理</Menu.Item>
+							<Menu.Item key="accumulate_list"><Icon type="heart-o" />积分管理</Menu.Item>
+							<Menu.Item key="volunteer_list"><Icon type="user" />志愿者管理</Menu.Item>
+					</SubMenu> 
+					<Menu.Item key="cancel"><Icon type="close-circle-o"/>注销</Menu.Item>
+				</Menu>
+			)
+		} else if(LoginType == "server") {
+			return (
+				<Menu
+					mode="inline"
+					collapsible = 'true'
+					theme = 'dark'
+					defaultSelectedKeys={['IC_cards_resident_list']}
+					defaultOpenKeys={['card_management']}
+					style={{ height: '100%',borderRight: 0 }}
+					onSelect = {this._click.bind(this)}
+				>
 					<SubMenu key = "card_management" title={<span><Icon type="credit-card" /><span>卡片管理</span></span>}>
 						<Menu.Item key="IC_cards_resident_list"><Icon type="barcode" />居民IC卡</Menu.Item>
 						<Menu.Item key="IC_cards_patrol_list"><Icon type="barcode" />巡更IC卡</Menu.Item>
-						<Menu.Item key="QRCode_list"><Icon type="barcode" />电子钥匙</Menu.Item>
-						<Menu.Item key="QRcode_record"><Icon type="user" />电子钥匙分享记录</Menu.Item>
 					</SubMenu>
-					
-					{/* my */}
+
 					<SubMenu key = "resident" title={<span><Icon type="database" /><span>用户管理</span></span>}>
 						<Menu.Item key="platform_user_list"><Icon type="smile-o" />平台用户管理</Menu.Item>
 						<Menu.Item key="community_resident_list"><Icon type="usergroup-add" />社区居民管理</Menu.Item>
 						<Menu.Item key="patrol_user_list"><Icon type="usergroup-add" />巡更用户管理</Menu.Item>
-					</SubMenu>
-
-					<SubMenu key = "operation" title={<span><Icon type="appstore" /><span>米社运维</span></span>}>
-							<Menu.Item key="activity_list"><Icon type="star-o" />活动管理</Menu.Item>
-							<Menu.Item key="accumulate_list"><Icon type="heart-o" />积分管理</Menu.Item>
-							<Menu.Item key="volunteer_list"><Icon type="user" />志愿者管理</Menu.Item>
 					</SubMenu>
 
 					<SubMenu key = "system" title={<span><Icon type="tool" /><span>系统功能</span></span>}>
@@ -83,45 +102,7 @@ export default class siders extends Component{
 					<Menu.Item key="cancel"><Icon type="close-circle-o"/>注销</Menu.Item>
 				</Menu>
 			)
-		} else if(this.state.user_group == "B") {
-			return (
-				<Menu
-					mode="inline"
-					collapsible = 'true'
-					theme = 'dark'
-					defaultSelectedKeys={['home']}
-					defaultOpenKeys={['sub1']}
-					style={{ height: '100%',borderRight: 0 }}
-					onSelect = {this._click.bind(this)}
-				>
-					<Menu.Item key="home"><Icon type="home" />首页</Menu.Item>
-					<Menu.Item key="activity_list"><Icon type="star-o" />活动管理</Menu.Item>
-					<Menu.Item key="accumulate_list"><Icon type="heart-o" />积分管理</Menu.Item>
-					<Menu.Item key="volunteer_list"><Icon type="user" />志愿者管理</Menu.Item>
-					<Menu.Item key="QRcode_record"><Icon type="user" />二维码分享记录</Menu.Item>
-					<Menu.Item key="cancel"><Icon type="close-circle-o"/>注销</Menu.Item>
-				</Menu>
-			)
-		} else if(this.state.user_group == "C") {
-			return (
-				<Menu
-					mode="inline"
-					collapsible = 'true'
-					theme = 'dark'
-					defaultSelectedKeys={['home']}
-					defaultOpenKeys={['sub1']}
-					style={{ height: '100%',borderRight: 0 }}
-					onSelect = {this._click.bind(this)}
-				>
-					<Menu.Item key="home"><Icon type="home" />首页</Menu.Item>
-					<Menu.Item key="activity_list"><Icon type="star-o" />活动管理</Menu.Item>
-					<Menu.Item key="accumulate_list"><Icon type="heart-o" />积分管理</Menu.Item>
-					<Menu.Item key="volunteer_list"><Icon type="user" />志愿者管理</Menu.Item>
-					<Menu.Item key="QRcode_record"><Icon type="user" />二维码分享记录</Menu.Item>
-					<Menu.Item key="cancel"><Icon type="close-circle-o"/>注销</Menu.Item>
-				</Menu>
-			)
-		} else {
+		}  else {
 			return null
 		}
 	}

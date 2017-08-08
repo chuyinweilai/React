@@ -56,7 +56,7 @@ class App extends Component {
 					<Headers className="header printHidden">
 					</Headers>
 				</Header>
-				<Layout>
+				<Layout style={{backgroundColor:'#fff'}}>
 					<Sider 
 						collapsible = 'true'
 						collapsed={this.state.collapsed}

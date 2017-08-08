@@ -30,6 +30,7 @@ class Login extends Component {
     componentDidMount() {
         console.log(this.props)
     }
+    
     handleSubmit (e) {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {

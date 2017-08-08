@@ -22,8 +22,10 @@ import {
 
 import{
 	IC_cards_resident_list,
+	IC_cards_resident_edit,
 
 	IC_cards_patrol_list,
+	IC_cards_patrol_edit,
 
 	IC_cards_list,
 	QRCode_list,
@@ -76,8 +78,14 @@ export default class mainPage extends Component{
 		//卡片管理
 		else if(name === 'IC_cards_resident_list')	
 			return <IC_cards_resident_list message={this.mess} Router={this.Router}/>
+		else if(name === 'IC_cards_resident_edit')	
+			return <IC_cards_resident_edit message={this.mess} Router={this.Router}/>
+
 		else if(name === 'IC_cards_patrol_list')	
 			return <IC_cards_patrol_list message={this.mess} Router={this.Router}/>
+		else if(name === 'IC_cards_patrol_edit')	
+			return <IC_cards_patrol_edit message={this.mess} Router={this.Router}/>
+			
 		else if(name === 'QRCode_list')	
 			return <QRCode_list message={this.mess} Router={this.Router}/>
 

@@ -1,12 +1,13 @@
 
+// const peruri = "http://192.168.100.177/api/";
 const peruri = "http://testapi.famesmart.com/api/";
 
 let appData_local  = {
-	_dataGet(afteruri, callback){
+	_dataGet(afteruri, callback,Token){
 		fetch(peruri+afteruri,{
 			method: 'GET',
 			headers: {
-				'Accept': 'application/json', 'Content-Type': 'application/json', 'Cache-Control':'no-cache', 
+				'Accept': 'application/json', 'Content-Type': 'application/json', 'Cache-Control':'no-cache', "Authorization": "Bearer "+Token,
 			},
 		})
 		.then(res => {
@@ -22,11 +23,11 @@ let appData_local  = {
 			alert('get报错 :' + error)
 		})
 	},
-	_dataPost(afteruri,data,callback){
+	_dataPost(afteruri,data,callback,Token){
 		fetch(peruri+afteruri,{
 				method: 'post',
 				headers: {
-					'Accept': 'application/json', 'Content-Type': 'application/json', 'Cache-Control':'no-cache', 
+					'Accept': 'application/json', 'Content-Type': 'application/json', 'Cache-Control':'no-cache', "Authorization": "Bearer "+Token
 				},
 				body: JSON.stringify(data)
 		})
@@ -48,12 +49,8 @@ let appData_local  = {
 		}
 		else if(type === 'get'){
 			let mess = localStorage.getItem(id)
-			// if(error){
-			// 	alert(error);
-			// }else {
 				let json = JSON.parse(mess)
 				data(json)
-			// }
 		}
 		if(type === 'del'){
 			localStorage.removeItem(id)

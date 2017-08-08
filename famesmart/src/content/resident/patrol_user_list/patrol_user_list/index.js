@@ -13,7 +13,8 @@ import {
 	Layout,
 	Dropdown 
 } from 'antd'
-import appData from './../../../../assert/Ajax';
+import appData_local from './../../../../assert/Ajax_local';
+
 import  '../../../../App.css'
 
 export default class patrol_user_list extends Component {
@@ -131,6 +132,7 @@ export default class patrol_user_list extends Component {
 			}
 		];
 		
+		this.TokenMess = ''
 		this.Router;
 		this.mess = null;
 	}
@@ -138,11 +140,8 @@ export default class patrol_user_list extends Component {
 	componentWillMount(){
 		this.Router = this.props.Router;
 		this.mess = this.props.message;
-		appData._Storage('get',"userMess",(res) =>{
-			this.setState({
-				comm_name: res.comm_name
-			})
-			this.userMess = res
+		appData_local._Storage('get',"Token",(res) =>{
+			this.TokenMess = res
 			this._getEvent()
 		})
 	}
@@ -153,12 +152,11 @@ export default class patrol_user_list extends Component {
 
 	//获取后台信息
 	_getEvent(){
-		let userMess = this.userMess;
-		let afteruri = 'vcity/listuser';
-		let body = {
-			 "comm_code": userMess.comm_code
-		}
-		appData._dataPost(afteruri,body,(res) => {
+		let TokenMess = this.TokenMess;
+		let afteruri = 'residents/search';
+		let body={}
+		appData_local._dataPost(afteruri,body,(res) => {
+			console.log(res)
 			let data = res.data
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let len = data.length;
@@ -167,7 +165,7 @@ export default class patrol_user_list extends Component {
 				dataSource: data,
 				count:len,
 			})
-		})
+		},TokenMess)
 	}
 	
 	//操作栏功能
@@ -180,7 +178,7 @@ export default class patrol_user_list extends Component {
 				"mobile": mess.mobile,
 				"comm_code": mess.comm_code
 			}
-			appData._dataPost(afteruri,body,(res) => {
+			appData_local._dataPost(afteruri,body,(res) => {
 				if(res){
 					this._getEvent()
 					this.setState({
@@ -200,7 +198,7 @@ export default class patrol_user_list extends Component {
 		let body = {
 			 "comm_code": userMess.comm_code
 		}
-		appData._dataPost(afteruri,body,(res) => {
+		appData_local._dataPost(afteruri,body,(res) => {
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let data = res.data;
 			let len = data.length;

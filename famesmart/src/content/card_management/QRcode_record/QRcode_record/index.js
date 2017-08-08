@@ -7,6 +7,7 @@ import {
 	Button, 
 	Row,
 	Col,
+	Layout,
 	Popconfirm, 
 	Pagination,
 	Menu, 
@@ -15,6 +16,7 @@ import {
 import appData from './../../../../assert/Ajax';
 import '../../../../App.css'
 import '../../../../index.css'
+const { Content } = Layout;
 
 export default class QRcode_record extends Component {
 	constructor(props) {
@@ -141,6 +143,7 @@ export default class QRcode_record extends Component {
 			"comm_code": userMess.comm_code,
 		}
 		appData._dataPost(afteruri,body,(res) => {
+			console.log(res)
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let data = res.data;
 			let len = data.length;
@@ -184,35 +187,37 @@ export default class QRcode_record extends Component {
 		const { dataSource } = this.state;
 		let columns = this.columns;
 		return (
-		<div style={{background: '#fff', flex: 1,padding: 24,margin: 0,minHeight: 80}}>
-			<Row className="printHidden" type="flex" justify="space-between" gutter={1}>
-				<Col> 
-					<text style={{fontSize: 24, color: '#aaa'}}>卡片管理/</text>
-					<text style={{fontSize: 24, color: '#1e8fe6'}}>电子钥匙分享记录</text>
-				</Col>
-				<Col>
-						<Button  style={{height: 32}} onClick={() => window.print()}>打印</Button>
-				</Col>
-			</Row>
-			<Row>
-				<Col span={8} style={{margin:'10px'}}> </Col>
-			</Row>
-			<Table 
-			bordered 
-			dataSource={dataSource} 
-			columns={columns} 
-			rowKey='key' 
-			pagination={false}/> 
-			
-			<Row style={{marginTop:20}} type="flex" justify="end">
-			<Pagination
-				showQuickJumper 
-				defaultCurrent={1} 
-				current={this.state.pageNum} 
-				total={this.state.total} 
-				onChange={this._pageChange.bind(this)} />
-			</Row>
-		</div>
+			<Layout style={{ background: '#fff', minHeight: 80 ,padding: '24px 48px 48px' }}>
+				<Content>
+					<Row className="printHidden" type="flex" justify="space-between" gutter={1}>
+						<Col> 
+							<text style={{fontSize: 24, color: '#aaa'}}>卡片管理/</text>
+							<text style={{fontSize: 24, color: '#1e8fe6'}}>电子钥匙分享记录</text>
+						</Col>
+						<Col>
+								<Button  style={{height: 32}} onClick={() => window.print()}>打印</Button>
+						</Col>
+					</Row>
+					<Row>
+						<Col span={8} style={{margin:'10px'}}> </Col>
+					</Row>
+					<Table 
+					bordered 
+					dataSource={dataSource} 
+					columns={columns} 
+					rowKey='key' 
+					pagination={false}/> 
+					
+					<Row style={{marginTop:20}} type="flex" justify="end">
+					<Pagination
+						showQuickJumper 
+						defaultCurrent={1} 
+						current={this.state.pageNum} 
+						total={this.state.total} 
+						onChange={this._pageChange.bind(this)} />
+					</Row>
+				</Content>
+			</Layout>
 		);
 	}
 }

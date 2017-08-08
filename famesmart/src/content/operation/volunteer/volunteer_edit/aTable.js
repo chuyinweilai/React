@@ -11,7 +11,6 @@ import {
 	Tooltip, 
 	Cascader, 
 	Checkbox, 
-	DatePicker,
 	InputNumber,
 	AutoComplete 
 } from 'antd';

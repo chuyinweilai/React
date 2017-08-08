@@ -8,6 +8,7 @@ import {
 	Row,
 	Col,
 	Radio,
+	Layout,
 	Collapse,
 	Popconfirm, 
 	Pagination,
@@ -23,6 +24,7 @@ const Panel = Collapse.Panel;
 const RadioButton = Radio.Button;
 const RadioGroup = Radio.Group;
 const Search = Input.Search;
+const { Content } = Layout;
 
 export default class unitlist_record extends Component {
 	constructor(props) {
@@ -53,11 +55,28 @@ export default class unitlist_record extends Component {
 				colSpan: 1,
 				title:'楼层',
 				dataIndex:'floor',
+				render:(text,record) =>{
+					let rem = Number(record.unit_code)%Number(this.activeMess.rooms);
+					let div = Math.floor(Number(record.unit_code)/Number(this.activeMess.rooms));
+					if(rem == 0){
+							return (<text>{div}</text>)
+					} else {
+							return (<text>{div + 1}</text>)
+					}
+				}
 			},
 			{
 				colSpan: 1,
 				title:'房间',
 				dataIndex:'room',
+				render:(text,record) =>{
+					let rem = Number(record.unit_code)%Number(this.activeMess.rooms);
+					if(rem == 0){
+							return (<text>{this.activeMess.rooms}</text>)
+					} else {
+							return (<text>{rem}</text>)
+					}
+				}
 			},
 			{
 				colSpan: 1,
@@ -102,7 +121,6 @@ export default class unitlist_record extends Component {
 		this.mess = this.props.message;
 		let mess = this.props.message.message
 		this.activeMess = mess;
-		console.log(mess)
 		appData._Storage('get',"userMess",(res) =>{
 			this.setState({
 				comm_name: res.comm_name,
@@ -166,7 +184,6 @@ export default class unitlist_record extends Component {
 		})
 	}
 
-	//折叠面板
 	_searchMob(val){
 		let userMess = this.userMess;
 		let activeMess = this.activeMess;
@@ -192,53 +209,55 @@ export default class unitlist_record extends Component {
 		const { dataSource } = this.state;
 		let columns = this.columns;
 		return (
-		<div style={{background: '#fff', flex: 1,padding: 24,margin: 0,minHeight: 80}}>
-			<Row type="flex" justify="space-between" gutter={1}  className="printHidden">
-				<Col> 
-					<text style={{fontSize: 24, color: '#aaa'}}>卡片管理/电子钥匙分享记录/</text>
-					<text style={{fontSize: 24, color: '#1e8fe6'}}>详情</text>
-				</Col>
-				<Col>
-						<Button  style={{height: 32}} onClick={() => window.print()}>打印</Button>
-				</Col>
-			</Row>
-			<Row>
-				<Col>
-					<Button  className="printHidden" style={{height: 32, margin: 10}} onClick={()=>this._jump('QRcode_record')}>返回</Button>
-					<Row>
-						<Col span={5} style={{margin:'10px'}}> 
-							楼栋编号:{this.state.apt_code}
+			<Layout style={{ background: '#fff', minHeight: 80 ,padding: '24px 48px 48px' }}>
+				<Content>
+					<Row type="flex" justify="space-between" gutter={1}  className="printHidden">
+						<Col> 
+							<text style={{fontSize: 24, color: '#aaa'}}>卡片管理/电子钥匙分享记录/</text>
+							<text style={{fontSize: 24, color: '#1e8fe6'}}>详情</text>
 						</Col>
-						<Col span={5} style={{margin:'10px'}}> 
-							楼栋信息:{this.state.apt_info}
-						</Col>
-						<Col span={13} style={{textAlign:'right'}}>
-							<Search
-							 	className="printHidden"
-								placeholder="输入手机号进行搜索"
-								style={{ minWidth: 200, maxWidth: 300 }}
-								onSearch={value => this._searchMob(value)}
-							/>
+						<Col>
+								<Button  style={{height: 32}} onClick={() => window.print()}>打印</Button>
 						</Col>
 					</Row>
-				</Col>
-			</Row>
-			<Table 
-			bordered 
-			dataSource={dataSource} 
-			columns={columns} 
-			rowKey='key' 
-			pagination={false}/> 
-			
-			<Row style={{marginTop:20}} type="flex" justify="end">
-			<Pagination
-				showQuickJumper 
-				defaultCurrent={1} 
-				current={this.state.pageNum} 
-				total={this.state.total} 
-				onChange={this._pageChange.bind(this)} />
-			</Row>
-		</div>
+					<Row>
+						<Col>
+							<Button  className="printHidden" style={{height: 32, margin: 10}} onClick={()=>this._jump('QRcode_record')}>返回</Button>
+							<Row>
+								<Col span={5} style={{margin:'10px'}}> 
+									楼栋编号:{this.state.apt_code}
+								</Col>
+								<Col span={5} style={{margin:'10px'}}> 
+									楼栋信息:{this.state.apt_info}
+								</Col>
+								<Col span={13} style={{textAlign:'right'}}>
+									<Search
+										className="printHidden"
+										placeholder="输入手机号进行搜索"
+										style={{ minWidth: 200, maxWidth: 300 }}
+										onSearch={value => this._searchMob(value)}
+									/>
+								</Col>
+							</Row>
+						</Col>
+					</Row>
+					<Table 
+					bordered 
+					dataSource={dataSource} 
+					columns={columns} 
+					rowKey='key' 
+					pagination={false}/> 
+					
+					<Row style={{marginTop:20}} type="flex" justify="end">
+					<Pagination
+						showQuickJumper 
+						defaultCurrent={1} 
+						current={this.state.pageNum} 
+						total={this.state.total} 
+						onChange={this._pageChange.bind(this)} />
+					</Row>
+				</Content>
+			</Layout>
 		);
 	}
 }

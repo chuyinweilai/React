@@ -13,8 +13,10 @@ import {
 	Layout,
 	Dropdown 
 } from 'antd'
-import appData from './../../../../assert/Ajax';
+import appData_local from './../../../../assert/Ajax_local';
 import  '../../../../App.css'
+const Search = Input.Search;
+const { Content } = Layout;
 
 export default class IC_cards_list extends Component {
 	constructor(props) {
@@ -138,7 +140,7 @@ export default class IC_cards_list extends Component {
 	componentWillMount(){
 		this.Router = this.props.Router;
 		this.mess = this.props.message;
-		appData._Storage('get',"userMess",(res) =>{
+		appData_local._Storage('get',"Token",(res) =>{
 			this.setState({
 				comm_name: res.comm_name
 			})
@@ -154,11 +156,11 @@ export default class IC_cards_list extends Component {
 	//获取后台信息
 	_getEvent(){
 		let userMess = this.userMess;
-		let afteruri = 'vcity/listuser';
+		let afteruri = 'residents/search';
 		let body = {
 			 "comm_code": userMess.comm_code
 		}
-		appData._dataPost(afteruri,body,(res) => {
+		appData_local._dataPost(afteruri,body,(res) => {
 			let data = res.data
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let len = data.length;
@@ -180,7 +182,7 @@ export default class IC_cards_list extends Component {
 				"mobile": mess.mobile,
 				"comm_code": mess.comm_code
 			}
-			appData._dataPost(afteruri,body,(res) => {
+			appData_local._dataPost(afteruri,body,(res) => {
 				if(res){
 					this._getEvent()
 					this.setState({
@@ -200,7 +202,7 @@ export default class IC_cards_list extends Component {
 		let body = {
 			 "comm_code": userMess.comm_code
 		}
-		appData._dataPost(afteruri,body,(res) => {
+		appData_local._dataPost(afteruri,body,(res) => {
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let data = res.data;
 			let len = data.length;
@@ -213,27 +215,67 @@ export default class IC_cards_list extends Component {
 		})
 	}
 
+	_searchMob(val){
+		let userMess = this.userMess;
+		let activeMess = this.activeMess;
+		let afteruri = 'cards/qr/search' ;
+		let body = {
+			 "comm_code": userMess.comm_code,
+			"apt_code": activeMess.apt_code,
+			"mobile": val,
+		}
+		appData_local._dataPost(afteruri,body,(res) => {
+			let pageSum = Math.ceil(res.total/res.per_page)
+			let data = res.data;
+			let len = data.length;
+			this.setState({
+				total:res.total,
+				dataSource: data,
+				count:len,
+			})
+		})
+	}
 	render() {
 		const { dataSource } = this.state;
 		let columns = this.columns;
 		return (
 			<Layout style={{ background: '#fff', padding: '24px 48px 48px' }}>
-				<Row type="flex" justify="space-between" gutter={1}>
-					<Col  className="printHidden">
-						<text style={{fontSize: 24, color: '#aaa'}}>用户管理/</text>
-						<text style={{fontSize: 24, color: '#1e8fe6'}}>平台用户管理</text>
-					</Col>
-					<Col className="printHidden">
-						<Button style={{height: 32}} onClick={()=>window.print()}>打印</Button>
-					</Col>
-				</Row>
-				<Row>
-					<Col span={8} style={{margin:'10px'}}> </Col>
-				</Row>
-				<Table bordered dataSource={this.state.dataSource} columns={columns} rowKey='key' pagination={false} style={{marginBottom: 20}}/> 
-				<Row type="flex" justify="end">
-					<Pagination showQuickJumper defaultCurrent={1} current={this.state.pageNum} total={this.state.total} onChange={this._pageChange.bind(this)} />
-				</Row>
+				<Content>	
+					<Row type="flex" justify="space-between" gutter={1}>
+						<Col  className="printHidden">
+							<text style={{fontSize: 24, color: '#aaa'}}>用户管理/</text>
+							<text style={{fontSize: 24, color: '#1e8fe6'}}>平台用户管理</text>
+						</Col>
+						<Col className="printHidden">
+							<Button style={{height: 32}} onClick={()=>window.print()}>打印</Button>
+						</Col>
+					</Row>
+					<Row>
+						<Col>
+							<Button  className="printHidden" style={{height: 32, margin: 10}} onClick={()=>this._jump('QRcode_record')}>返回</Button>
+							<Row>
+								<Col span={5} style={{margin:'10px'}}> 
+									楼栋编号:{this.state.apt_code}
+								</Col>
+								<Col span={5} style={{margin:'10px'}}> 
+									楼栋信息:{this.state.apt_info}
+								</Col>
+								<Col span={13} style={{textAlign:'right'}}>
+									<Search
+										className="printHidden"
+										placeholder="输入手机号进行搜索"
+										style={{ minWidth: 200, maxWidth: 300 }}
+										onSearch={value => this._searchMob(value)}
+									/>
+								</Col>
+							</Row>
+						</Col>
+					</Row>
+					<Table bordered dataSource={this.state.dataSource} columns={columns} rowKey='key' pagination={false} style={{marginBottom: 20}}/> 
+					<Row type="flex" justify="end">
+						<Pagination showQuickJumper defaultCurrent={1} current={this.state.pageNum} total={this.state.total} onChange={this._pageChange.bind(this)} />
+					</Row>
+				</Content>	
 			</Layout>
 		);
 	}
