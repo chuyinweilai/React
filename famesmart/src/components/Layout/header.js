@@ -29,7 +29,7 @@ export default class headers extends Component{
 					 <img style={{margin:10,width: '80%', height: 40, display:'inline-block'}} className="logo" src="./icon/LOGO.jpg"/> 
 				</Col>
 				<Col span={13}>
-					<text style={{color: 'white', fontSize: 30, display:'inline-block'}}>社区志愿者管理系统</text> 
+					<text style={{color: 'white', fontSize: 30, display:'inline-block'}}>智慧社区管理平台</text> 
 				</Col>
 				<Col span={5}>
 					<span style={{color: 'white', marginRight: 20}}>所在社区：{this.state.comm_name}</span>

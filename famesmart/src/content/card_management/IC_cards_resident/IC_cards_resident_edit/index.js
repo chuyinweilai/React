@@ -35,6 +35,8 @@ class IC_cards_resident_edit extends Component {
 			name: '',
 			mobile: 0,
 			access_group_id: 0,
+			vld_from: null,
+			exp_at:null,
 			helpStatus:"",
 			helpText:"",
 			disable: false,
@@ -59,8 +61,8 @@ class IC_cards_resident_edit extends Component {
 				rooms: arr[2],
 				name: mess.name,
 				mobile: mess.mobile,
-				vld_from: moment(mess.vld_from),
-				exp_at: moment(mess.exp_at),	
+				vld_from: mess.vld_from.split(" ")[0],
+				exp_at: mess.exp_at.split(" ")[0],	
 				access_group_id: mess.access_group_id,
 				disable: false,
 			})
@@ -86,24 +88,27 @@ class IC_cards_resident_edit extends Component {
 
 	//提交创建新活动
 	_add_active(){
-		let	afteruri  = 'vcity/edituser'
-		let body = {
-			"comm_code":  this.userMess.comm_code,
-			"type": this.state.type,
-			"name": this.state.name,
-			"mobile": this.state.mobile,
-			"vol_tag": this.state.vol_tag,
-			"occupation": this.state.occupation,
-			"ic_card": this.state.ic_card,
-			"email": this.state.email,
+		let	afteruri  = 'dist_devices/allocate'
+		let activeMess = this.activeMess
+		let Token = this.TokenMess;
+		let mess  = this.mess;
+		let vld_from = this.state.vld_from ? this.state.vld_from: "";
+		let exp_at = this.state.exp_at ? this.state.exp_at: "";
+		let body ={
+			"owner_group":"居民",
+			"number": activeMess.number,
+			"access_group_id": this.state.access_group_id,
+			"vld_from": vld_from,
+			"exp_at": exp_at,
+			"apt_code": activeMess.apt_code,
 		}
 		appData_local._dataPost(afteruri, body, (res) =>{
-			if(res >= 0 ){
+			if(res.result >= 0 ){
 				this._jump('back')
 			} else {
 				
 			}
-		})
+		},Token)
 	}
 
 	//文本
@@ -151,18 +156,33 @@ class IC_cards_resident_edit extends Component {
 			let time = adate.getFullYear() + "-" + (adate.getMonth()+1) + "-" + adate.getDate()
 			if(name === 'vld_from'){
 				this.setState({
-					open_date: time
+					vld_from: time
 				})
 			} else if(name === 'exp_at'){
 				this.setState({
-					vld_start: time
+					exp_at: time
 				})
 			} 
+		} else {
+			if(name === 'vld_from'){
+				this.setState({
+					vld_from: null
+				})
+			} else if(name === 'exp_at'){
+				this.setState({
+					exp_at: null
+				})
+			} 
+
 		}
 	}
 
 	_inputNum(name,value){
-		console.log(value)
+		if(name == 'access_group_id'){
+			this.setState({
+				access_group_id: value
+			})
+		}
 	}
 
 	render() { 
@@ -177,7 +197,7 @@ class IC_cards_resident_edit extends Component {
 					<Row type="flex" justify="space-between" gutter={1}>
 						<Col className="printHidden">
 							<text style={{fontSize: 24, color: '#aaa'}}>发卡管理/居民IC卡/</text>
-							<text style={{fontSize: 24, color: '#1e8fe6'}}>新增/编辑</text>
+							<text style={{fontSize: 24, color: '#1e8fe6'}}>新增编辑</text>
 						</Col>
 					</Row>
 
@@ -228,10 +248,9 @@ class IC_cards_resident_edit extends Component {
 							{...formItemLayout}
 							label="起始日期">
 							{getFieldDecorator('vld_from',{
-								initialValue: this.state.vld_from
-
+								initialValue: this.state.vld_from?moment(this.state.vld_from):this.state.vld_from,
 							})(
-								<DatePicker format="YYYY-MM-DD HH:mm:ss" showTime  placeholder="选择时间"  onChange={this._timeInput.bind(this,'vld_from')}/>
+								<DatePicker format="YYYY-MM-DD"   placeholder="选择时间"  onChange={this._timeInput.bind(this,'vld_from')}/>
 							)}
 						</FormItem>
 
@@ -239,9 +258,9 @@ class IC_cards_resident_edit extends Component {
 							{...formItemLayout}
 							label="截止日期">
 							{getFieldDecorator('exp_at',{
-								initialValue: this.state.exp_at
+								initialValue: this.state.exp_at?moment(this.state.exp_at):this.state.exp_at,
 							})(
-								<DatePicker format="YYYY-MM-DD HH:mm:ss"  showTime placeholder="选择时间" onChange={this._timeInput.bind(this,'exp_at')} />
+								<DatePicker format="YYYY-MM-DD"   placeholder="选择时间" onChange={this._timeInput.bind(this,'exp_at')} />
 							)}
 						</FormItem>
 

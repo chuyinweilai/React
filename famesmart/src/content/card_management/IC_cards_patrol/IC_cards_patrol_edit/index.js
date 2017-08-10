@@ -32,7 +32,8 @@ class IC_cards_resident_edit extends Component {
 		this.state = {
 			name: '',
 			mobile: 0,
-			number: '',
+			number: 0,
+			numberType:true,
 			id: '',
 			access_group_id: 0,
 
@@ -53,8 +54,7 @@ class IC_cards_resident_edit extends Component {
 		appData_local._Storage('get', "Token",(res) =>{
 			this.TokenMess = res
 		})
-		if(mess !== undefined){
-			let arr = mess.apt_code.split('-');
+		if(mess._action == "change"){
 			this.setState({
 				name: mess.name,
 				mobile: mess.mobile,
@@ -63,9 +63,13 @@ class IC_cards_resident_edit extends Component {
 				access_group_id: mess.access_group_id,
 				disable: false,
 			})
-		}else {
+		}else if(mess._action == "add") {
 			this.setState({
-				disable: true
+				numberType: false,
+				name: mess.name,
+				mobile: mess.mobile,
+				access_group_id: mess.access_group_id,
+				disable: false,
 			})
 		}
 	}
@@ -80,24 +84,22 @@ class IC_cards_resident_edit extends Component {
 
 	//提交创建新活动
 	_add_active(){
-		let	afteruri  = 'vcity/edituser'
+		let	afteruri  = 'dist_devices/allocate'
+		let mess = this.activeMess
+		let Token = this.TokenMess;
 		let body = {
-			"comm_code":  this.userMess.comm_code,
-			"type": this.state.type,
-			"name": this.state.name,
+			"number": mess.number,
+			"owner_group":"物业",
 			"mobile": this.state.mobile,
-			"vol_tag": this.state.vol_tag,
-			"occupation": this.state.occupation,
-			"ic_card": this.state.ic_card,
-			"email": this.state.email,
+			"access_group_id": this.state.access_group_id,
 		}
 		appData_local._dataPost(afteruri, body, (res) =>{
-			if(res >= 0 ){
+			if(res.result >= 0 ){
 				this._jump('back')
 			} else {
 				
 			}
-		})
+		},Token)
 	}
 
 	//文本
@@ -114,6 +116,13 @@ class IC_cards_resident_edit extends Component {
 					helpText:"请输入正确的手机号",
 					disable: true,
 				})
+			} else {
+				this.setState({
+					helpStatus: "",
+					helpText: "",
+					mobile: value,
+					disable: false,
+				})
 			}
 		} else if(name === 'rooms'){
 			this.setState({
@@ -121,7 +130,7 @@ class IC_cards_resident_edit extends Component {
 			})
 		} else if(name === 'access_group_id'){
 			this.setState({
-				rooms: value
+				access_group_id: value
 			})
 		}
 	}
@@ -143,7 +152,13 @@ class IC_cards_resident_edit extends Component {
 		}
 	}
 
+	//数字输入
 	_inputNum(type,value){
+		if(type === 'access_group_id'){
+			this.setState({
+				access_group_id: value
+			})
+		}
 	}
 
 	render() { 
@@ -157,22 +172,12 @@ class IC_cards_resident_edit extends Component {
 				<Content>
 					<Row type="flex" justify="space-between" gutter={1}>
 						<Col className="printHidden">
-							<text style={{fontSize: 24, color: '#aaa'}}>发卡管理/居民IC卡/</text>
+							<text style={{fontSize: 24, color: '#aaa'}}>发卡管理/巡更IC卡/</text>
 							<text style={{fontSize: 24, color: '#1e8fe6'}}>编辑</text>
 						</Col>
 					</Row>
 
 					<Form style={{paddingTop: '50px'}}>
-
-						<FormItem
-							{...formItemLayout}
-							label="用户ID">
-							{getFieldDecorator('id',{
-								initialValue: this.state.id
-							})(
-								<Input onChange={this._input.bind(this,"id")} disabled/>
-							)}
-						</FormItem>
 						
 						<FormItem
 							{...formItemLayout}
@@ -180,7 +185,7 @@ class IC_cards_resident_edit extends Component {
 							{getFieldDecorator('number',{
 								initialValue: this.state.number
 							})(
-								<Input onChange={this._input.bind(this,"number")} disabled/>
+								<Input onChange={this._input.bind(this,"number")} disabled={this.state.numberType}/>
 							)}
 						</FormItem>
 

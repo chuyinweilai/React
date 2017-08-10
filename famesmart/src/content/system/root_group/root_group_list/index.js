@@ -7,14 +7,17 @@ import {
 	Button, 
 	Row,
 	Col,
+	Select,
 	Popconfirm, 
 	Pagination,
 	Menu, 
 	Layout,
 	Dropdown 
 } from 'antd'
-import appData from './../../../../assert/Ajax';
+import appData_local from './../../../../assert/Ajax_local';
 import  '../../../../App.css'
+const Search = Input.Search;
+const Option = Select.Option;
 
 export default class root_group_list extends Component {
 	constructor(props) {
@@ -41,82 +44,24 @@ export default class root_group_list extends Component {
 			},
 			{
 				colSpan:1,
-				title: '手机',
-				dataIndex: 'mobile',
+				title: '权限组ID',
+				dataIndex: 'group_id',
 			},
 			{
   				colSpan: 1,
-				title: '姓名',
-				dataIndex: 'name',
-				render:(text) => {
-					return(
-						<text style={{color: '#1e8fe6',}}>{text}</text>
-					)
-				}
+				title: '地址名称',
+				dataIndex: 'loc_description',
 			}, 
 			{
   				colSpan: 1,
-				title: '性别',
-				dataIndex: 'gender',
+				title: '归属区域',
+				dataIndex: 'area_code',
 			}, 
 			{
   				colSpan: 1,
-				title: 'IC卡',
-				dataIndex: 'ic_card',
-			}, 
-			{
-  				colSpan: 1,
-				title: '居住类型',
-				dataIndex: 'type',
-				render:(text,record) => {
-					let test = ''
-					if(text === 'Y' ){
-						test = '业主'
-					}  else if(text === 'Z'){
-						test = '租户'
-					} 
-					return <div>{test}</div>
-				}
-			}, 
-			{
-  				colSpan: 1,
-				title: '楼栋',
-				dataIndex: 'apt_code',
-			}, 
-			{
-  				colSpan: 1,
-				title: '楼层',
-				dataIndex: 'floor',
-			}, 
-			{
-  				colSpan: 1,
-				title: '房间号',
-				dataIndex: 'room',
-			}, 
-			{
-  				colSpan: 1,
-				title: '职业',
-				dataIndex: 'occupation',
-			}, 
-			{
-				colSpan:1,
-				title: 'EMAIL',
-				dataIndex: 'email',
-			},
-			{
-				colSpan:1,
-				title: '志愿者类型',
-				dataIndex: 'vol_tag ',
-				render:(text,record) => {
-					return <text>{record.vol_tag}</text>
-				}
-			}, 
-			{
-				colSpan:1,
-				title: '注册时间',
-				dataIndex: 'register_date',
-			},
-			{
+				title: '设备ID',
+				dataIndex: 'id',
+			}, {
 				title:"操作",
 				key:"action",
   				colSpan: 3,
@@ -124,7 +69,7 @@ export default class root_group_list extends Component {
 					return (
 						<Row type="flex" justify="space-between">
 							<Button onClick={() =>this._action('change',record)}>编辑</Button>
-							<Button onClick={() =>this._action('cancel',record)}>注销</Button>
+							<Button onClick={() =>this._action('cancel',record)}>删除</Button>
 						</Row>
 					)
 				}
@@ -138,11 +83,8 @@ export default class root_group_list extends Component {
 	componentWillMount(){
 		this.Router = this.props.Router;
 		this.mess = this.props.message;
-		appData._Storage('get',"userMess",(res) =>{
-			this.setState({
-				comm_name: res.comm_name
-			})
-			this.userMess = res
+		appData_local._Storage('get',"Token",(res) =>{
+			this.TokenMess = res
 			this._getEvent()
 		})
 	}
@@ -153,12 +95,13 @@ export default class root_group_list extends Component {
 
 	//获取后台信息
 	_getEvent(){
-		let userMess = this.userMess;
-		let afteruri = 'vcity/listuser';
+		let Token = this.TokenMess;
+		let afteruri = 'dist_devices/access_group/search_details';
 		let body = {
-			 "comm_code": userMess.comm_code
+			"group_id":1
 		}
-		appData._dataPost(afteruri,body,(res) => {
+		appData_local._dataPost(afteruri,body,(res) => {
+			console.log(res)
 			let data = res.data
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let len = data.length;
@@ -167,7 +110,7 @@ export default class root_group_list extends Component {
 				dataSource: data,
 				count:len,
 			})
-		})
+		},Token)
 	}
 	
 	//操作栏功能
@@ -180,7 +123,7 @@ export default class root_group_list extends Component {
 				"mobile": mess.mobile,
 				"comm_code": mess.comm_code
 			}
-			appData._dataPost(afteruri,body,(res) => {
+			appData_local._dataPost(afteruri,body,(res) => {
 				if(res){
 					this._getEvent()
 					this.setState({
@@ -200,7 +143,7 @@ export default class root_group_list extends Component {
 		let body = {
 			 "comm_code": userMess.comm_code
 		}
-		appData._dataPost(afteruri,body,(res) => {
+		appData_local._dataPost(afteruri,body,(res) => {
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let data = res.data;
 			let len = data.length;
@@ -227,8 +170,27 @@ export default class root_group_list extends Component {
 						<Button style={{height: 32}} onClick={()=>window.print()}>打印</Button>
 					</Col>
 				</Row>
-				<Row>
-					<Col span={8} style={{margin:'10px'}}> </Col>
+				<Row  className="printHidden" style={{height: 32, margin: 10}}>
+					 <Col span={4}>
+					 	<Button>新建</Button>
+					 </Col>
+					<Col span={20} style={{textAlign:'right'}}>
+						<Search
+							className="printHidden"
+							placeholder={this.state.SearchText}
+							style={{ minWidth: 200, maxWidth: 300 }}
+							onSearch={value => this._searchMob(value)}
+						/>
+						{/* <Select
+							defaultValue="apt_code"
+							style={{width: 100, marginLeft: 20}}
+							onChange={this._handleChange.bind(this)}
+						>
+							<Option key="name">姓名</Option>
+							<Option key="mobile">手机号</Option>
+							<Option key="apt_code">住宅</Option>
+						</Select> */}
+					</Col>
 				</Row>
 				<Table bordered dataSource={this.state.dataSource} columns={columns} rowKey='key' pagination={false} style={{marginBottom: 20}}/> 
 				<Row type="flex" justify="end">

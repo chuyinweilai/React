@@ -1,0 +1,40 @@
+/* html,
+body {
+    margin: 0;
+    padding: 2%;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    box-sizing: border-box;
+    background: #eee;
+} */
+
+
+/* #coordinate {
+} */
+
+#coordinate-box {
+    margin: 20px auto;
+    width: 1000px;
+    height: 1000px;
+    border-left: 1px solid #111;
+    border-top: 1px solid #111;
+    position: relative;
+    background: #fff;
+}
+
+#coordinate-box #coordinate-img {
+    display: inline-block;
+    position: absolute;
+    border-radius: 50%;
+    width: 10px;
+    height: 10px;
+    background: #f9c;
+}
+
+#coordinate-box #coordinate-warning {
+    display: inline-block;
+    position: absolute;
+    border-radius: 50%;
+    background: rgba( 220, 20, 60, 0.3);
+}

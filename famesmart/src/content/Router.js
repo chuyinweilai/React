@@ -48,7 +48,7 @@ import {
 } from './system'
 
 import Cancel from './cancel'
-
+import Coordinate from './coordinate/coordinate'
 export default class mainPage extends Component{
 	constructor(props){
 		super(props);
@@ -137,6 +137,8 @@ export default class mainPage extends Component{
 		//注销
 		else if(name === 'cancel')	
 			return <Cancel message={this.mess} Router={this.Router}/>
+		else if(name === 'coordinate')	
+			return <Coordinate message={this.mess} Router={this.Router}/>
 		else return null
 	}
 	render(){

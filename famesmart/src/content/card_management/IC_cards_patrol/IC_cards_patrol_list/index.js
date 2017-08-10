@@ -40,11 +40,6 @@ export default class IC_cards_resident_list extends Component {
 			},
 			{
   				colSpan: 1,
-				title: '用户id',
-				dataIndex: 'id',
-			},
-			{
-  				colSpan: 1,
 				title: '巡更人员姓名',
 				dataIndex: 'name',
 			},
@@ -70,9 +65,9 @@ export default class IC_cards_resident_list extends Component {
 				render:(text, record)=>{
 					return (
 						<Row type="flex" justify="space-between">
+							<Button onClick={() =>this._action('add',record)}>新增</Button> 
 							<Button onClick={() =>this._action('change',record)}>编辑</Button>
 							<Button onClick={() =>this._action('cancel',record)}>删除</Button>
-							{/* <Button onClick={() =>this._action('cancel',record)}>新增</Button> */}
 						</Row>
 					)
 				}
@@ -102,6 +97,7 @@ export default class IC_cards_resident_list extends Component {
 		let afteruri = 'dist_devices/search';
 		let body = {
 			"per_page":10,
+			"owner_group": '物业'
 		}
 		appData_local._dataPost(afteruri,body,(res) => {
 			let data = res.data
@@ -117,34 +113,42 @@ export default class IC_cards_resident_list extends Component {
 	
 	//操作栏功能
 	_action(type,mess){
+		mess.owner_group='物业'
 		if(type === "change"){
+			mess._action = 'change';
 			this._jump('IC_cards_patrol_edit', mess)
 		}
-		// else if(type === "cancel"){
-		// 	let afteruri = 'vcity/canceluser';
-		// 	let body = {
-		// 		"mobile": mess.mobile,
-		// 		"comm_code": mess.comm_code
-		// 	}
-		// 	appData_local._dataPost(afteruri,body,(res) => {
-		// 		if(res){
-		// 			this._getEvent()
-		// 			this.setState({
-		// 				pageNum: 1
-		// 			})
-		// 		} else {
-		// 			alert('操作失败')
-		// 		}
-		// 	})
-		// }
+		if(type === "add"){
+			mess._action = 'add';
+			this._jump('IC_cards_patrol_edit', mess)
+		}
+		else if(type === "cancel"){
+			let afteruri = 'vcity/canceluser';
+			let body = {
+				"mobile": mess.mobile,
+				"comm_code": mess.comm_code
+			}
+			appData_local._dataPost(afteruri,body,(res) => {
+				if(res){
+					this._getEvent()
+					this.setState({
+						pageNum: 1
+					})
+				} else {
+					alert('操作失败')
+				}
+			})
+		}
 	}
 
 	//分页器activity/list?page=num
 	_pageChange(pageNumber){
-		let userMess = this.userMess;
-		let afteruri = 'vcity/listuser?page=' + pageNumber ;
+		let Token = this.TokenMess;
+		let afteruri = 'devices/search';
 		let body = {
-			 "comm_code": userMess.comm_code
+			"per_page": pageNumber,
+			"owner_group": '物业'
+			
 		}
 		appData_local._dataPost(afteruri,body,(res) => {
 			let pageSum = Math.ceil(res.total/res.per_page)
@@ -156,7 +160,7 @@ export default class IC_cards_resident_list extends Component {
 				count:len,
 				pageNum:pageNumber
 			})
-		})
+		},Token)
 	}
 
 	render() {

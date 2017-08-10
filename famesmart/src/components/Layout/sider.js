@@ -46,6 +46,7 @@ export default class siders extends Component{
 					<Menu.Item key="1"><Icon type="user" />五违管理</Menu.Item>
 					<Menu.Item key="2"><Icon type="user" />文明管理</Menu.Item>
 					<Menu.Item key="3"><Icon type="user" />报警汇总</Menu.Item>
+					<Menu.Item key="coordinate"><Icon type="close-circle-o"/>定位</Menu.Item>
 
 					<SubMenu key = "card_management" title={<span><Icon type="credit-card" /><span>卡片管理</span></span>}>
 						<Menu.Item key="QRCode_list"><Icon type="barcode" />电子钥匙</Menu.Item>

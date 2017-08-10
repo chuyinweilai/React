@@ -47,62 +47,17 @@ export default class community_resident_list extends Component {
 			},
 			{
 				colSpan:1,
-				title: '手机',
-				dataIndex: 'mobile',
+				title: '用户ID',
+				dataIndex: 'id',
 			},
 			{
   				colSpan: 1,
-				title: '姓名',
-				dataIndex: 'name',
-				render:(text) => {
-					return(
-						<text style={{color: '#1e8fe6',}}>{text}</text>
-					)
-				}
-			}, 
-			{
-  				colSpan: 1,
-				title: '性别',
-				dataIndex: 'gender',
-			}, 
-			{
-  				colSpan: 1,
-				title: 'IC卡',
-				dataIndex: 'ic_card',
-			}, 
-			{
-  				colSpan: 1,
-				title: '居住类型',
-				dataIndex: 'type',
-				render:(text,record) => {
-					let test = ''
-					if(text === 'Y' ){
-						test = '业主'
-					}  else if(text === 'Z'){
-						test = '租户'
-					} 
-					return <div>{test}</div>
-				}
-			}, 
-			{
-  				colSpan: 1,
-				title: '楼栋',
+				title: '楼号',
 				dataIndex: 'apt_code',
 				render:(text,record,index) =>{
 					let arr = record.apt_code.split('-');
 					return (
 						<text>{arr[0]}</text>
-					)
-				}
-			}, 
-			{
-  				colSpan: 1,
-				title: '楼层',
-				dataIndex: 'floor',
-				render:(text,record,index) =>{
-					let arr = record.apt_code.split('-');
-					return (
-						<text>{arr[1]}</text>
 					)
 				}
 			}, 
@@ -119,40 +74,14 @@ export default class community_resident_list extends Component {
 			}, 
 			{
   				colSpan: 1,
-				title: '职业',
-				dataIndex: 'occupation',
-			}, 
-			{
-				colSpan:1,
-				title: 'EMAIL',
-				dataIndex: 'email',
+				title: '业主姓名',
+				dataIndex: 'name',
 			},
 			{
 				colSpan:1,
-				title: '志愿者类型',
-				dataIndex: 'vol_tag ',
-				render:(text,record) => {
-					return <text>{record.vol_tag}</text>
-				}
-			}, 
-			{
-				colSpan:1,
-				title: '注册时间',
-				dataIndex: 'register_date',
+				title: '手机',
+				dataIndex: 'mobile',
 			},
-			// {
-			// 	title:"操作",
-			// 	key:"action",
-  			// 	colSpan: 3,
-			// 	render:(text, record)=>{
-			// 		return (
-			// 			<Row type="flex" justify="space-between">
-			// 				<Button onClick={() =>this._action('change',record)}>编辑</Button>
-			// 				<Button onClick={() =>this._action('cancel',record)}>注销</Button>
-			// 			</Row>
-			// 		)
-			// 	}
-			// }
 		];
 		
 		this.TokenMess = '';
@@ -191,36 +120,13 @@ export default class community_resident_list extends Component {
 			})
 		},TokenMess)
 	}
-	
-	//操作栏功能
-	_action(type,mess){
-		if(type === "change"){
-			this._jump('volunteer_edit', mess)
-		}else if(type === "cancel"){
-			let afteruri = 'vcity/canceluser';
-			let body = {
-				"mobile": mess.mobile,
-				"comm_code": mess.comm_code
-			}
-			appData_local._dataPost(afteruri,body,(res) => {
-				if(res){
-					this._getEvent()
-					this.setState({
-						pageNum: 1
-					})
-				} else {
-					alert('操作失败')
-				}
-			})
-		}
-	}
 
 	//分页器activity/list?page=num
 	_pageChange(pageNumber){
-		let userMess = this.userMess;
-		let afteruri = 'vcity/listuser?page=' + pageNumber ;
+		let Token = this.TokenMess;
+		let afteruri = 'residents/search';
 		let body = {
-			 "comm_code": userMess.comm_code
+			"per_page": pageNumber
 		}
 		appData_local._dataPost(afteruri,body,(res) => {
 			let pageSum = Math.ceil(res.total/res.per_page)
@@ -232,14 +138,12 @@ export default class community_resident_list extends Component {
 				count:len,
 				pageNum:pageNumber
 			})
-		})
+		},Token)
 	}
 
 	// 搜索框
 	_searchMob(val){
 		let TokenMess = this.TokenMess;
-		// let activeMess = this.activeMess;
-		// SearchType
 		let afteruri = 'residents/search' ;
 		let body = {}
 		let searchType =  this.state.SearchType;
@@ -256,9 +160,7 @@ export default class community_resident_list extends Component {
 				"apt_code": val,
 			}
 		}
-		console.log(body)
 		appData_local._dataPost(afteruri,body,(res) => {
-			console.log(res)
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let data = res.data;
 			let len = data.length;
