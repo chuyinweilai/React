@@ -1,2 +1,0 @@
-# React
-My React learn

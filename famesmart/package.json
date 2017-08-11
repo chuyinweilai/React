@@ -7,8 +7,8 @@
         "babel-plugin-import": "^1.2.1",
         "react": "^15.6.1",
         "react-dom": "^15.6.1",
-        "react-router-dom": "^4.1.1",
         "react-scripts": "1.0.10",
+        "react-router-dom": "^4.1.1",
         "recharts": "^1.0.0-alpha.2"
     },
     "scripts": {

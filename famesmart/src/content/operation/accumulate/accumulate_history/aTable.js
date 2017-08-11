@@ -25,7 +25,8 @@ export default class pointTable extends Component {
 			used_score:0,
 			dataSource: [],
 			count: 0,
-			detail_val:{}
+			detail_val:{},
+
 		};
 
 		this.columns = [
@@ -95,6 +96,7 @@ export default class pointTable extends Component {
 	
 	
 	componentWillMount(){
+		let printf = this.state.printf;
 		this.Router = this.props.Router;
 		this.mess = this.props.message;
 		appData._Storage('get',"userMess",(res) =>{
