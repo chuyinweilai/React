@@ -29,4 +29,13 @@ siders {
     .printHidden {
         visibility: hidden;
     }
+    .ant-modal-header.ant-modal-footer {
+        visibility: hidden;
+    }
+    .ant-modal-close {
+        visibility: hidden;
+    }
+    .ant-modal-footer {
+        visibility: hidden;
+    }
 }

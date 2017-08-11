@@ -85,10 +85,11 @@ export default class community_resident_list extends Component {
 	_getEvent(){
 		let TokenMess = this.TokenMess;
 		let afteruri = 'users/search';
-		let body={}
+		let body={
+			"org":"物业"
+		}
 		appData_local._dataPost(afteruri,body,(aval) => {
 			let res = aval.data
-			console.log(res)
 			let data = res.data
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let len = data.length;
@@ -102,13 +103,17 @@ export default class community_resident_list extends Component {
 	
 	//分页器activity/list?page=num
 	_pageChange(pageNumber){
+		console.log(pageNumber)
 		let Token = this.TokenMess;
 		let afteruri = 'users/search';
 		let body = {
+			"org":"物业",
 			"per_page": pageNumber
 		}
-		appData_local._dataPost(afteruri,body,(res) => {
-			console.log(res)
+		console.log(body)
+		appData_local._dataPost(afteruri,body,(aval) => {
+			console.log(aval)
+			let res = aval.data
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let data = res.data;
 			let len = data.length;
@@ -124,23 +129,28 @@ export default class community_resident_list extends Component {
 	// 搜索框
 	_searchMob(val){
 		let TokenMess = this.TokenMess;
-		let afteruri = 'residents/search' ;
+		let afteruri = 'users/search';
 		let body = {}
 		let searchType =  this.state.SearchType;
 		if( searchType == "name"){
 			body = {
+				"org":"物业",
 				"name": val,
 			}
 		} else if( searchType == "mobile"){
 			body = {
+				"org":"物业",
 				"mobile": val,
 			}
 		} else if( searchType == "apt_code"){
 			body = {
+				"org":"物业",
 				"apt_code": val,
 			}
 		}
-		appData_local._dataPost(afteruri,body,(res) => {
+		appData_local._dataPost(afteruri,body,(aval) => {
+			console.log(aval)
+			let res = aval.data
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let data = res.data;
 			let len = data.length;

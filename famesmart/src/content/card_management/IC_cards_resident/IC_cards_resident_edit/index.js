@@ -228,7 +228,7 @@ class IC_cards_resident_edit extends Component {
 							{getFieldDecorator('name',{
 								initialValue: this.state.name
 							})(
-								<Input onChange={this._input.bind(this,"name")}/>
+								<Input onChange={this._input.bind(this,"name")} disabled/>
 							)}
 						</FormItem>
 
@@ -240,7 +240,7 @@ class IC_cards_resident_edit extends Component {
 							{getFieldDecorator('mobile',{
 								initialValue: this.state.mobile
 							})(
-								<Input onChange={this._input.bind(this,'mobile')}/>
+								<Input onChange={this._input.bind(this,'mobile')} disabled/>
 							)}
 						</FormItem>
 

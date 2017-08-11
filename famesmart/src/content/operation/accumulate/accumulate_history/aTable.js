@@ -233,8 +233,8 @@ export default class pointTable extends Component {
 							{score}
 						</text>
 					</Col>
-					<Col style={{height: 60}}>
-					兑换者签名
+					<Col style={{height: 60, fontSize: 16}}>
+					兑换者签名:
 					</Col>
 				</Modal>
 			)
