@@ -42,25 +42,11 @@ export default class siders extends Component{
 					onSelect = {this._click.bind(this)}
 				>
 					<Menu.Item key="home"><Icon type="home" />首页</Menu.Item> 
-
-					<Menu.Item key="1"><Icon type="user" />五违管理</Menu.Item>
-					<Menu.Item key="2"><Icon type="user" />文明管理</Menu.Item>
-					<Menu.Item key="3"><Icon type="user" />报警汇总</Menu.Item>
 					<Menu.Item key="coordinate"><Icon type="close-circle-o"/>定位</Menu.Item>
 
 					<SubMenu key = "card_management" title={<span><Icon type="credit-card" /><span>卡片管理</span></span>}>
 						<Menu.Item key="QRCode_list"><Icon type="barcode" />电子钥匙</Menu.Item>
 						<Menu.Item key="QRcode_record"><Icon type="user" />电子钥匙分享记录</Menu.Item>
-					</SubMenu>
-
-					<SubMenu key = "IO" title={<span><Icon type="credit-card" /><span>出入管理</span></span>}>
-						<Menu.Item key="realtime_record_list"><Icon type="key" />实时记录</Menu.Item>
-						<Menu.Item key="statistics_record_list"><Icon type="key" />统计记录</Menu.Item>
-					</SubMenu>
-					
-					<SubMenu key = "5" title={<span><Icon type="credit-card" /><span>巡更管理</span></span>}>
-						<Menu.Item key="5_1"><Icon type="key" />巡更计划</Menu.Item>
-						<Menu.Item key="5_2"><Icon type="key" />巡更记录</Menu.Item>
 					</SubMenu>
 
 						<SubMenu key = "operation" title={<span><Icon type="appstore" /><span>米社运维</span></span>}>
@@ -82,6 +68,21 @@ export default class siders extends Component{
 					style={{ height: '100%',borderRight: 0 }}
 					onSelect = {this._click.bind(this)}
 				>
+
+					<Menu.Item key="five_list"><Icon type="star-o" />五违管理</Menu.Item>
+					<Menu.Item key="civilization_list"><Icon type="star-o" />文明管理</Menu.Item>
+					<Menu.Item key="report_list"><Icon type="star-o" />报警汇总</Menu.Item>
+
+					<SubMenu key = "IO" title={<span><Icon type="credit-card" /><span>出入管理</span></span>}>
+						<Menu.Item key="IOcount_list"><Icon type="key" />实时记录</Menu.Item>
+						<Menu.Item key="IOstatistic_list"><Icon type="key" />统计记录</Menu.Item>
+					</SubMenu>
+					
+					<SubMenu key = "patrol" title={<span><Icon type="credit-card" /><span>巡更管理</span></span>}>
+						<Menu.Item key="patrolPlan_list"><Icon type="key" />巡更计划</Menu.Item>
+						<Menu.Item key="patrol_list"><Icon type="key" />巡更记录</Menu.Item>
+					</SubMenu>
+
 					<SubMenu key = "card_management" title={<span><Icon type="credit-card" /><span>卡片管理</span></span>}>
 						<Menu.Item key="IC_cards_resident_list"><Icon type="barcode" />居民IC卡</Menu.Item>
 						<Menu.Item key="IC_cards_patrol_list"><Icon type="barcode" />巡更IC卡</Menu.Item>

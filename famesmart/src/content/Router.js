@@ -47,6 +47,46 @@ import {
 	White_list,
 } from './system'
 
+//------------------------------------
+import{
+    Civilization_list,
+} from './civilization'
+
+import{
+    IOcount_edit,
+    IOcount_list,
+	IOstatistic_list,
+} from './eecount'
+
+import{
+    Doorlock_list,
+} from './doorlock'
+
+import{
+    Doorlock_userlist,
+} from './doorlockusers'
+
+import{
+    Patrol_list,
+    Patrol_edit,
+    PatrolPlan_list,
+} from './patrol'
+
+import{
+    Patrol_userlist,
+} from './patrolusers'
+
+import{
+    Devarea_list,
+} from './devarea'
+
+import{
+    Five_list,
+} from './five'
+
+import{
+    Report_list,
+} from './report'
 import Cancel from './cancel'
 import Coordinate from './coordinate/coordinate'
 export default class mainPage extends Component{
@@ -133,6 +173,33 @@ export default class mainPage extends Component{
 			return <Root_group_list message={this.mess} Router={this.Router}/>
 		else if(name === 'device_root_list')	
 			return <Device_root_list message={this.mess} Router={this.Router}/>
+		
+        else if(name === 'IOcount_edit')
+            return <IOcount_edit message={this.mess} Router={this.Router}/>
+        else if(name === 'IOcount_list')
+            return <IOcount_list message={this.mess} Router={this.Router}/>
+        else if(name === 'IOstatistic_list')
+            return <IOstatistic_list message={this.mess} Router={this.Router}/>
+        else if(name === 'patrol_list')
+            return <Patrol_list message={this.mess} Router={this.Router}/>
+        else if(name === 'patrol_edit')
+            return <Patrol_edit message={this.mess} Router={this.Router}/>
+        else if(name === 'doorlock_list')
+            return <Doorlock_list message={this.mess} Router={this.Router}/>
+        else if(name === 'doorlock_userlist')
+            return <Doorlock_userlist message={this.mess} Router={this.Router}/>
+        else if(name === 'patrol_userlist')
+            return <Patrol_userlist message={this.mess} Router={this.Router}/>
+        else if(name === 'patrolPlan_list')
+            return <PatrolPlan_list message={this.mess} Router={this.Router}/>
+        else if(name === 'devarea_list')
+            return <Devarea_list message={this.mess} Router={this.Router}/>
+        else if(name === 'civilization_list')
+            return <Civilization_list message={this.mess} Router={this.Router}/>
+        else if(name === 'five_list')
+            return <Five_list message={this.mess} Router={this.Router}/>
+        else if(name === 'report_list')
+            return <Report_list message={this.mess} Router={this.Router}/>
 
 		//注销
 		else if(name === 'cancel')	
