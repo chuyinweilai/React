@@ -20,7 +20,9 @@ body {
     border-left: 1px solid #111;
     border-top: 1px solid #111;
     position: relative;
-    background: #fff;
+    background: url(./../../components/icon/community.jpg) no-repeat 0 0;
+    /* background: url(./icon/community.jpg) no-repeat 0 0; */
+    background-size: 100% 100%;
 }
 
 #coordinate-box #coordinate-img {
@@ -29,7 +31,7 @@ body {
     border-radius: 50%;
     width: 10px;
     height: 10px;
-    background: #f9c;
+    background: blue;
 }
 
 #coordinate-box #coordinate-warning {

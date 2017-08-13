@@ -31,6 +31,7 @@ export default class siders extends Component{
 		})
 
 		if(LoginType == "cloude"){
+
 			return (
 				<Menu
 					mode="inline"
@@ -42,7 +43,7 @@ export default class siders extends Component{
 					onSelect = {this._click.bind(this)}
 				>
 					<Menu.Item key="home"><Icon type="home" />首页</Menu.Item> 
-					<Menu.Item key="coordinate"><Icon type="close-circle-o"/>定位</Menu.Item>
+					<Menu.Item key="coordinate"><Icon type="environment-o" />定位服务</Menu.Item>
 
 					<SubMenu key = "card_management" title={<span><Icon type="credit-card" /><span>卡片管理</span></span>}>
 						<Menu.Item key="QRCode_list"><Icon type="barcode" />电子钥匙</Menu.Item>
@@ -65,13 +66,14 @@ export default class siders extends Component{
 					theme = 'dark'
 					defaultSelectedKeys={['IC_cards_resident_list']}
 					defaultOpenKeys={['card_management']}
-					style={{ height: '100%',borderRight: 0 }}
+					style={{ height: '100%', borderRight: 0 }}
 					onSelect = {this._click.bind(this)}
 				>
 
 					<Menu.Item key="five_list"><Icon type="star-o" />五违管理</Menu.Item>
 					<Menu.Item key="civilization_list"><Icon type="star-o" />文明管理</Menu.Item>
 					<Menu.Item key="report_list"><Icon type="star-o" />报警汇总</Menu.Item>
+					<Menu.Item key="coordinate"><Icon type="environment-o" />定位服务</Menu.Item>
 
 					<SubMenu key = "IO" title={<span><Icon type="credit-card" /><span>出入管理</span></span>}>
 						<Menu.Item key="IOcount_list"><Icon type="key" />实时记录</Menu.Item>

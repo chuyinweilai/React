@@ -40,6 +40,7 @@ class IC_cards_resident_edit extends Component {
 			helpStatus:"",
 			helpText:"",
 			disable: false,
+			number:0,
 		};
 		this.TokenMess;
 		this.Router;
@@ -59,6 +60,7 @@ class IC_cards_resident_edit extends Component {
 			this.setState({
 				floors:arr[0],
 				rooms: arr[2],
+				number: mess.number,
 				name: mess.name,
 				mobile: mess.mobile,
 				vld_from: mess.vld_from.split(" ")[0],
@@ -88,25 +90,25 @@ class IC_cards_resident_edit extends Component {
 
 	//提交创建新活动
 	_add_active(){
-		let	afteruri  = 'dist_devices/allocate'
 		let activeMess = this.activeMess
 		let Token = this.TokenMess;
 		let mess  = this.mess;
+		let	afteruri  = 'dist_devices/allocate';
 		let vld_from = this.state.vld_from ? this.state.vld_from: "";
 		let exp_at = this.state.exp_at ? this.state.exp_at: "";
-		let body ={
+		let body={
 			"owner_group":"居民",
-			"number": activeMess.number,
-			"access_group_id": this.state.access_group_id,
-			"vld_from": vld_from,
 			"exp_at": exp_at,
+			"vld_from": vld_from,
+			"number": this.state.number,
 			"apt_code": activeMess.apt_code,
+			"access_group_id": this.state.access_group_id,
 		}
 		appData_local._dataPost(afteruri, body, (res) =>{
-			if(res.result >= 0 ){
+			if(res.result > 0 ){
 				this._jump('back')
 			} else {
-				
+				alert(res.message)
 			}
 		},Token)
 	}
@@ -118,7 +120,11 @@ class IC_cards_resident_edit extends Component {
 			this.setState({
 				name: value
 			})
-		} else if(name === 'floors'){
+		} else if(name === 'number'){
+			this.setState({
+				number: value
+			})
+		}  else if(name === 'floors'){
 			this.setState({
 				floors: value
 			})
@@ -202,6 +208,16 @@ class IC_cards_resident_edit extends Component {
 					</Row>
 
 					<Form style={{paddingTop: '50px'}}>
+						<FormItem
+							{...formItemLayout}
+							label="卡号">
+							{getFieldDecorator('number',{
+								initialValue: this.state.number
+							})(
+								<Input type="number" onChange={this._input.bind(this,"number")} />
+							)}
+						</FormItem>
+
 						<FormItem
 							{...formItemLayout}
 							label="楼号">

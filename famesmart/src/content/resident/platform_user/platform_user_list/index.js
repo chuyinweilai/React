@@ -52,35 +52,28 @@ export default class community_resident_list extends Component {
 			},
 			{
   				colSpan: 1,
-				title: '楼号',
-				dataIndex: 'apt_code',
-				render:(text,record,index) =>{
-					let arr = record.apt_code.split('-');
-					return (
-						<text>{arr[0]}</text>
-					)
-				}
-			}, 
-			{
-  				colSpan: 1,
-				title: '房间号',
-				dataIndex: 'room',
-				render:(text,record,index) =>{
-					let arr = record.apt_code.split('-');
-					return (
-						<text>{arr[2]}</text>
-					)
-				}
-			}, 
-			{
-  				colSpan: 1,
 				title: '业主姓名',
 				dataIndex: 'name',
+			},
+			{
+  				colSpan: 1,
+				title: '等级',
+				dataIndex: 'auth_lvl',
 			},
 			{
 				colSpan:1,
 				title: '手机',
 				dataIndex: 'mobile',
+			},
+			{
+  				colSpan: 1,
+				title: '组织',
+				dataIndex: 'org',
+			},
+			{
+  				colSpan: 1,
+				title: '邮箱',
+				dataIndex: 'email',
 			},
 		];
 		
@@ -106,11 +99,9 @@ export default class community_resident_list extends Component {
 	//获取后台信息
 	_getEvent(){
 		let TokenMess = this.TokenMess;
-		// let afteruri = 'user/2';
-		let afteruri = 'residents/search';
+		let afteruri = 'users/search';
 		let body={}
 		appData_local._dataPost(afteruri,body,(res) => {
-			console.log(res)
 			let data = res.data
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let len = data.length;
@@ -125,10 +116,8 @@ export default class community_resident_list extends Component {
 	//分页器activity/list?page=num
 	_pageChange(pageNumber){
 		let Token = this.TokenMess;
-		let afteruri = 'user/2';
-		let body = {
-			"per_page": pageNumber
-		}
+		let afteruri = 'user/search?page=' + pageNumber;
+		let body = {}
 		appData_local._dataPost(afteruri,body,(res) => {
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let data = res.data;
@@ -145,7 +134,7 @@ export default class community_resident_list extends Component {
 	// 搜索框
 	_searchMob(val){
 		let TokenMess = this.TokenMess;
-		let afteruri = 'user/2';
+		let afteruri = 'user/search';
 		let body = {}
 		let searchType =  this.state.SearchType;
 		if( searchType == "name"){
@@ -156,42 +145,17 @@ export default class community_resident_list extends Component {
 			body = {
 				"mobile": val,
 			}
-		} else if( searchType == "apt_code"){
+		} else if(val == 'auth_lvl'){
 			body = {
-				"apt_code": val,
+				auth_lvl: val
+			}
+		} else if(val == 'org'){
+			body = {
+				org: val
 			}
 		}
 		appData_local._dataPost(afteruri,body,(res) => {
-			let pageSum = Math.ceil(res.total/res.per_page)
-			let data = res.data;
-			let len = data.length;
-			this.setState({
-				total:res.total,
-				dataSource: data,
-				count:len,
-			})
-		},TokenMess)
-	}
-	// 搜索框
-	_searchMob(val){
-		let TokenMess = this.TokenMess;
-		let afteruri = 'user/2';
-		let body = {}
-		let searchType =  this.state.SearchType;
-		if( searchType == "name"){
-			body = {
-				"name": val,
-			}
-		} else if( searchType == "mobile"){
-			body = {
-				"mobile": val,
-			}
-		} else if( searchType == "apt_code"){
-			body = {
-				"apt_code": val,
-			}
-		}
-		appData_local._dataPost(afteruri,body,(res) => {
+			console.log(res)
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let data = res.data;
 			let len = data.length;
@@ -214,10 +178,15 @@ export default class community_resident_list extends Component {
 				SearchType: 'mobile',
 				SearchText: '请输入手机号'
 			})
-		} else if(val == 'apt_code'){
+		} else if(val == 'auth_lvl'){
 			this.setState({
-				SearchType: 'mobile',
-				SearchText:'输入住宅号查询。如：1-3-301'
+				SearchType: 'auth_lvl',
+				SearchText:'输入权限等级'
+			})
+		} else if(val == 'org'){
+			this.setState({
+				SearchType: 'org',
+				SearchText:'输入组织名称'
 			})
 		}
 	}
@@ -237,7 +206,7 @@ export default class community_resident_list extends Component {
 							<Button style={{height: 32}} onClick={()=>window.print()}>打印</Button>
 						</Col>
 					</Row>
-					<Row  className="printHidden" style={{height: 32, margin: 10}}>
+					{/* <Row  className="printHidden" style={{height: 32, margin: 10}}>
 						<Col span={24} style={{textAlign:'right'}}>
 							<Search
 								className="printHidden"
@@ -252,9 +221,13 @@ export default class community_resident_list extends Component {
 							>
 								<Option key="name">姓名</Option>
 								<Option key="mobile">手机号</Option>
-								<Option key="apt_code">住宅</Option>
+								<Option key="auth_lvl">权限等级</Option>
+								<Option key="org">组织</Option>
 							</Select>
 						</Col>
+					</Row> */}
+					<Row>
+						<Col span={8} style={{margin:'10px'}}> </Col>
 					</Row>
 					<Table bordered dataSource={this.state.dataSource} columns={columns} rowKey='key' pagination={false} style={{marginBottom: 20}}/> 
 					<Row type="flex" justify="end">

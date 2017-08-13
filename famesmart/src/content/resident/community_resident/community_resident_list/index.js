@@ -109,7 +109,6 @@ export default class community_resident_list extends Component {
 		let afteruri = 'residents/search';
 		let body={}
 		appData_local._dataPost(afteruri,body,(res) => {
-			console.log(res)
 			let data = res.data
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let len = data.length;
@@ -124,10 +123,8 @@ export default class community_resident_list extends Component {
 	//分页器activity/list?page=num
 	_pageChange(pageNumber){
 		let Token = this.TokenMess;
-		let afteruri = 'residents/search';
-		let body = {
-			"per_page": pageNumber
-		}
+		let afteruri = 'residents/search?page=' + pageNumber;
+		let body = {}
 		appData_local._dataPost(afteruri,body,(res) => {
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let data = res.data;

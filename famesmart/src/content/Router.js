@@ -42,8 +42,11 @@ import{
 
 import {
 	Device_online_list,
+	Device_address_list,
+	
 	Device_root_list,
 	Root_group_list,
+	Root_group_edit,
 	White_list,
 } from './system'
 
@@ -167,10 +170,14 @@ export default class mainPage extends Component{
 		//系统功能
 		else if(name === 'device_online_list')	
 			return <Device_online_list message={this.mess} Router={this.Router}/>
+		else if(name === 'device_address_list')	
+			return <Device_address_list message={this.mess} Router={this.Router}/>
 		else if(name === 'white_list')	
 			return <White_list message={this.mess} Router={this.Router}/>
 		else if(name === 'root_group_list')	
 			return <Root_group_list message={this.mess} Router={this.Router}/>
+		else if(name === 'root_group_edit')	
+			return <Root_group_edit message={this.mess} Router={this.Router}/>
 		else if(name === 'device_root_list')	
 			return <Device_root_list message={this.mess} Router={this.Router}/>
 		

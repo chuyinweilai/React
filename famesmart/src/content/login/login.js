@@ -38,8 +38,29 @@ class Login extends Component {
     
     handleSubmit (e) {
         e.preventDefault();
-        if(this.state.loginType == "cloude"){
-            this.props.form.validateFields((err, values) => {
+        this.props.form.validateFields((err, values) => {
+            console.log((/^1(3|4|5|7|8)\d{9}$/.test(values.userName)))
+            if((/^1(3|4|5|7|8)\d{9}$/.test(values.userName))){ 
+                if (!err) {
+                    let afteruri = 'auth/login'
+                    let body = {
+                        "mobile":values.userName,
+                        "password":values.password
+                    }
+                    appData_local._dataPost(afteruri, body, (res) => {
+                        if(res === undefined || !res.token.length){
+                            this.setState({
+                                error: true
+                            })
+                        } else {
+                            appData._Storage('set',"Token",res.token)
+                            appData._Storage('set',"userMess",res.user)
+                            appData._Storage('set',"LoginType",'server')
+                            this.props.Router('IC_cards_resident_list')
+                        }
+                    })
+                }
+            } else {
                 if (!err) {
                     let afteruri = 'vcity/login'
                     let body = {
@@ -59,38 +80,15 @@ class Login extends Component {
                         }
                     })
                 }
-            });
-        }
-        else if(this.state.loginType == "server"){
-            this.props.form.validateFields((err, values) => {
-                if (!err) {
-                    let afteruri = 'auth/login'
-                    let body = {
-                        "mobile":values.userName,
-                        "password":values.password
-                    }
-                    appData_local._dataPost(afteruri, body, (res) => {
-                        if(res === undefined || !res.token.length){
-                            this.setState({
-                                error: true
-                            })
-                        } else {
-                            appData._Storage('set',"Token",res.token)
-                            appData._Storage('set',"userMess",{})
-                            appData._Storage('set',"LoginType",'server')
-                            this.props.Router('IC_cards_resident_list')
-                        }
-                    })
-                }
-            });
-        }
+            }
+        })
     }
 
     //账号不存在返回提示
     _errorInfo(){
         if(this.state.error){
             return (
-                    <Alert description="账号或密码错误" type="error" closable onClose={()=>{this.setState({error: false})}}/>
+                <Alert description="账号或密码错误" type="error" closable onClose={()=>{this.setState({error: false})}}/>
             )
         } else {
             return null
@@ -134,7 +132,7 @@ class Login extends Component {
                         {this._errorInfo()}
                     </Form>
                 </Row>
-                <Row type="flex" justify='center' align="center">
+                {/* <Row type="flex" justify='center' align="center">
                     <text style={{height: '26px', lineHeight: '26px', margin: '0 10px', color: 'white', fontSize: 12}}>  
                         请选择登录平台
                     </text>
@@ -146,7 +144,7 @@ class Login extends Component {
                         <Option key="cloude">服务器</Option>
                         <Option key="server">局域网</Option>
                     </Select>
-                </Row>
+                </Row> */}
             </div>
         );
     }

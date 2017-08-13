@@ -83,13 +83,13 @@ export default class community_resident_list extends Component {
 
 	//获取后台信息
 	_getEvent(){
-		let TokenMess = this.TokenMess;
+		let Token = this.TokenMess;
 		let afteruri = 'users/search';
 		let body={
 			"org":"物业"
 		}
-		appData_local._dataPost(afteruri,body,(aval) => {
-			let res = aval.data
+		appData_local._dataPost(afteruri,body,(res) => {
+			console.log(res)
 			let data = res.data
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let len = data.length;
@@ -98,24 +98,19 @@ export default class community_resident_list extends Component {
 				dataSource: data,
 				count:len,
 			})
-		},TokenMess)
+		},Token)
 	}
 	
 	//分页器activity/list?page=num
 	_pageChange(pageNumber){
-		console.log(pageNumber)
 		let Token = this.TokenMess;
-		let afteruri = 'users/search';
+		let afteruri = 'users/search?page=' + pageNumber;
 		let body = {
 			"org":"物业",
-			"per_page": pageNumber
 		}
-		console.log(body)
-		appData_local._dataPost(afteruri,body,(aval) => {
-			console.log(aval)
-			let res = aval.data
-			let pageSum = Math.ceil(res.total/res.per_page)
+		appData_local._dataPost(afteruri,body,(res) => {
 			let data = res.data;
+			let pageSum = Math.ceil(res.total/res.per_page)
 			let len = data.length;
 			this.setState({
 				total:res.total,
@@ -142,17 +137,11 @@ export default class community_resident_list extends Component {
 				"org":"物业",
 				"mobile": val,
 			}
-		} else if( searchType == "apt_code"){
-			body = {
-				"org":"物业",
-				"apt_code": val,
-			}
 		}
-		appData_local._dataPost(afteruri,body,(aval) => {
-			console.log(aval)
-			let res = aval.data
+		appData_local._dataPost(afteruri,body,(res) => {
+			console.log(res)
+			let data = res.data
 			let pageSum = Math.ceil(res.total/res.per_page)
-			let data = res.data;
 			let len = data.length;
 			this.setState({
 				total:res.total,
@@ -172,11 +161,6 @@ export default class community_resident_list extends Component {
 			this.setState({
 				SearchType: 'mobile',
 				SearchText: '请输入手机号'
-			})
-		} else if(val == 'apt_code'){
-			this.setState({
-				SearchType: 'mobile',
-				SearchText:'输入住宅号查询。如：1-3-301'
 			})
 		}
 	}
@@ -205,13 +189,12 @@ export default class community_resident_list extends Component {
 								onSearch={value => this._searchMob(value)}
 							/>
 							<Select
-								defaultValue="apt_code"
+								defaultValue="name"
 								style={{width: 100, marginLeft: 20}}
 								onChange={this._handleChange.bind(this)}
 							>
 								<Option key="name">姓名</Option>
 								<Option key="mobile">手机号</Option>
-								<Option key="apt_code">住宅</Option>
 							</Select>
 						</Col>
 					</Row>

@@ -113,40 +113,40 @@ export default class IC_cards_resident_list extends Component {
 	
 	//操作栏功能
 	_action(type,mess){
-		mess.owner_group='物业'
+		mess.owner_group='物业';
+		let Token = this.TokenMess;
+
 		if(type === "change"){
 			mess._action = 'change';
-			this._jump('IC_cards_patrol_edit', mess)
+			this._jump('IC_cards_patrol_edit', mess);
 		}
 		if(type === "add"){
 			mess._action = 'add';
 			this._jump('IC_cards_patrol_edit', mess)
 		}
 		else if(type === "cancel"){
-			let afteruri = 'vcity/canceluser';
+			let afteruri = 'dist_devices/checkin';
 			let body = {
-				"mobile": mess.mobile,
-				"comm_code": mess.comm_code
+				"number": mess.number,
 			}
 			appData_local._dataPost(afteruri,body,(res) => {
-				if(res){
-					this._getEvent()
+				if(res.result){
+					this._getEvent();
 					this.setState({
 						pageNum: 1
 					})
 				} else {
 					alert('操作失败')
 				}
-			})
+			},Token)
 		}
 	}
 
 	//分页器activity/list?page=num
 	_pageChange(pageNumber){
 		let Token = this.TokenMess;
-		let afteruri = 'devices/search';
+		let afteruri = 'devices/search?page=' + pageNumber;
 		let body = {
-			"per_page": pageNumber,
 			"owner_group": '物业'
 			
 		}
@@ -169,12 +169,12 @@ export default class IC_cards_resident_list extends Component {
 		return (
 			<Layout style={{ background: '#fff', minHeight: 80 ,padding: '24px 48px 48px' }}>
 				<Content>
-				<Row type="flex" justify="space-between" gutter={1}>
-					<Col  className="printHidden">
+				<Row type="flex" justify="space-between" gutter={1} className="printHidden">
+					<Col>
 						<text style={{fontSize: 24, color: '#aaa'}}>发卡管理/</text>
 						<text style={{fontSize: 24, color: '#1e8fe6'}}>巡更IC卡</text>
 					</Col>
-					<Col className="printHidden">
+					<Col>
 						<Button style={{height: 32}} onClick={()=>window.print()}>打印</Button>
 					</Col>
 				</Row>
@@ -182,7 +182,7 @@ export default class IC_cards_resident_list extends Component {
 					<Col span={8} style={{margin:'10px'}}> </Col>
 				</Row>
 				<Table bordered dataSource={this.state.dataSource} columns={columns} rowKey='key' pagination={false} style={{marginBottom: 20}}/> 
-				<Row type="flex" justify="end">
+				<Row type="flex" justify="end" className="printHidden">
 					<Pagination showQuickJumper defaultCurrent={1} current={this.state.pageNum} total={this.state.total} onChange={this._pageChange.bind(this)} />
 				</Row>
 				</Content>

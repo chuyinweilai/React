@@ -14,9 +14,18 @@ export default class headers extends Component{
 	}
 	componentWillMount(){
 		appData._Storage('get',"userMess",(res) =>{
-			this.setState({
-				comm_name: res.comm_name,
-				user_id: res.user_id
+			appData._Storage('get',"LoginType",(val) =>{
+				if(val == 'cloude'){
+					this.setState({
+						comm_name: res.comm_name,
+						user_id: res.user_id
+					})
+				}else if(val == "server"){
+					this.setState({
+						comm_name: res.name,
+						user_id: res.id
+					})
+				}
 			})
 		})
 	}

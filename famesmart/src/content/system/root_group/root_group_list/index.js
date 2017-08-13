@@ -29,9 +29,18 @@ export default class root_group_list extends Component {
 			listMess:{},
 			pageSum:1,
 			pageNum:1,
-			comm_name:'',
 		};
 
+	/*
+	
+bld_entrance:"own"
+description:"居民缺省"
+garage:"none"
+id:1
+main_entrance:"all"
+managed_service:"none"
+shared_service:"all"
+	*/
 		this.columns = [
 			{
 				colSpan:1,
@@ -44,24 +53,35 @@ export default class root_group_list extends Component {
 			},
 			{
 				colSpan:1,
-				title: '权限组ID',
-				dataIndex: 'group_id',
+				title: '名称',
+				dataIndex: 'description',
 			},
 			{
   				colSpan: 1,
-				title: '地址名称',
-				dataIndex: 'loc_description',
+				title: '大门',
+				dataIndex: 'main_entrance',
 			}, 
 			{
   				colSpan: 1,
-				title: '归属区域',
-				dataIndex: 'area_code',
+				title: '楼道',
+				dataIndex: 'bld_entrance',
 			}, 
 			{
   				colSpan: 1,
-				title: '设备ID',
-				dataIndex: 'id',
-			}, {
+				title: '车库',
+				dataIndex: 'garage',
+			},
+			{
+  				colSpan: 1,
+				title: '公共管理点',
+				dataIndex: 'managed_service',
+			},
+			{
+  				colSpan: 1,
+				title: '公共服务点',
+				dataIndex: 'shared_service',
+			}, 
+			{
 				title:"操作",
 				key:"action",
   				colSpan: 3,
@@ -96,12 +116,11 @@ export default class root_group_list extends Component {
 	//获取后台信息
 	_getEvent(){
 		let Token = this.TokenMess;
-		let afteruri = 'dist_devices/access_group/search_details';
+		let afteruri = 'access_group/search';
 		let body = {
-			"group_id":1
+			// "group_id":1
 		}
 		appData_local._dataPost(afteruri,body,(res) => {
-			console.log(res)
 			let data = res.data
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let len = data.length;
@@ -112,17 +131,18 @@ export default class root_group_list extends Component {
 			})
 		},Token)
 	}
-	
+
 	//操作栏功能
 	_action(type,mess){
 		if(type === "change"){
-			this._jump('volunteer_edit', mess)
+			mess._action = 'change'
+			this._jump('root_group_edit', mess)
 		}else if(type === "cancel"){
-			let afteruri = 'vcity/canceluser';
+			let afteruri = 'access_group/delete';
 			let body = {
-				"mobile": mess.mobile,
-				"comm_code": mess.comm_code
+				"id": 	mess.id
 			}
+
 			appData_local._dataPost(afteruri,body,(res) => {
 				if(res){
 					this._getEvent()
@@ -133,16 +153,16 @@ export default class root_group_list extends Component {
 					alert('操作失败')
 				}
 			})
+		}else if(type === "add"){
+			this._jump('root_group_edit')
 		}
 	}
 
 	//分页器activity/list?page=num
 	_pageChange(pageNumber){
 		let userMess = this.userMess;
-		let afteruri = 'vcity/listuser?page=' + pageNumber ;
-		let body = {
-			 "comm_code": userMess.comm_code
-		}
+		let afteruri = 'access_group/search?page=' + pageNumber;
+		let body = {}
 		appData_local._dataPost(afteruri,body,(res) => {
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let data = res.data;
@@ -172,16 +192,16 @@ export default class root_group_list extends Component {
 				</Row>
 				<Row  className="printHidden" style={{height: 32, margin: 10}}>
 					 <Col span={4}>
-					 	<Button>新建</Button>
+					 	<Button onClick={()=>this._action("add")}>新建</Button>
 					 </Col>
-					<Col span={20} style={{textAlign:'right'}}>
+					{/* <Col span={20} style={{textAlign:'right'}}>
 						<Search
 							className="printHidden"
 							placeholder={this.state.SearchText}
 							style={{ minWidth: 200, maxWidth: 300 }}
 							onSearch={value => this._searchMob(value)}
 						/>
-						{/* <Select
+						 <Select
 							defaultValue="apt_code"
 							style={{width: 100, marginLeft: 20}}
 							onChange={this._handleChange.bind(this)}
@@ -189,8 +209,8 @@ export default class root_group_list extends Component {
 							<Option key="name">姓名</Option>
 							<Option key="mobile">手机号</Option>
 							<Option key="apt_code">住宅</Option>
-						</Select> */}
-					</Col>
+						</Select> 
+					</Col> */}
 				</Row>
 				<Table bordered dataSource={this.state.dataSource} columns={columns} rowKey='key' pagination={false} style={{marginBottom: 20}}/> 
 				<Row type="flex" justify="end">

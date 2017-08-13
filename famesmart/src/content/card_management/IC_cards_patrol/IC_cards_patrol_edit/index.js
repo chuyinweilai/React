@@ -88,16 +88,16 @@ class IC_cards_resident_edit extends Component {
 		let mess = this.activeMess
 		let Token = this.TokenMess;
 		let body = {
-			"number": mess.number,
+			"number": this.state.number,
 			"owner_group":"物业",
 			"mobile": this.state.mobile,
 			"access_group_id": this.state.access_group_id,
 		}
 		appData_local._dataPost(afteruri, body, (res) =>{
-			if(res.result >= 0 ){
+			if(res.result > 0 ){
 				this._jump('back')
 			} else {
-				
+				alert(res.message)
 			}
 		},Token)
 	}
@@ -124,9 +124,9 @@ class IC_cards_resident_edit extends Component {
 					disable: false,
 				})
 			}
-		} else if(name === 'rooms'){
+		} else if(name === 'number'){
 			this.setState({
-				rooms: value
+				number: value
 			})
 		} else if(name === 'access_group_id'){
 			this.setState({
@@ -223,7 +223,7 @@ class IC_cards_resident_edit extends Component {
 
 					</Form> 
 
-					<Row type="flex" justify="end" gutter={1} >
+					<Row type="flex" justify="end" gutter={1}  className="printHidden">
 						<Col span={2}>
 							<Button style={this.state.disable ?{}: {backgroundColor:'#1e8fe6', color :'white'}}  onClick={() => this._add_active()} disabled={this.state.disable}>提交</Button>
 						</Col>

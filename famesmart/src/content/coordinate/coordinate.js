@@ -18,8 +18,8 @@ export default class coordinate extends Component{
 		const ws = new WebSocket("ws://testws.famesmart.com");
 
 		this.state = {
-			G_x: 0,
-			G_y: 0,
+			G_x: 100,
+			G_y: 250,
 			W_x: 0,
 			W_y: 0,
 			G_intval: 2000,
@@ -32,7 +32,7 @@ export default class coordinate extends Component{
 			W_w:0,
 			W_h:0,
 			W_r: 50,
-			W_x_s: 300,
+			W_x_s: 100,
 			W_y_s: 300,
 			W_r_s:50,
 			W_text:'',
@@ -190,6 +190,10 @@ export default class coordinate extends Component{
 				<div>
 					<div id="coordinate-box">
 						<span id="coordinate-img" style={{left: this.state.left, top: this.state.bottom}}></span>
+						<span id="coordinate-img" style={{left:346 , top:854}}></span>
+						<span id="coordinate-img" style={{left:105 , top:333}}></span>
+						<span id="coordinate-img" style={{left:851 , top:221}}></span>
+						<span id="coordinate-img" style={{left: 831, top:100}}></span>
 						<span id="coordinate-warning" style={{width: this.state.W_w, height: this.state.W_h, left: this.state.W_x, top: this.state.W_y, }}></span>
 					</div>
 					<Row type="flex" style={{padding: 10}}>
@@ -202,6 +206,16 @@ export default class coordinate extends Component{
 							<text style={{fontSize: 24}}>
 								报警信息：{this.state.W_text}
 							</text>
+						</Col>
+					</Row>
+					<Row type="flex" justify="center" align="center" style={{paddingTop:20,paddingBottom:20,backgroundColor: 'white'}}>
+						<Col span={4}>
+							<span style={{display:'inline-block', width: '10px', height: '10px', backgroundColor: 'blue', borderRadius:'50%',marginTop:'8px' }}></span>
+							<text>人员位置坐标点</text>
+						</Col>
+						<Col span={4}>
+							<span style={{display:'inline-block', width: '10px', height: '10px', backgroundColor: 'rgba( 220, 20, 60, 0.3)', borderRadius:'50%',marginTop:'8px' }}></span>
+							<text>报警坐标点</text>
 						</Col>
 					</Row>
 					<Row type="flex" justify="center" align="center" style={{paddingTop:20,paddingBottom:20,backgroundColor: 'white'}}>
