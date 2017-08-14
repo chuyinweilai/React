@@ -39,7 +39,6 @@ class Login extends Component {
     handleSubmit (e) {
         e.preventDefault();
         this.props.form.validateFields((err, values) => {
-            console.log((/^1(3|4|5|7|8)\d{9}$/.test(values.userName)))
             if((/^1(3|4|5|7|8)\d{9}$/.test(values.userName))){ 
                 if (!err) {
                     let afteruri = 'auth/login'
@@ -48,6 +47,7 @@ class Login extends Component {
                         "password":values.password
                     }
                     appData_local._dataPost(afteruri, body, (res) => {
+                        console.log(res)
                         if(res === undefined || !res.token.length){
                             this.setState({
                                 error: true

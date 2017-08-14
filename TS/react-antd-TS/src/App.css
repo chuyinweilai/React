@@ -1,0 +1,53 @@
+ .App {
+     text-align: center;
+ }
+ 
+ .App-Left,
+ .App-Right {
+     display: inline-block;
+     width: 7.15rem;
+ }
+ 
+ .App-logo {
+     animation: App-logo-spin infinite 20s linear;
+     height: 0.41rem;
+ }
+ 
+ .App-header {
+     background-color: #222;
+     height: 1rem;
+     /* padding: 2rem; */
+     color: white;
+ }
+ 
+ .App-intro {
+     font-size: large;
+ }
+ 
+ @keyframes App-logo-spin {
+     from {
+         transform: rotate(0deg);
+     }
+     to {
+         transform: rotate(360deg);
+     }
+ }
+ 
+ .App-Phone {
+     display: inline-block;
+     width: 4.70rem;
+     height: 10.8rem;
+     border: 1px solid #000;
+     border-radius: 0.6rem
+ }
+ 
+ .Phone-box {
+     width: 4.72rem;
+     height: 10.2rem;
+ }
+ 
+ .Phone {
+     width: 4.36rem;
+     height: 8.1rem;
+     background: rgba(0, 0, 0, 0.7)
+ }

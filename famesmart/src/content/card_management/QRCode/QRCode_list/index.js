@@ -15,6 +15,7 @@ import {
 } from 'antd'
 import appData from './../../../../assert/Ajax';
 import  '../../../../App.css'
+const { Content } = Layout;
 
 export default class QRCode_list extends Component {
 	constructor(props) {
@@ -218,6 +219,7 @@ export default class QRCode_list extends Component {
 		let columns = this.columns;
 		return (
 			<Layout style={{ background: '#fff', padding: '24px 48px 48px' }}>
+				<Content>
 				<Row type="flex" justify="space-between" gutter={1}>
 					<Col  className="printHidden">
 						<text style={{fontSize: 24, color: '#aaa'}}>发卡管理/</text>
@@ -234,6 +236,7 @@ export default class QRCode_list extends Component {
 				<Row type="flex" justify="end">
 					<Pagination showQuickJumper defaultCurrent={1} current={this.state.pageNum} total={this.state.total} onChange={this._pageChange.bind(this)} />
 				</Row>
+				</Content>
 			</Layout>
 		);
 	}

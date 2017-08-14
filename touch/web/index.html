@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<meta charset="utf-8">
+<title></title>
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<body>
+    <div>
+        加载中，请稍后...
+    </div>
+</body>
+<script src="https://code.jquery.com/jquery-3.2.1.min.js"></script>
+<script src="http://res.wx.qq.com/open/js/jweixin-1.2.0.js"></script>
+<script>
+    (function() {
+
+        var react = document.getElementById("test");
+        var APPID = 'wx176d805510bcba9e';
+        var randomNum = Math.floor(Math.random() * 10000);
+        window.location.href = 'https://open.weixin.qq.com/connect/oauth2/authorize?appid=' + APPID + '&redirect_uri=http%3A%2F%2Fcloudapi.famesmart.com%2FVcity%2Fweb%2Fsrc%2Findex.html&response_type=code&scope=snsapi_base&state=' + randomNum + '&connect_redirect=1#wechat_redirect'
+    })()
+</script>

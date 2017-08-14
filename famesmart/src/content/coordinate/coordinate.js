@@ -6,7 +6,8 @@ import{
 	Input,
 	Button,
 } from 'antd'
-import $ from 'jquery';
+import $ from'jquery'
+
 import './index.css'
 const { Content } = Layout;
 const awidth =  $("#coordinate-box").width()
