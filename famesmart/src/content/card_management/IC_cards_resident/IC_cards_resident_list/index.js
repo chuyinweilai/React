@@ -2,22 +2,20 @@
 import React, { PropTypes,Component } from 'react';
 import { 
 	Table, 
-	Input, 
-	Icon, 
 	Button, 
 	Row,
 	Col,
 	Modal,
-	Popconfirm, 
 	Pagination,
-	Menu, 
 	Layout,
-	Dropdown 
+	Checkbox,
+	Collapse,
+	
 } from 'antd'
 import appData_local from './../../../../assert/Ajax_local';
 import  '../../../../App.css'
 const { Content } = Layout;
-
+const Panel = Collapse.Panel;
 export default class IC_cards_resident_list extends Component {
 	constructor(props) {
 		super(props);
@@ -114,7 +112,8 @@ export default class IC_cards_resident_list extends Component {
 		];
 		this.Router;
 		this.mess = null;
-		this.TokenMess = ''
+		this.TokenMess = '';
+		this.filter = [1,2,3,4,5]
 	}
 
 	componentWillMount(){
@@ -199,28 +198,63 @@ export default class IC_cards_resident_list extends Component {
 		},Token)
 	}
 
+	_filter(val,index){
+		console.log(val,index)
+	}
+
 	render() {
 		const { dataSource } = this.state;
 		let columns = this.columns;
 		return (
 			<Layout style={{ background: '#fff', minHeight: 80 ,padding: '24px 48px 48px' }}>
 				<Content>
-				<Row type="flex" justify="space-between" gutter={1}  className="printHidden">
-					<Col>
-						<text style={{fontSize: 24, color: '#aaa'}}>发卡管理/</text>
-						<text style={{fontSize: 24, color: '#1e8fe6'}}>居民IC卡</text>
-					</Col>
-					<Col>
-						<Button style={{height: 32}} onClick={()=>window.print()}>打印</Button>
-					</Col>
-				</Row>
-				<Row>
-					<Col span={8} style={{margin:'10px'}}> </Col>
-				</Row>
-				<Table bordered dataSource={this.state.dataSource} columns={columns} rowKey='key' pagination={false} style={{marginBottom: 20}}/> 
-				<Row type="flex" justify="end" className="printHidden">
-					<Pagination showQuickJumper defaultCurrent={1} current={this.state.pageNum} total={this.state.total} onChange={this._pageChange.bind(this)} />
-				</Row>
+					<Row type="flex" justify="space-between" gutter={1}  className="printHidden">
+						<Col>
+							<text style={{fontSize: 24, color: '#aaa'}}>发卡管理/</text>
+							<text style={{fontSize: 24, color: '#1e8fe6'}}>居民IC卡</text>
+						</Col>
+						<Col>
+							<Button style={{height: 32}} onClick={()=>window.print()}>打印</Button>
+						</Col>
+					</Row>
+
+					<Row style={{marginTop:20, marginBottom: 20}}>
+						<Collapse>
+							<Panel header="This is panel header 1" key="1">
+								<Checkbox.Group onChange={this._filter.bind(this)}>
+									<Row>
+									<Col span={8}><Checkbox value="A">A</Checkbox></Col>
+									<Col span={8}><Checkbox value="B">B</Checkbox></Col>
+									<Col span={8}><Checkbox value="C">C</Checkbox></Col>
+									<Col span={8}><Checkbox value="D">D</Checkbox></Col>
+									<Col span={8}><Checkbox value="E">E</Checkbox></Col>
+									</Row>
+								</Checkbox.Group>
+							</Panel>
+
+							<Panel header="This is panel header 2" key="2">
+								<Checkbox.Group onChange={this._filter.bind(this)}>
+									<Row>
+									<Col span={8}><Checkbox value="1">A</Checkbox></Col>
+									<Col span={8}><Checkbox value="2">B</Checkbox></Col>
+									<Col span={8}><Checkbox value="3">C</Checkbox></Col>
+									<Col span={8}><Checkbox value="4D">D</Checkbox></Col>
+									<Col span={8}><Checkbox value="5">E</Checkbox></Col>
+									</Row>
+								</Checkbox.Group>
+							</Panel>
+						</Collapse>
+
+						<Button type="primary">检索</Button>
+					</Row>
+					
+					<Row>
+						<Col span={8} style={{margin:'10px'}}> </Col>
+					</Row>
+					<Table bordered dataSource={this.state.dataSource} columns={columns} rowKey='key' pagination={false} style={{marginBottom: 20}}/> 
+					<Row type="flex" justify="end" className="printHidden">
+						<Pagination showQuickJumper defaultCurrent={1} current={this.state.pageNum} total={this.state.total} onChange={this._pageChange.bind(this)} />
+					</Row>
 				</Content>
 				<Modal>	
 				</Modal>

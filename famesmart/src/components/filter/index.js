@@ -1,3 +1,14 @@
+/**
+ * React Radius 
+ * @author Corey
+ * 
+ * 	parameter：
+ * 	data: Array,
+ * 	style: Object,
+ * 	bgColor: String,
+ * 	onChange: Function,
+ */
+
 import React,{Component} from 'react'
 import './index.css'
 export  class Filters extends Component{
@@ -27,7 +38,7 @@ export  class Filters extends Component{
 			data:{ 
 				value: this.props.data,
 				bgColor: bgColor,
-				choosed: 0,				
+				choosed: -1,				
 			},
 			className:this.props.className,
 		})
@@ -37,21 +48,27 @@ export  class Filters extends Component{
 	_list(val,index){
 		if(index == this.state.data.choosed){
 			return (
-				<li >
-					<button className="filter-click-btn" key={index} onClick={this._btnClick.bind(this, index)}>{val}</button>
+				<li className="checkbox">
+					<button type="checkbox" className="filter-click-btn"  id={index} onClick={this._btnClick.bind(this, index)}/>
+					<label htmlFor={index} style={{flex: 7}}>
+						<text>{val}</text>
+					</label>
 				</li>
 			)
 		} else {
 			return (
-				<li >
-					<button key={index} className={index} onClick={this._btnClick.bind(this, index)}>{val}</button>
+				<li className="checkbox">
+					<button type="checkbox" key={index} id={index} onClick={this._btnClick.bind(this, index)}/>
+					<label htmlFor={index} style={{flex: 7}}>
+						<text>{val}</text>
+					</label>
 				</li>
 			)
 		}
 	}
 
 	_btnClick(index,e){
-		let class_name = e.target.className
+		let class_name = e.target.id
 		let obj = JSON.parse(JSON.stringify(this.state.data));
 		obj['choosed']= class_name
 		this.setState({
@@ -68,7 +85,7 @@ export  class Filters extends Component{
 		let arr = this.state.data.value
 		return (
 			<div style={this.state.style} className={this.state.className}>
-				<ul id="filter-list" >
+				<ul id="filter-list" className="clear">
 					{arr.map((value,index) =>this._list(value,index))}		
 				</ul>
 			</div>
