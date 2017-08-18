@@ -155,7 +155,6 @@ export default class community_resident_list extends Component {
 			}
 		}
 		appData_local._dataPost(afteruri,body,(res) => {
-			console.log(res)
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let data = res.data;
 			let len = data.length;

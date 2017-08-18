@@ -57,7 +57,6 @@ export default class pointTable extends Component {
             }
 
             const id = record.id
-            console.log('id:'+id)
 
             let TokenMess = this.TokenMess;
             let afteruri = 'comm_alerts/'+id+'/close';
@@ -197,7 +196,6 @@ export default class pointTable extends Component {
 		}
         appData_local._dataPost(afteruri,body,(res) => {
 			let data = res.data
-			console.log(data)
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let len = data.length;
 			this.setState({
@@ -252,7 +250,6 @@ export default class pointTable extends Component {
             mess = '其他'
         }
         let id = this.state.dev_id;
-        console.log('close_id:'+id)
         let TokenMess = this.TokenMess;
 
         let afteruri = 'comm_alerts/'+id+'/close';
@@ -283,7 +280,7 @@ export default class pointTable extends Component {
 				"comm_code": mess.comm_code
 			}
 			appData._dataPost(afteruri,body,(res) => {
-				console.log(res)
+				(res)
 				if(res){
 					this._getEvent()
 				} else {
@@ -314,7 +311,6 @@ export default class pointTable extends Component {
 	}
 
     onChange = (e) => {
-        console.log('radio checked', e.target.value);
         this.setState({
             value: e.target.value,
         });

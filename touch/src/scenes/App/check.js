@@ -7,7 +7,6 @@ import FadeInView from '../../components/FadeInView'
 
 const peruri = "http://cloudapi.famesmart.com";
 const appData = require('./../../components/Ajax')
-const _wx = require('./../../wx/wx')
 
 const Routers  = require('./router');
 const Regist  = require( './regist');

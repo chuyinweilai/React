@@ -264,10 +264,10 @@ class pointTable extends Component {
 					onCancel={() =>this.setState({visible: false})}
 					okText="提交"
 					cancelText="取消">
-					<Col style={{height: 30}}>手机号: {this.state.mobile}</Col>
-					<Col style={{height: 30}}>兑换商品: {this.state.ch_name}</Col>
-					<Col style={{height: 30}}>兑换积分: {this.state.ch_score}</Col>
-					<Col style={{height: 60}}>兑换者签名</Col>
+					 <text style={{height: 30}}>手机号: {this.state.mobile}</text>
+					<text style={{height: 30}}>兑换商品: {this.state.ch_name}</text>
+					<text style={{height: 30}}>兑换积分: {this.state.ch_score}</text>
+					<text style={{height: 60}}>兑换者签名</text> 
 					<Row className="printHidden">
 						<Col>
 							<Button onClick={()=>window.print()}>打印</Button>

@@ -13,7 +13,8 @@ body,
 body {
     margin: 0;
     padding: 0;
-    font-family: sans-serif;
+    display: block;
+    font-family: 'wf_segoe-ui_normal', 'Verdana', 'Geneva', 'Tahoma', 'sans-serif', '微软雅黑';
 }
 
 .header {
@@ -26,15 +27,11 @@ siders {
 }
 
 @media print {
-    .printHidden {
-        visibility: hidden;
-    }
-    .ant-modal-header.ant-modal-footer {
-        visibility: hidden;
-    }
-    .ant-modal-close {
-        visibility: hidden;
-    }
+    .printHidden,
+    .ant-modal-header,
+    .ant-modal-footer,
+    .ant-modal-title,
+    .ant-modal-close,
     .ant-modal-footer {
         visibility: hidden;
     }

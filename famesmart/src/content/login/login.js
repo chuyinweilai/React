@@ -47,7 +47,6 @@ class Login extends Component {
                         "password":values.password
                     }
                     appData_local._dataPost(afteruri, body, (res) => {
-                        console.log(res)
                         if(res === undefined || !res.token.length){
                             this.setState({
                                 error: true

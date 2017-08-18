@@ -156,7 +156,6 @@ export default class coordinate extends Component{
 
 	_setting(type,e){
 		let val = e.target.value
-		console.log(val)
 		if(type == 'spacing'){
 			this.setState({
 				W_r_s: val,

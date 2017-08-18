@@ -143,7 +143,6 @@ export default class QRcode_record extends Component {
 			"comm_code": userMess.comm_code,
 		}
 		appData._dataPost(afteruri,body,(res) => {
-			console.log(res)
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let data = res.data;
 			let len = data.length;

@@ -27,7 +27,6 @@ const Accumulate_More_activity = require('./../Subpages/accumulate_more_activity
 
 
 const pxToDp =require('../responsive/px');
-// const _Wx = require('./../../wx/wx')
 
 export default class routers extends Component {
 	constructor() {

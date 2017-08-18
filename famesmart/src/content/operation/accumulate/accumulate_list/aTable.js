@@ -7,6 +7,7 @@ import {
 	Button, 
 	Row,
 	Col,
+	Modal,
 	Popconfirm, 
 	Pagination,
 	Menu, 
@@ -26,6 +27,8 @@ export default class pointTable extends Component {
 			listMess:{},
 			pageSum:1,
 			pageNum:1,
+			disable: false,
+			loading: false,
 		};
 		// ID	手机	姓名	性别	当前积分	操作		
 
@@ -165,6 +168,22 @@ export default class pointTable extends Component {
 		})
 	}
 
+	//过期提醒
+	_outDate(){
+		this.setState({
+			loading: true,
+		})
+		fetch('http://cloudapi.famesmart.com/Vcity/PC/jftx.php',{
+			method: 'GET',
+		})
+		.catch( error => {
+			this.setState({
+				loading: false,
+				disable: false,
+			})
+		})
+	}
+
 	render() {
 		const { dataSource } = this.state;
 		let columns = this.columns;
@@ -176,6 +195,9 @@ export default class pointTable extends Component {
 					<text style={{fontSize: 24, color: '#1e8fe6'}}>积分管理</text>
 				</Col>
 				<Col className="printHidden">
+					<Button style={{height: 32, marginRight:30, background:'#ea7c6b', color: 'white'}} onClick={()=>this.setState({disable: true})}>
+						到期提醒
+					</Button>
 					<Button style={{height: 32}} onClick={() =>  window.print()}>打印</Button>
 				</Col>
 			</Row>
@@ -197,6 +219,21 @@ export default class pointTable extends Component {
 				total={this.state.total} 
 				onChange={this._pageChange.bind(this)} />
 			</Row>
+
+			<Modal
+				title="到期提醒"
+				visible = {this.state.disable}
+				confirmLoading = {this.state.loading}
+				okText = '确认'
+				cancelText = '取消'
+				onOk={this._outDate.bind(this)}
+				onCancel = {()=>{this.setState({disable: false})}}
+				closable={false}
+			>
+				<Row>
+					<Col>是否发送积分到期提醒？</Col>
+				</Row>
+			</Modal>
 		</div>
 		);
 	}

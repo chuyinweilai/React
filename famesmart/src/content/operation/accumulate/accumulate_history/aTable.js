@@ -143,7 +143,6 @@ export default class pointTable extends Component {
 
 	_accuCtrl(type,value){
 		if(type == "detail"){
-			console.log(value)
 			this.setState({
 				detail_val:value,
 				_visible: true
@@ -186,6 +185,8 @@ export default class pointTable extends Component {
 				type ='手动积分'
 				score =  "+" + aValue.activity_score
 			}
+			// encodeURI(encodeURI(this.state.comm_name))
+			let aurl = "http://cloudapi.famesmart.com/Mirai/PC/printPage/index.html?comm_name=" +this.state.comm_name + "&mobile=" + this.state.mobile + "&change_date=" + aValue.change_date + "&type=" + type + "&score=" + score;
 			return (
 				<Modal
 					title="积分变动"
@@ -195,49 +196,7 @@ export default class pointTable extends Component {
 					okText="打印" 
 					cancelText="确认"
 				>
-					<Col style={{height: 30}}>
-						<text style={{display:'inline-block', width: 100, textAlign:"right", marginRight: 30}}>	
-							所在社区:
-						</text>
-						<text>	
-							{this.state.comm_name}
-						</text>
-					</Col>
-					<Col style={{height: 30}}>
-						<text style={{display:'inline-block', width: 100, textAlign:"right", marginRight: 30}}>	
-							手机号: 
-						</text>
-						<text>	
-							{this.state.mobile}
-						</text>
-					</Col>
-					<Col style={{height: 30}}>
-						<text style={{display:'inline-block', width: 100, textAlign:"right", marginRight: 30}}>	
-							积分时间: 
-						</text>
-						<text>	
-							{aValue.change_date}
-						</text>
-					</Col>
-					<Col style={{height: 30}}>
-						<text style={{display:'inline-block', width: 100, textAlign:"right", marginRight: 30}}>	
-							积分类型:
-						</text>
-						<text>	
-							{type}
-						</text>
-					</Col>
-					<Col style={{height: 30}}>
-						<text style={{display:'inline-block', width: 100, textAlign:"right", marginRight: 30}}>	
-							积分分值:
-						</text>
-						<text>	
-							{score}
-						</text>
-					</Col>
-					<Col style={{height: 60, fontSize: 16}}>
-					兑换者签名:
-					</Col>
+					<iframe style={{border: 'none',height: 200}} src={encodeURI(aurl)}></iframe> 
 				</Modal>
 			)
 		}

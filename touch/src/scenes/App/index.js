@@ -6,13 +6,9 @@ import{
 } from 'react-native'
 import $ from 'jquery'
 import Wxs from './check';
-// require( './index.css');
-import {
-  Row,
-  Col
-} from 'antd'
 
 export default class index extends Component {
+
   render() {
     return (
       <View style={styles.App}>

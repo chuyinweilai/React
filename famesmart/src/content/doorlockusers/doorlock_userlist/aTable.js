@@ -124,8 +124,6 @@ export default class pointTable extends Component {
 		}
 		appData._dataGet(afteruri,(res) => {
 			let data = res.data
-			console.log(res)
-			// return null
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let len = data.length;
 			this.setState({
@@ -147,7 +145,6 @@ export default class pointTable extends Component {
 				"comm_code": mess.comm_code
 			}
 			appData._dataPost(afteruri,body,(res) => {
-				console.log(res)
 				if(res){
 					this._getEvent()
 				} else {
@@ -165,7 +162,6 @@ export default class pointTable extends Component {
 		// 	 "comm_code": userMess.comm_code
 		// }
 		appData._dataGet(afteruri,(res) => {
-			console.log(res)
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let data = res.data;
 			let len = data.length;

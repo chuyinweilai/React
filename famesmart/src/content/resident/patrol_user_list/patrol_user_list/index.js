@@ -89,7 +89,6 @@ export default class community_resident_list extends Component {
 			"org":"物业"
 		}
 		appData_local._dataPost(afteruri,body,(res) => {
-			console.log(res)
 			let data = res.data
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let len = data.length;
@@ -139,7 +138,6 @@ export default class community_resident_list extends Component {
 			}
 		}
 		appData_local._dataPost(afteruri,body,(res) => {
-			console.log(res)
 			let data = res.data
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let len = data.length;

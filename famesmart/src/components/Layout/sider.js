@@ -31,9 +31,8 @@ export default class siders extends Component{
 		appData._Storage('get',"LoginType",(res)=>{
 			LoginType = res
 		})
-		console.log(this.userMess)
 		if(LoginType == "cloude"){
-			if(this.userMess.auth_lvl == 1){
+			if(this.userMess.auth_lvl == 0){
 				return (
 					<Menu
 						mode="inline"
@@ -46,6 +45,7 @@ export default class siders extends Component{
 					>
 						<Menu.Item key="home"><Icon type="home" />首页</Menu.Item> 
 						<Menu.Item key="cancel"><Icon type="close-circle-o"/>注销</Menu.Item>
+						<Menu.Item key="accumulate_list"><Icon type="heart-o" />积分管理</Menu.Item>
 					</Menu>
 				)
 			}else if(this.userMess.auth_lvl == 9) {

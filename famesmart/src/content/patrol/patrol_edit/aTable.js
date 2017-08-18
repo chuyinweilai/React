@@ -104,11 +104,8 @@ class pointTable extends Component {
             "audit_time": this.state.audit_time,
 
         }
-        console.log('id:' + this.state.id + '|audit_time:' + this.state.audit_time)
         appData_local._dataPost(afteruri, body, (res) => {
-            console.log(res)
             if (res.result >= 0) {
-                console.log("11111111111111")
                 this._jump('back')
             } else {
 
