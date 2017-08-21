@@ -84,13 +84,13 @@ export default class accumulate_more_activity extends Component {
 					<View>
 						<View style={{flexDirection:'row', alignItems:'center'}}>
 							<Image style={{width: pxToDp(41), height:pxToDp(41), margin:pxToDp(16)}} source={require('./../../assets/公益活动icon@2x.png')}/>
-							<Text style={{color:'#fdac41', fontSize:pxToDp(18)}}>#{type}#</Text>
+							<Text style={{color:'#fdac41', fontSize:pxToDp(24)}}>#{type}#</Text>
 							<Text style={{color:'#333', marginLeft: pxToDp(32), fontSize:pxToDp(32)}} numberOfLines={1}>{rowData.title}</Text>
 						</View>
 
 						<View>
 							<TouchableOpacity onPress={() => this.props.backCtrl('accumulate_details',rowData )}>
-								<Text style={{ textAlign:'justify', height:pxToDp(116), paddingHorizontal:pxToDp(30), fontSize:pxToDp(21), lineHeight:pxToDp(29)}}>
+								<Text style={{ textAlign:'justify', height:pxToDp(124), paddingHorizontal:pxToDp(30), fontSize:pxToDp(24), lineHeight:pxToDp(36)}}>
 									{text}
 								</Text>
 							</TouchableOpacity>
@@ -143,7 +143,7 @@ export default class accumulate_more_activity extends Component {
 					</View>
 					<View style={{width:pxToDp(120), alignItems: 'center', justifyContent: 'center'}}/>
 				</View>
-				<ScrollView style={{height: pxToDp(506 *dataSource.length)}}>
+				<ScrollView>
 					<ListView
 							dataSource = {this.state.ds.cloneWithRows(this.state.dataSource)}
 							enableEmptySections = {true}

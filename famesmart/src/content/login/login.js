@@ -31,10 +31,6 @@ class Login extends Component {
             error:false,
         }
     }
-
-    componentDidMount() {
-
-    }
     
     handleSubmit (e) {
         e.preventDefault();

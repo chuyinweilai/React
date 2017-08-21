@@ -230,11 +230,6 @@ class pointTable extends Component {
 					<Col style={{height: 30}}>积分变动值: {this.state.rule_score}</Col>
 					<Col style={{height: 30}}>剩余积分: {this.state.rule_score + this.choMess.score}</Col>
 					<Col style={{height: 60}}>签名</Col>
-					<Row className="printHidden">
-						<Col>
-							<Button onClick={()=>window.print()}>打印</Button>
-						</Col>
-					</Row>
 				</Modal>
 			</div>
 		);

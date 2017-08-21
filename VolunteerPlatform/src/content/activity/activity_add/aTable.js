@@ -217,6 +217,7 @@ class pointTable extends Component {
 				})
 			}
 		}
+		
 		const props = {
 			action: 'http://cloudapi.famesmart.com/api/activity/filesave',
 			listType: 'picture',
@@ -241,6 +242,7 @@ class pointTable extends Component {
 			},
 			className:'upload-list-inline',
 		}
+		
 		return (
 			<Row gutter={40} style={{ padding: 10}}>
 				<Col span={8}>
@@ -290,64 +292,70 @@ class pointTable extends Component {
 	}
 
 	//提交创建新活动
-	_add_active(){
-		let afteruri  = '';
-		let body  = {}
-		let adate = new Date()
-		let time = adate.getFullYear() + "-" + (adate.getMonth()+1) + "-" + adate.getDate()
+	_add_active(type,e){
+		e.preventDefault();
+		this.props.form.validateFields((err, values) => {
+			if (!err) {
+				let afteruri  = '';
+				let body  = {}
+				let adate = new Date()
+				let time = adate.getFullYear() + "-" + (adate.getMonth()+1) + "-" + adate.getDate()
 
-		let pic_list = this.state.pic_list;
-		let pic_path = '';
-		pic_list.forEach((val, index)=>{
-			if(index){
-				pic_path += "," + val;
-			}else {
-				pic_path = val;
+				let pic_list = this.state.pic_list;
+				let pic_path = '';
+				pic_list.forEach((val, index)=>{
+					if(index){
+						pic_path += "," + val;
+					}else {
+						pic_path = val;
+					}
+				})
+				if(this.activeMess == undefined){
+						afteruri  = 'activity/add';
+						body = {
+							"comm_code":  this.userMess.comm_code,
+							"title":  this.state.theme,
+							"detail":  this.state.content,
+							"pic_path":pic_path,
+							"join_limit": this.state.limite,
+							"type": this.state.type,
+							"score_type": this.state.rule_no,
+							"score": this.state.rule_sorce,
+							"pub_date": time,
+							"open_date": this.state.open_date,
+							"vld_start":  this.state.vld_start,
+							"vld_end":  this.state.vld_end,
+							"open_add": this.state.open_add,
+						}
+				} else {
+						afteruri  = 'activity/update';
+						body= {
+							"comm_code":  this.userMess.comm_code,
+							"title":  this.state.theme,
+							"detail":  this.state.content,
+							"pic_path": pic_path,
+							"join_limit": this.state.limite,
+							"type": this.state.type,
+							"score_type": this.state.rule_no,
+							"score": this.state.rule_sorce,
+							"pub_date": time,
+							"open_date": this.state.open_date,
+							"vld_start":  this.state.vld_start,
+							"vld_end":  this.state.vld_end,
+							"activity_no": this.activeMess.activity_no,
+							"join_cnt": this.activeMess.join_cnt,
+							"sign_cnt": this.activeMess.sign_cnt,
+							"open_add": this.state.open_add,
+						}
+				}
+				appData._dataPost(afteruri, body, (res) =>{
+					if(res){
+						this._jump('back')
+					}
+				})
 			}
 		})
-		if(this.activeMess == undefined){
- 				afteruri  = 'activity/add';
-				body = {
-					"comm_code":  this.userMess.comm_code,
-					"title":  this.state.theme,
-					"detail":  this.state.content,
-					"pic_path":pic_path,
-					"join_limit": this.state.limite,
-					"type": this.state.type,
-					"score_type": this.state.rule_no,
-					"score": this.state.rule_sorce,
-					"pub_date": time,
-					"open_date": this.state.open_date,
-					"vld_start":  this.state.vld_start,
-					"vld_end":  this.state.vld_end,
-					"open_add": this.state.open_add,
-				}
-		} else {
-				afteruri  = 'activity/update';
-				body= {
-					"comm_code":  this.userMess.comm_code,
-					"title":  this.state.theme,
-					"detail":  this.state.content,
-					"pic_path": pic_path,
-					"join_limit": this.state.limite,
-					"type": this.state.type,
-					"score_type": this.state.rule_no,
-					"score": this.state.rule_sorce,
-					"pub_date": time,
-					"open_date": this.state.open_date,
-					"vld_start":  this.state.vld_start,
-					"vld_end":  this.state.vld_end,
-					"activity_no": this.activeMess.activity_no,
-					"join_cnt": this.activeMess.join_cnt,
-					"sign_cnt": this.activeMess.sign_cnt,
-					"open_add": this.state.open_add,
-				}
-		}
-		appData._dataPost(afteruri, body, (res) =>{
-			if(res){
-				this._jump('back')
-			}
-		})
+		return null
 	}
 
 	render() { 
@@ -363,7 +371,7 @@ class pointTable extends Component {
 					<text style={{fontSize: 24, color: '#aaa'}}>活动管理/</text>
 					<text style={{fontSize: 24, color: '#1e8fe6'}}>新增（修改）活动</text>
 				</Col>
-				<Form  style={{paddingTop: '50px'}}>
+				<Form  style={{paddingTop: '50px'}} onSubmit={this._add_active.bind(this,'add')}>
 					<Row gutter={40}>
 						<Col span={8}>
 							<FormItem
@@ -411,7 +419,14 @@ class pointTable extends Component {
 								{...formItemLayout}
 								label="活动主题">
 								{getFieldDecorator('theme',{
-									initialValue: this.state.theme
+									initialValue: this.state.theme,
+									rules:[
+										{
+											required: true, message: '请输入活动主题'
+										},{
+											max: 20,message:'超过输入最大长度！'
+										}
+									]
 								})(
 									<Input placeholder="活动主题" onChange={this._input.bind(this,'theme')} />
 								)}
@@ -422,7 +437,12 @@ class pointTable extends Component {
 								{...formItemLayout}
 								label="活动地点">
 								{getFieldDecorator('address',{
-									initialValue: this.state.open_add
+									initialValue: this.state.open_add,
+									rules:[
+										{
+											required: true, message: '请输入活动主题'
+										}
+									]
 								})(
 									<Input placeholder="活动地点" onChange={this._input.bind(this,'address')} />
 								)}
@@ -482,26 +502,29 @@ class pointTable extends Component {
 					
 					<Row gutter={40}>
 						<FormItem
-							//labelCol={{ span: 1 }}
-							//wrapperCol= {{ span: 20 }}
 							label="活动内容">
 							{getFieldDecorator('content',{
-								initialValue: this.state.content
+								initialValue: this.state.content,
+								rules:[
+									{ max: 300, message:'超过输入最大长度！'},
+									{required: true, message:"请输入活动内容"}
+									]
 							})(
 								<TextArea rows={6} placeholder="输入活动内容" onChange={this._input.bind(this,'content')} />
 							)}
 						</FormItem>
 					</Row>
+					<FormItem>
+						<Row type="flex" justify="end" gutter={1} >
+							<Col span={2}>
+								<Button type="primary" disabled={this.state.disable} htmlType="submit">提交</Button>
+							</Col>
+							<Col span={2}>
+								<Button onClick={()=>this._jump('back')}>取消</Button>
+							</Col>
+						</Row>
+					</FormItem>
 				</Form>
-
-				<Row type="flex" justify="end" gutter={1} >
-					<Col span={2}>
-						<Button style={{backgroundColor:'#1e8fe6', color: 'white'}}  onClick={() => this._add_active('add')} disabled={this.state.disable}>提交</Button>
-					</Col>
-					<Col span={2}>
-						<Button onClick={()=>this._jump('back')}>取消</Button>
-					</Col>
-				</Row>
 			</div>
 		);
 	}

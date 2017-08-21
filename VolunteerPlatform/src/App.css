@@ -17,16 +17,31 @@ body {
 }
 
 .header {
-    background-color: '#efefef';
+    /* background-color: #efefef; */
+    padding: 0;
 }
 
-siders {
+.header span {
+    float: left;
+}
+
+.header span:last-child {
+    float: right;
+}
+
+.siders {
     /* width: 200px; */
-    background-color: '#efefef';
+    /* background-color: #efefef; */
 }
 
 @media print {
+    .ant-modal-footer,
+    .ant-modal-close,
+    .ant-modal-header,
     .printHidden {
         visibility: hidden;
+    }
+    .ant-modal-body {
+        padding: 0
     }
 }

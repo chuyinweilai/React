@@ -154,7 +154,6 @@ class pointTable extends Component {
 	}
 
 	//提交创建新活动
-
 	_upData(){
 		let afteruri  = 'gift/change';
 		let body = {
@@ -270,11 +269,6 @@ class pointTable extends Component {
 					<Col style={{height: 30}}>兑换商品: {this.state.ch_name}</Col>
 					<Col style={{height: 30}}>兑换积分: {this.state.ch_score}</Col>
 					<Col style={{height: 60}}>兑换者签名</Col>
-					<Row className="printHidden">
-						<Col>
-							<Button onClick={()=>window.print()}>打印</Button>
-						</Col>
-					</Row>
 				</Modal>
 			</div>
 		);

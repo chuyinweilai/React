@@ -19,6 +19,8 @@ import appData from './../../../assert/Ajax';
 export default class pointTable extends Component {
 	constructor(props) {
 		super(props);
+		const ws = new WebSocket("ws://139.196.241.190:30300");
+		
 		this.state = {
 			dataSource: [],
 			count: 1,
@@ -26,8 +28,11 @@ export default class pointTable extends Component {
 			listMess:{},
 			pageSum:1,
 			pageNum:1,
+
+			
+			ws_ok : false,
+            ws:ws,
 		};
-		// ID	手机	姓名	性别	当前积分	操作		
 
 		this.columns = [
 			{
@@ -108,6 +113,22 @@ export default class pointTable extends Component {
 		})
 	}
 
+	//过期提醒
+	_outDate(){
+		this.setState({
+			loading: true,
+		})
+		fetch('http://cloudapi.famesmart.com/Vcity/PC/jftx.php',{
+			method: 'GET',
+		})
+		.catch( error => {
+			this.setState({
+				loading: false,
+				disable: false,
+			})
+		})
+	}
+
 	_jump(nextPage,mess){
 		this.Router(nextPage,mess,this.mess.nextPage)
 	}
@@ -175,6 +196,9 @@ export default class pointTable extends Component {
 					<text style={{fontSize: 24, color: '#1e8fe6'}}>积分管理</text>
 				</Col>
 				<Col className="printHidden">
+					<Button style={{height: 32, marginRight:30, background:'#ea7c6b', color: 'white'}} onClick={()=>this.setState({disable: true})}>
+						到期提醒
+					</Button>
 					<Button style={{height: 32}} onClick={() =>  window.print()}>打印</Button>
 				</Col>
 			</Row>

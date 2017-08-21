@@ -13,6 +13,7 @@ export default class siders extends Component{
 		}
 		this.userMess = '';
 	}
+	
 	componentWillMount(){
 		appData._Storage('get',"userMess",(res)=>{
 			this.userMess  = res;

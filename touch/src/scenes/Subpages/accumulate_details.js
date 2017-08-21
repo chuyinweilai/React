@@ -101,26 +101,16 @@ export default class details extends Component {
 			type='其他'
 		} 
 		return (
-			<View>
-				<View style={{height:pxToDp(86), flexDirection:'row',backgroundColor:'#f2f2f2',  justifyContent:'space-between'}}>
-					<TouchableOpacity style={{flexDirection:'row',width:pxToDp(120), alignItems: 'center', justifyContent: 'center'}} onPress={()=>this.props.backCtrl(false)}>
-						<Image style={{height:pxToDp(48), width: pxToDp(48)}} source={require('./../../assets/arrow-left.png')} 	resizeMode="contain"/>
-						<Text style={{fontSize:pxToDp(30)}}>返回</Text>
-					</TouchableOpacity>
-					<View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
-						<Text style={{fontSize: pxToDp(36)}}>活动详情</Text>
-					</View>
-					<View style={{width:pxToDp(120), alignItems: 'center', justifyContent: 'center'}}/>
-				</View>
+			<ScrollView>
 				<View>
 					<View style={{flexDirection:'row', alignItems:'center'}}>
 						<Image style={{width: pxToDp(41), height:pxToDp(41), margin:pxToDp(16)}} source={require('./../../assets/公益活动icon@2x.png')}/>
-						<Text style={{color:'#fdac41', fontSize:pxToDp(18)}}>#{type}#</Text>
+						<Text style={{color:'#fdac41', fontSize:pxToDp(24)}}>#{type}#</Text>
 						<Text style={{color:'#333', marginLeft: pxToDp(32), fontSize:pxToDp(32)}} numberOfLines={1}>{rowData.title}</Text>
 					</View>
 
 					<View>
-								<Text style={{ textAlign:'justify', height:pxToDp(116), paddingHorizontal:pxToDp(30), fontSize:pxToDp(21), lineHeight:pxToDp(29)}}>
+							<Text style={{ textAlign:'justify', minHeight:pxToDp(176), paddingHorizontal:pxToDp(30), fontSize:pxToDp(24), lineHeight:pxToDp(36)}}>
 							{rowData.detail}
 						</Text>
 						<ListView
@@ -171,7 +161,7 @@ export default class details extends Component {
 						</TouchableOpacity>
 					</View>
 				</View>
-			</View>
+			</ScrollView>
 		)
 	}
 
@@ -202,7 +192,18 @@ export default class details extends Component {
 
 	render() {
 		return (
-			<View>
+			<View style={styles.container}>
+				<View style={{height:pxToDp(86), flexDirection:'row',backgroundColor:'#f2f2f2',  justifyContent:'space-between'}}>
+					<TouchableOpacity style={{flexDirection:'row',width:pxToDp(120), alignItems: 'center', justifyContent: 'center'}} onPress={()=>this.props.backCtrl(false)}>
+						<Image style={{height:pxToDp(48), width: pxToDp(48)}} source={require('./../../assets/arrow-left.png')} 	resizeMode="contain"/>
+						<Text style={{fontSize:pxToDp(30)}}>返回</Text>
+					</TouchableOpacity>
+					<View style={{flex: 1, alignItems: 'center', justifyContent: 'center'}}>
+						<Text style={{fontSize: pxToDp(36)}}>活动详情</Text>
+					</View>
+					<View style={{width:pxToDp(120), alignItems: 'center', justifyContent: 'center'}}/>
+				</View>
+
 				{this._details()}
 			</View>
 		);

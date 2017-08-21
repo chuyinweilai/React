@@ -48,8 +48,9 @@ class Login extends Component {
                         })
                     } else {
                         appData._Storage('set',"userMess",res[0])
+                        appData._Storage('set',"Token",'')
+                        appData._Storage('set',"LoginType",'cloude')
                         this.props.Router('home')
-
                     }
                 })
             }

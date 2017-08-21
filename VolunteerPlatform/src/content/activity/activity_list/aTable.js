@@ -257,7 +257,6 @@ export default class pointTable extends Component {
 	
 	//操作栏功能
 	_action(type,mess){
-		console.log(type, mess)
 		if(type=== "sign"){
 			this._jump('activity_sign', mess)
 		} else if(type === "change"){
@@ -310,12 +309,12 @@ export default class pointTable extends Component {
 					<text style={{fontSize: 24, color: '#1e8fe6'}}>活动管理</text>
 				</Col>
 				<Col className="printHidden">
-				<span style={{ marginRight: 10}}>
-						<Button style={{height: 32, backgroundColor: '#1e8fe6', color: 'white'}}  onClick = {()=>this._addAct('add')}>新增活动</Button>
-				</span>
-				<span>
-						<Button  style={{height: 32}} onClick={() => window.print()}>打印</Button>
-				</span>
+					<span style={{ marginRight: 10}}>
+							<Button style={{height: 32, backgroundColor: '#1e8fe6', color: 'white'}}  onClick = {()=>this._addAct('add')}>新增活动</Button>
+					</span>
+					<span>
+							<Button  style={{height: 32}} onClick={() => window.print()}>打印</Button>
+					</span>
 				</Col>
 			</Row>
 			<Row>

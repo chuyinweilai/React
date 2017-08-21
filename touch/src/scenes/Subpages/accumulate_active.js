@@ -144,7 +144,7 @@ export default class accumulate_active extends Component {
 							</Text>
 						</TouchableOpacity>
 					</View>
-					<View style={{height: pxToDp(210 * dataSource1.length + 30)}}>
+					<View style={{height: pxToDp(225 * dataSource1.length + 30)}}>
 						<ListView 
 							dataSource={this.state.ds.cloneWithRows(dataSource1)}
 							enableEmptySections={true}

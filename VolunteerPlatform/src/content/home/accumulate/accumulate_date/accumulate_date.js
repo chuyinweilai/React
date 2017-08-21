@@ -18,6 +18,7 @@ import '../../../../App.css'
 export default class accumulate_list extends Component {
 	constructor(props) {
 		super(props);
+
 		this.state = {
 			dataSource: [],
 			count: 1,
@@ -25,6 +26,7 @@ export default class accumulate_list extends Component {
 			listMess:{},
 			pageSum:1,
 			pageNum:1,
+
 		};
 
 		this.columns = [
@@ -41,11 +43,6 @@ export default class accumulate_list extends Component {
 				title: '手机',
 				dataIndex: 'mobile',
 			}, 
-			// {
-			// 	colSpan:1,
-			// 	title: '性别',
-			// 	dataIndex: 'gender',
-			// },
 			{
 				colSpan:1,
 				title: '当前积分',

@@ -147,7 +147,7 @@ export default class Accumulate extends Component {
 		}
 		return (
 			<View style={{flex: 1}}>
-				<View style={{height: pxToDp(80),flexDirection:'row', alignItems: 'center', justifyContent:'center', backgroundColor:'#f2f2f2', borderBottomColor:'#B4B4B4', borderBottomWidth:pxToDp(2)}}>
+				{/* <View style={{height: pxToDp(80),flexDirection:'row', alignItems: 'center', justifyContent:'center', backgroundColor:'#f2f2f2', borderBottomColor:'#B4B4B4', borderBottomWidth:pxToDp(2)}}>
 					<View style={{width:pxToDp(50)}}>
 					</View>
 					<View style={{flex: 1, alignItems:'center', justifyContent:'center',}}>
@@ -156,10 +156,9 @@ export default class Accumulate extends Component {
 					<TouchableOpacity style={{width:pxToDp(50),marginRight: pxToDp(40)}} onPress={()=>this.props.backCtrl('accumulate_ruler')}>
 						<Image style={{width: pxToDp(50), height: pxToDp(50)}} source={require('./../../assets/积分细则icon.png')}></Image>
 					</TouchableOpacity>
-				</View>
-				
+				</View> */}
 				<ScrollView style={styles.container} removeClippedSubviews ={true}>
-					<View style={{flexDirection:'row', height: pxToDp(264),marginVertical:pxToDp(22)}}>
+					<View style={{flexDirection:'row', justifyContent:'space-around', height: pxToDp(264),marginVertical:pxToDp(22)}}>
 						<View>
 							<Image style={{height: pxToDp(216), width: pxToDp(216), marginHorizontal:pxToDp(62), paddingTop: pxToDp(90), justifyContent:'center', alignItems:'center'}} resizeMode='contain' source={require('./../../assets/icon.png')}>	
 								<Text style={{fontSize:pxToDp(20), color: 'white'}}>
@@ -186,19 +185,19 @@ export default class Accumulate extends Component {
 						{this.userMess.volunteer ? this._HasRegistVol():this._NoRegistVol()}
 					</View>
 
-					<View style={{height: pxToDp(118), flexDirection:'row', backgroundColor:'#e6e6e6',paddingBottom:pxToDp(26)}}>
+					<View style={{height: pxToDp(148), flexDirection:'row', backgroundColor:'#e6e6e6',paddingBottom:pxToDp(26)}}>
 						<TouchableOpacity style={{flex: 1}} onPress={()=>this.props.backCtrl('accumulate_join')}>
 							<Image style={styles.list} source={require('./../../assets/我参与的@2x.png')}>
-									<Text style={styles.listText}>我参与的</Text>
+								<Text style={styles.listText}>我参与的</Text>
 							</Image>
 						</TouchableOpacity>
 						<TouchableOpacity style={{flex: 1}} onPress={()=>this.props.backCtrl('accumulate_active')}>
-							<Image style={styles.list} source={require('./../../assets/往期活动@2x.png')} >
+							<Image style={styles.list} resizeMode="stretch" source={require('./../../assets/往期活动@2x.png')} >
 								<Text style={styles.listText}>往期活动</Text>
 							</Image>
 						</TouchableOpacity>
 						<TouchableOpacity style={{flex: 1}} onPress={()=>this.props.backCtrl('accumulate_exchange')}>
-							<Image style={{flex: 1, flexDirection:'row', alignItems:'center', justifyContent:'center', backgroundColor:'#d96475'}} source={require('./../../assets/积分兑换@2x.png')} >
+							<Image resizeMode="stretch"  style={{flex: 1, flexDirection:'row', alignItems:'center', justifyContent:'center', backgroundColor:'#d96475'}} source={require('./../../assets/积分兑换@2x.png')} >
 								<Text style={styles.listText}>爱心兑换</Text>
 							</Image>
 						</TouchableOpacity>
@@ -286,7 +285,7 @@ export default class Accumulate extends Component {
 							<Image style={{width:pxToDp(28), height:pxToDp(32), margin:0, marginTop: pxToDp(8)}} resizeMode='stretch'  source={require('../../assets/more.png')}/>
 						</TouchableOpacity>
 					</View>
-					<View style={{height: pxToDp(506 *eventsData.length)}}>
+					<View style={{height: pxToDp(514 *eventsData.length)}}>
 						<ListView
 						 		style={{height: pxToDp(400*eventsData.length)}}
 								dataSource = {this.state.ds.cloneWithRows(eventsData)}
@@ -321,13 +320,13 @@ export default class Accumulate extends Component {
 					<View>
 						<View style={{flexDirection:'row', alignItems:'center'}}>
 							<Image style={{width: pxToDp(41), height:pxToDp(41), margin:pxToDp(16)}} source={require('./../../assets/公益活动icon@2x.png')}/>
-							<Text style={{color:'#fdac41', fontSize:pxToDp(18)}}>#{type}#</Text>
+							<Text style={{color:'#fdac41', fontSize:pxToDp(24)}}>#{type}#</Text>
 							<Text style={{color:'#333', marginLeft: pxToDp(32), fontSize:pxToDp(32)}} numberOfLines={1}>{rowData.title}</Text>
 						</View>
 
 						<View>
 							<TouchableOpacity onPress={() => this.props.backCtrl('accumulate_details',rowData )}>
-								<Text style={{ textAlign:'justify', height:pxToDp(116), paddingHorizontal:pxToDp(30), fontSize:pxToDp(21), lineHeight:pxToDp(29)}}>
+								<Text style={{ textAlign:'justify', height:pxToDp(124), paddingHorizontal:pxToDp(30), fontSize:pxToDp(24), lineHeight:pxToDp(36)}}>
 									{text}
 								</Text>
 							</TouchableOpacity>

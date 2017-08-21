@@ -130,7 +130,6 @@ export default class pointTable extends Component {
 			comm_code: mess.comm_code,
 			activity_no:mess.activity_no,
 		}
-
 		appData._dataPost(afteruri, body, (res) =>{
 			let pageSum = Math.ceil(res.length/res.per_page)
 			let len = res.length;

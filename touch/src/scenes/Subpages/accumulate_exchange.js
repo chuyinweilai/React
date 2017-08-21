@@ -76,10 +76,10 @@ export default class accumulate_exchange extends Component {
 		let Imguri = '';
 		Imguri  = peruri + rowData.pic_path;
 		return (
-			<TouchableOpacity style={{width: pxToDp(375), padding:pxToDp(20), paddingRight:pxToDp(10)}} onPress={()=>this.props.backCtrl('accumulate_goods_details',rowData)}>
+			<TouchableOpacity style={{width: pxToDp(356), padding:pxToDp(10)}} onPress={()=>this.props.backCtrl('accumulate_goods_details',rowData)}>
 				<View style={{borderRadius:pxToDp(20),backgroundColor:'white'}}>
 					<View style={{padding:pxToDp(24), paddingBottom:0,borderBottomWidth:pxToDp(1), }}>
-						<Image style={{height:pxToDp(450), width: pxToDp(300), borderRadius:pxToDp(20)}} resizeMode='contain' source ={{uri: Imguri}}/>
+						<Image style={{height:pxToDp(450), width: pxToDp(290), borderRadius:pxToDp(20)}} resizeMode='contain' source ={{uri: Imguri}}/>
 						<Text style={{fontSize:pxToDp(30), marginBottom:pxToDp(10)}} numberOfLines={1}>
 							{rowData.gift_name}
 						</Text>

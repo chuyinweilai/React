@@ -178,6 +178,8 @@ export default class pointTable extends Component {
 	_action(type,mess){
 		if(type === "change"){
 			this._jump('volunteer_edit', mess)
+		} else if(type === "add"){
+			this._jump('volunteer_edit', mess)
 		}else if(type === "cancel"){
 			let afteruri = 'vcity/canceluser';
 			let body = {
@@ -228,7 +230,12 @@ export default class pointTable extends Component {
 					<text style={{fontSize: 24, color: '#1e8fe6'}}>志愿者管理</text>
 				</Col>
 				<Col className="printHidden">
-					<Button style={{height: 32}} onClick={()=>window.print()}>打印</Button>
+					<span style={{ marginRight: 10}}>
+							<Button style={{height: 32, backgroundColor: '#1e8fe6', color: 'white'}}  onClick = {()=>this._action('add')}>新增</Button>
+					</span>
+					<span>
+							<Button  style={{height: 32}} onClick={() => window.print()}>打印</Button>
+					</span>
 				</Col>
 			</Row>
 			<Row>

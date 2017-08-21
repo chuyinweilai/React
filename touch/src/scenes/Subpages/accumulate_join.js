@@ -89,7 +89,7 @@ export default class accumulate_join extends Component {
 					<View style={{width:pxToDp(120), alignItems: 'center', justifyContent: 'center'}}/>
 				</View>
 				<View>
-					<View style={{height: pxToDp(224*dataSource1.length)}}>
+					<View style={{height: pxToDp(226*dataSource1.length)}}>
 						<ListView 
 							dataSource={this.state.ds.cloneWithRows(dataSource1)}
 							enableEmptySections = {true}

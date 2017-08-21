@@ -11,7 +11,7 @@ const uiWidthPx = 1920;
 console.log()
 //转换方式
 function pxToDp(uiElementPx) {
-			return uiElementPx*(720 / 1920) ;
+			return uiElementPx*(720 / 1920)*2 ;
 			// return uiElementPx *  (deviceWidthDp) / uiWidthPx;
 }
 

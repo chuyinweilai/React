@@ -1,7 +1,9 @@
 import React,{Component} from 'react';
 import {
-		Animated,
-		Image
+	View,
+	Text,
+	Animated,
+	Image
 } from 'react-native';
 import FadeInView from '../../components/FadeInView'
 
@@ -9,7 +11,6 @@ const peruri = "http://cloudapi.famesmart.com";
 const appData = require('./../../components/Ajax')
 
 const Routers  = require('./router');
-const Regist  = require( './regist');
 
 const APPID = 'wx176d805510bcba9e';
 const SECRET = '249ef2079ec5667e7dc5e5c93c600521';
@@ -20,31 +21,16 @@ export default class check extends Component{
 	constructor(props){
 		super(props);
 		this.state={
-			pageTurn: false,
+			pageTurn:false,
 			userMess: {},
-			timeClock: false,
 		};
 	}
 
 	componentWillMount(){
-		this._login(777)
-		appData._Storage('set','openId',777)
-		// let as = /[^/code=?][0-9a-zA-Z]*[$/9a-zA-Z]?/;
-		// let arr = code.split('&')[0];
-		// let COD = arr.match(as)[0];
-		// appData._Storage('get','code',(res)=>{
-		// 	if(res !== undefined && COD == JSON.parse(res)){
-		// 			window.location.href ='http://cloudapi.famesmart.com/Vcity/web/index.html'
-		// 	} else{
-		// 		appData._Storage('set','code', COD)
-		// 		this._getAccess(COD)
-		// 	}
-		// })
-		// setTimeout(() => {
-		// 	this.setState({
-		// 		timeClock: false
-		// 	})
-		// },3000)
+		// let cardId = this.props.cardId;
+		let cardId = 57197187
+		this._login(cardId)
+		appData._Storage('set','openId',cardId)
 	}
 
 	//成功返回
@@ -65,33 +51,30 @@ export default class check extends Component{
 		})
 	}
 
-	_login(openId){
-		let afturi = '/api/wxuser/'+ openId
-		appData._dataGet(afturi, (data) => {
+	_login(ic_card){
+		let afturi = '/api/wxuser/find';
+		let body ={
+			"ic_card": ic_card,
+			"open_id": "",
+		}
+			console.log(body)
+		appData._dataPost(afturi,body, (data) => {
+			console.log(data)
 			if(data){
 				this.setState({
 					userMess: data,
 					pageTurn: true,
 				})
 			}else {
+				setTimeout(()=>{
+					this.props.backCtrl()
+				},5000)
 				this.setState({
 					userMess: openId,
 					pageTurn: false,
 				})
 			}
 		});
-	}
-	
-	_animate(){
-		if(this.state.timeClock){
-			return (
-				<FadeInView style={{flex : 1}}>
-						<Image style={{flex : 1}} resizeMode="stretch" source={require('./../../assets/book.jpg')}/>
-				</FadeInView>
-			)
-		} else {
-			return this._pageOut()
-		}
 	}
 
 	_changePage(){
@@ -104,15 +87,23 @@ export default class check extends Component{
 	_pageOut(){
 		let userMess = this.state.userMess
 		if(this.state.pageTurn){
+			console.log(userMess)
 			appData._Storage('set','userMess',userMess[0])
-			return <Routers/>
+			return <Routers />
 		} else {
-			return <Regist backCtrl = {()=>this._changePage()}/>
+			return (
+				<View style={{flex: 1, backgroundColor: '#555',  overflow:'hidden',alignItems:'center', justifyContent: 'center'}}>
+					<Text style={{fontSize: '0.4rem', color: 'white'}}>此卡未注册,请至前台办理相关业务</Text>
+				</View>
+			)
 		}
 	}
 	
 	render(){
-		return this._animate()
+		return this.state.pageTurn == ""?
+		<View>
+		</View>
+		:this._pageOut()
 	}
 }
 
