@@ -78,11 +78,12 @@ export default class accumulate_list extends Component {
 		let userMess = this.userMess;
 		let afteruri = 'wxuser/topscore';
 		let body = {
-			 "comm_code": userMess.comm_code
+			 "comm_code": userMess.comm_code,
+			  "per_page": 5,
 		}
 		appData._dataPost(afteruri,body,(res) => {
 			let pageSum = Math.ceil(res.total/res.per_page)
-			let data = res.data.slice(0, 5);
+			let data = res.data
 			let len = data.length;
 			this.setState({
 				total:res.total,
