@@ -27,8 +27,8 @@ export default class check extends Component{
 	}
 
 	componentWillMount(){
-		// let cardId = this.props.cardId;
-		let cardId = 57197187
+		let cardId = this.props.cardId;
+		// let cardId = 57197187
 		this._login(cardId)
 		appData._Storage('set','openId',cardId)
 	}
@@ -57,9 +57,7 @@ export default class check extends Component{
 			"ic_card": ic_card,
 			"open_id": "",
 		}
-			console.log(body)
 		appData._dataPost(afturi,body, (data) => {
-			console.log(data)
 			if(data){
 				this.setState({
 					userMess: data,
@@ -87,7 +85,6 @@ export default class check extends Component{
 	_pageOut(){
 		let userMess = this.state.userMess
 		if(this.state.pageTurn){
-			console.log(userMess)
 			appData._Storage('set','userMess',userMess[0])
 			return <Routers />
 		} else {

@@ -24,16 +24,18 @@ export default class volunteer_change extends Component{
 	}
 
 	_getEvent(mess){
-		let afteruri = 'vcity/trend'
+		let afteruri = 'vcity/trend2'
 		let body = {
 			'comm_code': mess.comm_code,
 		}
 		appData._dataPost(afteruri,body,(res) =>{
+			console.log(res)
 			let datas = [];
 			res.forEach((value)=>{
 				let obj = {
-					name: value.xmonth,
-					pv: value.xnumber,
+					pv: Math.ceil((value.sign_cnt/value.join_limit)*100),
+					//  + '%',
+					name: value.activity_no,
 				}
 				datas.unshift(obj)
 			})
@@ -47,7 +49,7 @@ export default class volunteer_change extends Component{
 		return (
 			<div style={{padding: 15, height: 173 , backgroundColor: '#fff'}}>	
 				<text style={{fontSize: 20,paddingBottom: 5, }}>
-					志愿者新增趋势
+					活动参与人数比例
 				</text>
 					<ResponsiveContainer height={133}>
 						<AreaChart  data={this.state.data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
