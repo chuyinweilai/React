@@ -21,7 +21,7 @@ export default class check extends Component{
 	constructor(props){
 		super(props);
 		this.state={
-			pageTurn:false,
+			pageTurn: null,
 			userMess: {},
 		};
 	}
@@ -58,19 +58,18 @@ export default class check extends Component{
 			"open_id": "",
 		}
 		appData._dataPost(afturi,body, (data) => {
-			if(data){
+			if(data !== undefined){
 				this.setState({
 					userMess: data,
 					pageTurn: true,
 				})
 			}else {
+				this.setState({
+					pageTurn: false,
+				})
 				setTimeout(()=>{
 					this.props.backCtrl()
 				},5000)
-				this.setState({
-					userMess: openId,
-					pageTurn: false,
-				})
 			}
 		});
 	}
@@ -83,8 +82,8 @@ export default class check extends Component{
 	}
 
 	_pageOut(){
-		let userMess = this.state.userMess
 		if(this.state.pageTurn){
+			let userMess = this.state.userMess
 			appData._Storage('set','userMess',userMess[0])
 			return <Routers />
 		} else {
@@ -97,10 +96,13 @@ export default class check extends Component{
 	}
 	
 	render(){
-		return this.state.pageTurn == ""?
-		<View>
-		</View>
-		:this._pageOut()
+		return (
+			this.state.pageTurn == null?
+			<View>
+			</View>
+			:this._pageOut()
+		)
+		
 	}
 }
 

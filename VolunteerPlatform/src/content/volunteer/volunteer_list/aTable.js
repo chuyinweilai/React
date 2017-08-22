@@ -125,10 +125,27 @@ export default class pointTable extends Component {
 				key:"action",
   				colSpan: 3,
 				render:(text, record)=>{
+					let title = '激活';
+					let disable = false;
+					let type = 'primary'
+					if(record.ic_card == "" ){
+							title = '激活';
+							disable = true;
+					} else {
+						// console.log(record.a_flag)
+						if(record.a_flag){
+							title = '已激活';
+							disable = true;
+						} else{
+							title = '激活';
+							disable = false;
+						}
+					}
 					return (
 						<Row type="flex" justify="space-between">
+							<Button type="primary" disabled={disable} onClick={() =>this._action('running',record)}>{title}</Button>
 							<Button onClick={() =>this._action('change',record)}>编辑</Button>
-							<Button onClick={() =>this.setState({	record: record,	_visible:true,})}>注销</Button>
+							<Button onClick={() =>this.setState({ record: record,	_visible:true,})}>注销</Button>
 						</Row>
 					)
 				}
@@ -195,6 +212,33 @@ export default class pointTable extends Component {
 					})
 				} else {
 					alert('操作失败')
+				}
+			})
+		} else if(type === 'running'){
+			let afteruri = 'wxuser/add';
+			let body = {
+				"open_id": 0,
+				"ic_card":  mess.ic_card,
+				"wx_id": mess.wx_id,
+				"nickname":  mess.mobile,
+				"name": mess.name,
+				"gender": mess.gender,
+				"mobile": mess.mobile,
+				"comm_code": mess.comm_code,
+				"apt_code": mess.apt_code,
+				"unit_code": mess.unit_code,
+				"floor": mess.floor,
+				"room": mess.room,
+				"type": mess.type,
+				"comm_name": this.userMess.comm_name,
+				"apt_info": mess.apt_code,
+			}
+			appData._dataPost(afteruri, body, (res) => {
+				if(res){
+					this._getEvent()
+					this.setState({
+						pageNum:1
+					})
 				}
 			})
 		}

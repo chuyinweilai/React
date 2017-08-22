@@ -232,7 +232,7 @@ class pointTable extends Component {
 				<Row type="flex" justify="space-between" gutter={1}>
 					<Col className="printHidden">
 						<text style={{fontSize: 24, color: '#aaa'}}>志愿者管理/</text>
-						<text style={{fontSize: 24, color: '#1e8fe6'}}>修改志愿者</text>
+						<text style={{fontSize: 24, color: '#1e8fe6'}}>修改(新增)志愿者</text>
 					</Col>
 				</Row>
 

@@ -37807,7 +37807,7 @@
 	function check(props){_classCallCheck(this,check);var _this=_possibleConstructorReturn(this,(check.__proto__||Object.getPrototypeOf(check)).call(this,
 	props));
 	_this.state={
-	pageTurn:false,
+	pageTurn:null,
 	userMess:{}};return _this;
 
 	}_createClass(check,[{key:'componentWillMount',value:function componentWillMount()
@@ -37844,19 +37844,18 @@
 	"open_id":""};
 
 	appData._dataPost(afturi,body,function(data){
-	if(data){
+	if(data!==undefined){
 	_this3.setState({
 	userMess:data,
 	pageTurn:true});
 
 	}else{
+	_this3.setState({
+	pageTurn:false});
+
 	setTimeout(function(){
 	_this3.props.backCtrl();
 	},5000);
-	_this3.setState({
-	userMess:openId,
-	pageTurn:false});
-
 	}
 	});
 	}},{key:'_changePage',value:function _changePage()
@@ -37869,8 +37868,8 @@
 	}},{key:'_pageOut',value:function _pageOut()
 
 	{
-	var userMess=this.state.userMess;
 	if(this.state.pageTurn){
+	var userMess=this.state.userMess;
 	appData._Storage('set','userMess',userMess[0]);
 	return _react2.default.createElement(Routers,null);
 	}else{
@@ -37883,10 +37882,13 @@
 	}},{key:'render',value:function render()
 
 	{
-	return this.state.pageTurn==""?
+	return(
+	this.state.pageTurn==null?
 	_react2.default.createElement(_reactNative.View,null):
 
-	this._pageOut();
+	this._pageOut());
+
+
 	}}]);return check;}(_react.Component);exports.default=check;
 
 

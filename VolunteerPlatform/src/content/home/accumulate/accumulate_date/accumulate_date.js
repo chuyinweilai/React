@@ -101,26 +101,6 @@ export default class accumulate_list extends Component {
 		}
 	}
 
-	//分页器activity/list?page=num
-	_pageChange(pageNumber){
-		let userMess = this.userMess;
-		let afteruri = 'activity/list?page=' + pageNumber ;
-		let body = {
-			 "comm_code": userMess.comm_code
-		}
-		appData._dataPost(afteruri,body,(res) => {
-			let pageSum = Math.ceil(res.total/res.per_page)
-			let data = res.data;
-			let len = data.length;
-			this.setState({
-				total:res.total,
-				dataSource: data,
-				count:len,
-				pageNum:pageNumber
-			})
-		})
-	}
-
 	render() {
 		const { dataSource } = this.state;
 		let columns = this.columns;

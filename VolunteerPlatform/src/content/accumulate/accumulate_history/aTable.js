@@ -184,18 +184,18 @@ export default class pointTable extends Component {
 				type ='手动积分'
 				score =  "+" + aValue.activity_score
 			}
-			// encodeURI(encodeURI(this.state.comm_name))
 			let aurl = "http://cloudapi.famesmart.com/Mirai/PC/printPage/index.html?comm_name=" +this.state.comm_name + "&mobile=" + this.state.mobile + "&change_date=" + aValue.change_date + "&type=" + type + "&score=" + score;
 			return (
 				<Modal
 					title="积分变动"
+					style={{height: 300}}
 					visible={this.state._visible}
 					onOk={()=>window.print()}
 					onCancel={() =>this.setState({_visible: false})}
 					okText="打印" 
 					cancelText="确认"
 				>
-					<iframe style={{border: 'none',height: 200}} src={encodeURI(aurl)}></iframe> 
+					<iframe style={{border: 'none',height: 250, overflow: 'hidden'}} src={encodeURI(aurl)}></iframe> 
 				</Modal>
 			)
 		}
