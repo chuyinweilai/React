@@ -164,7 +164,7 @@ export default class pointTable extends Component {
   				colSpan: 2,
 				render:(text, record)=>{
 					let disable = [];
-					if(record.vld_flag == 2 ){
+					if(record.vld_flag == 2 || record.vld_flag == 3){
 						return (
 							<Row type="flex" gutter={6} justify="center">
 								<Col>
