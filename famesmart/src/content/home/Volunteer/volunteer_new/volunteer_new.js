@@ -5,7 +5,7 @@ import {
 } from 'antd'
 
 import appData from './../../../../assert/Ajax'
-import { LineChart, Line,XAxis,YAxis, CartesianGrid,Tooltip, Legend, ResponsiveContainer } from 'recharts';
+import { AreaChart ,Area, XAxis,YAxis, CartesianGrid,Tooltip, Legend, ResponsiveContainer } from 'recharts';
 
 const device = document.body.offsetWidth
 
@@ -50,12 +50,18 @@ export default class volunteer_new extends Component{
 					志愿者新增趋势
 				</text>
 					<ResponsiveContainer height={133}>
-						<LineChart data={this.state.data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+						<AreaChart  data={this.state.data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
+							<defs>
+								<linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
+									<stop offset="15%" stopColor="#1e8fe6" stopOpacity={1}/>
+									<stop offset="95%" stopColor="#1e8fe6" stopOpacity={0.4}/>
+								</linearGradient>
+							</defs>
 							<XAxis dataKey="name" />
 							<YAxis />
 							<CartesianGrid strokeDasharray="3 3" />
-							<Line  name="新增志愿者" type="monotone" dataKey="pv" stroke="#1e8fe6" />
-						</LineChart>
+							<Area  name="新增志愿者" type="monotone" dataKey="pv" stroke="#1e8fe6" fillOpacity={1} fill="url(#colorPv)" />
+						</AreaChart >
 					</ResponsiveContainer>
 			</div>
 		)

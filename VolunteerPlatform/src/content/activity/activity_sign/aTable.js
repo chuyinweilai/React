@@ -92,9 +92,16 @@ export default class pointTable extends Component {
 				render:(text, record)=>{
 					let state = '签到';
 					let disable = false;
-					 if(record.status_flag == 1){
+					if(record.status_flag == 1){
 						state = "已签到"
-						disable = "true"
+					}
+					
+					if(this.activeMess.vld_flag == 3){
+						disable = true
+					} else {
+						if(record.status_flag == 1){
+							disable = true
+						}
 					}
 					return(
 						<span>
@@ -150,13 +157,20 @@ export default class pointTable extends Component {
 		}
 	}
 
-	_showPage(){
-		if(this.state.pageCtrl){
-			<Table bordered columns={this.columns} dataSource={this.state.dataSource} />
-		} else {
-
+	//活动结束
+	_over(){
+		let afteruri = 'activity/finish';
+		// this.activeMess
+		let body = {   
+			"comm_code": this.activeMess.comm_code,
+            "activity_no": this.activeMess.activity_no
 		}
-	}
+		appData._dataPost(afteruri, body, (res)=>{
+			if(res){
+				this._jump('back')
+			}
+		})
+	}	
 
 	_volSign(obj){
 		// this.activeMess = mess;
@@ -204,6 +218,7 @@ export default class pointTable extends Component {
 						<text style={{fontSize: 24, color: '#1e8fe6'}}>签到</text>
 					</Col>
 					<Col className="printHidden">
+							 <Button type="danger" style={{height: 32,marginRight: 30}} onClick={() => this._over()}>结束活动</Button> 
 							<Button  style={{height: 32}} onClick={() => window.print()}>打印</Button>
 					</Col>
 				</Row>

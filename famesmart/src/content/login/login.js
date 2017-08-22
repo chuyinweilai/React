@@ -43,7 +43,7 @@ class Login extends Component {
                         "password":values.password
                     }
                     appData_local._dataPost(afteruri, body, (res) => {
-                        if(res === undefined || !res.token.length){
+                        if(res === undefined || !res.token.length  || res.user.token >= 7){
                             this.setState({
                                 error: true
                             })
@@ -63,7 +63,7 @@ class Login extends Component {
                         "password":values.password
                     }
                     appData._dataPost(afteruri, body, (res) => {
-                        if(res === undefined || !res.length){
+                        if(res === undefined || !res.length  || res[0].auth_lvl >= 7){
                             this.setState({
                                 error: true
                             })

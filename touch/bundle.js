@@ -38019,8 +38019,8 @@
 
 	_react2.default.createElement(_reactNative.Image,{style:styles.Phonebox,resizeMode:'stretch',source:__webpack_require__(396)},
 	_react2.default.createElement(_reactNative.View,{style:styles.Phone},
-	_react2.default.createElement(_check2.default,{cardId:this.state.cardID,backCtrl:this._backCtrl.bind(this)})),
 
+	this.state.page?this._wxPage():_react2.default.createElement(_advert.Wait,null)),
 
 	_react2.default.createElement(_reactNative.View,{style:styles.bottom},
 	_react2.default.createElement(_reactNative.View,{style:{flexDirection:'row'}},

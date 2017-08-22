@@ -116,8 +116,8 @@ export default class index extends Component {
 
                 <Image style={styles.Phonebox}  resizeMode="stretch" source={require("./../../assets/elements.png")}>
                     <View style={styles.Phone}>
-                        <Wxs cardId={this.state.cardID} backCtrl={this._backCtrl.bind(this)}/>
-                        {/* {this.state.page? this._wxPage(): <Wait></Wait>}  */}
+                        {/* <Wxs cardId={this.state.cardID} backCtrl={this._backCtrl.bind(this)}/> */}
+                         {this.state.page? this._wxPage(): <Wait></Wait>}  
                     </View>
                     <View style={styles.bottom}>
                         <View style={{flexDirection: 'row'}}>

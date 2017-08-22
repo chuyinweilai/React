@@ -42,7 +42,8 @@ class Login extends Component {
                     "password":values.password
                 }
                 appData._dataPost(afteruri, body, (res) => {
-                    if(res === undefined || !res.length){
+                    console.log(res)
+                    if(res === undefined || !res.length  || res[0].auth_lvl < 7){
                         this.setState({
                             error: true
                         })

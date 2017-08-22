@@ -7,6 +7,7 @@ import {
 	Button, 
 	Row,
 	Col,
+	Modal,
 	Popconfirm, 
 	Pagination,
 	Menu, 
@@ -29,7 +30,8 @@ export default class pointTable extends Component {
 			pageSum:1,
 			pageNum:1,
 
-			
+			alarm_data: "",
+			disable: false,
 			ws_ok : false,
             ws:ws,
 		};
@@ -110,11 +112,16 @@ export default class pointTable extends Component {
 			})
 			this.userMess = res
 			this._getEvent()
+			this._alarm_data()
 		})
 	}
 
 	//过期提醒
 	_outDate(){
+		let afteruri = 'func/jftx/set';
+		let body = {
+			comm_code: this.userMess.comm_code
+		}
 		this.setState({
 			loading: true,
 		})
@@ -126,6 +133,12 @@ export default class pointTable extends Component {
 				loading: false,
 				disable: false,
 			})
+		});
+		
+		appData._dataPost(afteruri, body, (res)=>{
+			if(res){
+				this._alarm_data()
+			}
 		})
 	}
 
@@ -133,10 +146,23 @@ export default class pointTable extends Component {
 		this.Router(nextPage,mess,this.mess.nextPage)
 	}
 	
+	_alarm_data(){
+		let afteruri = 'func/jftx/get';
+		let body = {
+			"comm_code": this.userMess.comm_code
+		}
+		appData._dataPost(afteruri, body, (res)=>{
+			this.setState({
+				alarm_data: res[0].mind_at,
+			})
+		})
+	}
+
 	//获取后台信息
 	_getEvent(){
 		let userMess = this.userMess;
 		let afteruri = 'vcity/scoresheet';
+		let afteruri_data = 'func/jftx/get';
 		let body = {
 			 "comm_code": userMess.comm_code
 		}
@@ -196,7 +222,8 @@ export default class pointTable extends Component {
 					<text style={{fontSize: 24, color: '#1e8fe6'}}>积分管理</text>
 				</Col>
 				<Col className="printHidden">
-					<Button style={{height: 32, marginRight:30, background:'#ea7c6b', color: 'white'}} onClick={()=>this.setState({disable: true})}>
+					<text style={{marginRight: 10}}>上次提醒时间： {this.state.alarm_data}</text>
+					<Button type="danger" style={{height: 32, marginRight:30}} onClick={()=>this.setState({disable: true})}>
 						到期提醒
 					</Button>
 					<Button style={{height: 32}} onClick={() =>  window.print()}>打印</Button>
@@ -220,6 +247,21 @@ export default class pointTable extends Component {
 				total={this.state.total} 
 				onChange={this._pageChange.bind(this)} />
 			</Row>
+			
+			<Modal
+				title="到期提醒"
+				visible = {this.state.disable}
+				confirmLoading = {this.state.loading}
+				okText = '确认'
+				cancelText = '取消'
+				onOk={this._outDate.bind(this)}
+				onCancel = {()=>{this.setState({disable: false})}}
+				closable={false}
+			>
+				<Row>
+					<Col>是否发送积分到期提醒？</Col>
+				</Row>
+			</Modal>
 		</div>
 		);
 	}
