@@ -31,7 +31,7 @@ export default class siders extends Component{
 						collapsible = 'true'
 						theme = 'dark'
 						defaultSelectedKeys={['home']}
-						defaultOpenKeys={['sub1']}
+						defaultOpenKeys={['home']}
 						style={{ height: '100%',borderRight: 0 }}
 						onSelect = {this._click.bind(this)}
 					>

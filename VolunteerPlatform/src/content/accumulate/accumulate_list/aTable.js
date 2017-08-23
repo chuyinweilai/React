@@ -127,6 +127,12 @@ export default class pointTable extends Component {
 		fetch('http://cloudapi.famesmart.com/Vcity/PC/jftx.php',{
 			method: 'GET',
 		})
+		.then(res =>{
+			this.setState({
+				loading: false,
+				disable: false,
+			})
+		})
 		.catch( error => {
 			this.setState({
 				loading: false,

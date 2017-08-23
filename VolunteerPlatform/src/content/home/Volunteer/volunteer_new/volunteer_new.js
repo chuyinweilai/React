@@ -59,8 +59,9 @@ export default class volunteer_new extends Component{
 							</defs>
 							<XAxis dataKey="name" />
 							<YAxis />
+							<Tooltip />
 							<CartesianGrid strokeDasharray="3 3" />
-							<Area  name="新增志愿者" type="monotone" dataKey="pv" stroke="#1e8fe6" fillOpacity={1} fill="url(#colorPv)" />
+							<Area  name="新增志愿者人数" type="monotone" dataKey="pv" stroke="#1e8fe6" fillOpacity={1} fill="url(#colorPv)" />
 						</AreaChart >
 					</ResponsiveContainer>
 			</div>

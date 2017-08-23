@@ -206,7 +206,7 @@ class pointTable extends Component {
 		let arr = []
 		if(this.activeMess !== undefined){
 			let ss = this.activeMess.pic_path;
-			if( ss!== undefined || ss !== ''){
+			if( ss!== undefined && ss !== ''){
 				ss.split(",").forEach((value,index)=>{
 					arr.push({
 						uid: index,
