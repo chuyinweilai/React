@@ -14,7 +14,7 @@ import {
 	Dropdown 
 } from 'antd'
 import appData from './../../../assert/Ajax';
-import  '../../../App.css'
+import  './../../../App.css'
 
 require('./index.css');
 export default class pointTable extends Component {
@@ -132,7 +132,6 @@ export default class pointTable extends Component {
 							title = '激活';
 							disable = true;
 					} else {
-						// console.log(record.a_flag)
 						if(record.a_flag){
 							title = '已激活';
 							disable = true;

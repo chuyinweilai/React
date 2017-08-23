@@ -52,7 +52,7 @@ export default class volunteer_new extends Component{
 					<ResponsiveContainer height={133}>
 						<AreaChart  data={this.state.data} margin={{ top: 10, right: 30, left: 0, bottom: 0 }}>
 							<defs>
-								<linearGradient id="colorPv" x1="0" y1="0" x2="0" y2="1">
+								<linearGradient id="vlounteer_new" x1="0" y1="0" x2="0" y2="1">
 									<stop offset="15%" stopColor="#1e8fe6" stopOpacity={1}/>
 									<stop offset="95%" stopColor="#1e8fe6" stopOpacity={0.4}/>
 								</linearGradient>
@@ -60,7 +60,7 @@ export default class volunteer_new extends Component{
 							<XAxis dataKey="name" />
 							<YAxis />
 							<CartesianGrid strokeDasharray="3 3" />
-							<Area  name="新增志愿者" type="monotone" dataKey="pv" stroke="#1e8fe6" fillOpacity={1} fill="url(#colorPv)" />
+							<Area  name="新增志愿者" type="monotone" dataKey="pv" stroke="#1e8fe6" fillOpacity={1} fill="url(#vlounteer_new)" />
 						</AreaChart >
 					</ResponsiveContainer>
 			</div>

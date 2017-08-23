@@ -11,7 +11,7 @@ import {
 } from 'antd'
 import ATable from './aTable'
 import appData from './../../../../assert/Ajax';
-import '../../../../App.css'
+import  './../../../../App.css'
 
 
 const { Content } = Layout;

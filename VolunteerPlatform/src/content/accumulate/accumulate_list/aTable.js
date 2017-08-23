@@ -27,7 +27,6 @@ export default class pointTable extends Component {
 			count: 1,
 			total:0,
 			listMess:{},
-			pageSum:1,
 			pageNum:1,
 
 			alarm_data: "",
@@ -167,8 +166,6 @@ export default class pointTable extends Component {
 			 "comm_code": userMess.comm_code
 		}
 		appData._dataPost(afteruri,body,(res) => {
-			// let pageSum = Math.ceil(res.total/res.per_page)
-			console.log(res)
 			let data = res.data
 			data.forEach((value)=>{
 				value.address = value.comm_name + value.apt_info+value.floor+value.room
@@ -199,10 +196,7 @@ export default class pointTable extends Component {
 		let body = {
 			 "comm_code": userMess.comm_code,
 		}
-		console.log(pageNumber)
 		appData._dataPost(afteruri,body,(res) => {
-			console.log(res)
-			// let pageSum = Math.ceil(res.total/res.per_page)
 			let data = res.data;
 			let len = data.length;
 			this.setState({

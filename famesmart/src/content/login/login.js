@@ -51,7 +51,7 @@ class Login extends Component {
                             appData._Storage('set',"Token",res.token)
                             appData._Storage('set',"userMess",res.user)
                             appData._Storage('set',"LoginType",'server')
-                            this.props.Router('IC_cards_resident_list')
+                            this.props.Router('home1')
                         }
                     })
                 }
@@ -71,7 +71,7 @@ class Login extends Component {
                             appData._Storage('set',"userMess",res[0])
                             appData._Storage('set',"Token",'')
                             appData._Storage('set',"LoginType",'cloude')
-                            this.props.Router('home')
+                            this.props.Router('home3')
                         }
                     })
                 }
@@ -127,19 +127,6 @@ class Login extends Component {
                         {this._errorInfo()}
                     </Form>
                 </Row>
-                {/* <Row type="flex" justify='center' align="center">
-                    <text style={{height: '26px', lineHeight: '26px', margin: '0 10px', color: 'white', fontSize: 12}}>  
-                        请选择登录平台
-                    </text>
-                    <Select
-                        style={{width: 100, height: '26px'}}
-                        defaultValue = "server"
-                        onChange={this._handleChange.bind(this)}
-                        >
-                        <Option key="cloude">服务器</Option>
-                        <Option key="server">局域网</Option>
-                    </Select>
-                </Row> */}
             </div>
         );
     }

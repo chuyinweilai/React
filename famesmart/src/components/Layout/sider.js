@@ -39,18 +39,20 @@ export default class siders extends Component{
 						mode="inline"
 						collapsible = 'true'
 						theme = 'dark'
-						defaultSelectedKeys={['home']}
-						defaultOpenKeys={['sub1']}
+						defaultSelectedKeys={['home3']}
+						defaultOpenKeys={['home3']}
 						style={{ height: '100%',borderRight: 0 }}
 						onSelect = {this._click.bind(this)}
 					>
-						<Menu.Item key="home"><Icon type="home" />首页</Menu.Item> 
 
+						<Menu.Item key="home3"><Icon type="star-o" />首页3</Menu.Item>
 						<SubMenu key = "operation" title={<span><Icon type="appstore" /><span>米社运维</span></span>}>
 							<Menu.Item key="activity_list"><Icon type="star-o" />活动管理</Menu.Item>
 							<Menu.Item key="accumulate_list"><Icon type="heart-o" />积分管理</Menu.Item>
 							<Menu.Item key="volunteer_list"><Icon type="user" />志愿者管理</Menu.Item>
 						</SubMenu> 
+						<Menu.Item key="QRCode_list"><Icon type="barcode" />电子钥匙</Menu.Item>
+						<Menu.Item key="QRcode_record"><Icon type="user" />电子钥匙分享记录</Menu.Item>
 
 						<Menu.Item key="cancel"><Icon type="close-circle-o"/>注销</Menu.Item>
 					</Menu>
@@ -67,11 +69,13 @@ export default class siders extends Component{
 						mode="inline"
 						collapsible = 'true'
 						theme = 'dark'
-						defaultSelectedKeys={['IC_cards_resident_list']}
-						defaultOpenKeys={['card_management']}
+						defaultSelectedKeys={['home1']}
+						defaultOpenKeys={['home1']}
 						style={{ height: '100%', borderRight: 0 }}
 						onSelect = {this._click.bind(this)}
 					>
+						<Menu.Item key="home1"><Icon type="star-o" />首页1</Menu.Item>
+						<Menu.Item key="home2"><Icon type="star-o" />首页2</Menu.Item>
 
 						<Menu.Item key="five_list"><Icon type="star-o" />五违管理</Menu.Item>
 						<Menu.Item key="civilization_list"><Icon type="star-o" />文明管理</Menu.Item>
@@ -99,11 +103,14 @@ export default class siders extends Component{
 						mode="inline"
 						collapsible = 'true'
 						theme = 'dark'
-						defaultSelectedKeys={['IC_cards_resident_list']}
-						defaultOpenKeys={['card_management']}
+						defaultSelectedKeys={['home1']}
+						defaultOpenKeys={['home1']}
 						style={{ height: '100%', borderRight: 0 }}
 						onSelect = {this._click.bind(this)}
 					>
+
+						<Menu.Item key="home1"><Icon type="star-o" />首页1</Menu.Item>
+						<Menu.Item key="home2"><Icon type="star-o" />首页2</Menu.Item>
 
 						<Menu.Item key="five_list"><Icon type="star-o" />五违管理</Menu.Item>
 						<Menu.Item key="civilization_list"><Icon type="star-o" />文明管理</Menu.Item>

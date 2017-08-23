@@ -96,7 +96,7 @@ export default class pointTable extends Component {
         let userMess = this.userMess;
         let afteruri = 'devices/audit_plan';
         let body = {
-            "per_page":"5"
+            "per_page":"10"
         }
         appData_local._dataPost(afteruri,body,(res) => {
             let data = res.data
@@ -112,32 +112,33 @@ export default class pointTable extends Component {
 
 	//操作栏功能
 	_action(type,mess){
+        let TokenMess = this.TokenMess;
 		if(type === "change"){
             this._jump('patrol_edit', mess)
 		}else if(type === "delete"){
-			let afteruri = 'vcity/canceluser';
+			let afteruri = 'device/set_audit';
 			let body = {
-				"mobile": mess.mobile,
-				"comm_code": mess.comm_code
+				"loc_description": mess.loc_description
 			}
-			appData._dataPost(afteruri,body,(res) => {
+            appData_local._dataPost(afteruri,body,(res) => {
 				if(res){
 					this._getEvent()
 				} else {
 					alert('操作失败')
 				}
-			})
+			},TokenMess)
 		}
 	}
 
 	//分页器activity/list?page=num
 	_pageChange(pageNumber){
+        let TokenMess = this.TokenMess;
 		let userMess = this.userMess;
-		let afteruri = 'users?page=' + pageNumber ;
-		// let body = {
-		// 	 "comm_code": userMess.comm_code
-		// }
-		appData._dataGet(afteruri,(res) => {
+		let afteruri = 'devices/audit_plan?page=' + pageNumber ;
+		let body = {
+            "per_page":"10"
+		}
+        appData_local._dataPost(afteruri,body,(res) => {
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let data = res.data;
 			let len = data.length;
@@ -147,7 +148,7 @@ export default class pointTable extends Component {
 				count:len,
 				pageNum:pageNumber
 			})
-		})
+		},TokenMess)
 	}
 
 	render() {
@@ -158,7 +159,6 @@ export default class pointTable extends Component {
             fontSize: '15px',
         }
         function handleSearch(){
-            console.log()
         }
 		return (
 		<div style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>

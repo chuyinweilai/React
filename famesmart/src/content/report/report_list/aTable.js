@@ -157,7 +157,8 @@ export default class pointTable extends Component {
         let TokenMess = this.TokenMess;
         let afteruri = 'comm_alerts/search';
         let body = {
-
+            "duration": "all",
+            "perpage":10
         }
 		appData_local._dataPost(afteruri,body,(res) => {
 			let data = res.data
@@ -197,14 +198,16 @@ export default class pointTable extends Component {
             this.state.roomNum = mess.loc_description
 			this.state.comments = mess.comments
 			if(mess.closure_code === '干预解决'){
-                this.state.value = 1
+                this.setState({ value: 1})
 			}else if(mess.closure_code === '自行解决'){
-                this.state.value = 2
+                this.setState({ value: 2})
 			}else if(mess.closure_code === '误报'){
-                this.state.value = 3
+                this.setState({ value: 3})
             }else if(mess.closure_code === '其他'){
-                this.state.value = 4
-            }
+                this.setState({ value: 4})
+            }else{
+                this.setState({ value: 4})
+			}
 
             this.showModal()
 
@@ -250,6 +253,27 @@ export default class pointTable extends Component {
         });
     }
 
+    loop = (text) => {
+        if (text != null) {
+            // const array = item.created_at.split(' ')
+            // const arrMin = array[1].split(':')
+            // const image1 = `http://test.famesmart.com/alart_cam/2A0387EPAA00036/${array[0]}/001/jpg/${arrMin[0]}/${arrMin[1]}/${arrMin[2]}[M][0@0][0].jpg`
+            let image = ''
+            if (text === '违法排污') {
+                image = 'http://www.famesmart.com/test/imageScroll/image/illegal_water.png'
+            } else if (text === '违法建筑') {
+                image = 'http://www.famesmart.com/test/imageScroll/image/illegal_building.png'
+            } else {
+                image = 'http://www.famesmart.com/test/imageScroll/image/illegal_car.png'
+            }
+            return (
+				<img style={{height: '100px', width: '178px'}} src={image} role="presentation"/>
+            )
+        }
+        return null
+    }
+
+
 	render() {
 		const { dataSource } = this.state;
 		let columns = this.columns;
@@ -258,13 +282,17 @@ export default class pointTable extends Component {
             fontSize: '15px',
         }
         function handleSearch(){
-            console.log()
         }
         const ColStyle = {
             background: '#00A0E9',
             height: '30px',
+            width:'180px',
             lineHeight: '30px',
             fontSize: '13px',
+            margin: '2px',
+            borderColor: '#E9E9E9',
+            fontColor: '#FFF',
+            borderRadius: '4px',
             textAlign: 'center',
         }
         const radioStyle = {
@@ -277,7 +305,17 @@ export default class pointTable extends Component {
             solid:'1px',
             borderColor: '#00A0E9',
         }
-
+        const test = {
+            marginLeft: '160px'
+        }
+        const detail = {
+            width: '100%',
+            textAlign: 'left',
+            color: '#fff',
+            fontWeight:'bold',
+            marginLeft:'2px',
+            marginRight:'2px'
+        }
 		return (
 		<div style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>
 			<Row type="flex" justify="space-between" gutter={1}>
@@ -322,27 +360,37 @@ export default class pointTable extends Component {
 				onOk={this.handleOk}
 				onCancel={this.handleCancel}
 				footer={[
-					<Button key="back" size="large" onClick={this.handleCancel}>取消</Button>,
-					<Button key="submit" type="primary" size="large" loading={this.state.loading} onClick={this.handleOk}>
+					<Button key="submit" type="primary" size="large" onClick={this.handleCancel}>
 						关闭
 					</Button>,
                 ]}
 			>
 				<Form>
-					<FormItem >
-						<div>
-							<Row gutter={8}>
-								<Col style={ColStyle} span={4}>
-									<div>{`区域:`+this.state.apt_code}</div>
+					<FormItem>
+						<div style={{height: '100px', width: '100%'}}>
+							<Row gutter={12}>
+								<Col span={6}>
+                                    {this.loop('')}
 								</Col>
-								<Col style={ColStyle} span={6} offset={1}>
-									<div> {`位置:`+this.state.roomNum}</div>
-								</Col>
-								<Col style={ColStyle} span={6} offset={1}>
-									<div>{`设备号:`+this.state.ic_card}</div>
-								</Col>
-								<Col span={4} offset={2}>
-									{/*<a style={{ marginLeft: '25%' }} target="_blank" rel="noopener noreferrer" href="http://192.168.1.158/">视频确认</a>*/}
+								<Col style={test} span={6}>
+
+									<Row style={ColStyle} span={2} offset={1}>
+										<div style={detail}> {`位置:` + this.state.roomNum}</div>
+									</Row>
+
+									<Row style={ColStyle} span={2} offset={1}>
+										<div style={detail}>{`设备号:` + this.state.ic_card}</div>
+									</Row>
+
+									<Row style={ColStyle} span={2}>
+										<div style={detail}>{`区域:` + this.state.apt_code}</div>
+									</Row>
+									{/*<Row span={2} offset={2}>*/}
+										{/*<a style={{marginLeft: '25%',*/}
+                                            {/*textAlign: 'left',*/}
+                                            {/*fontWeight:'bold', }} target="_blank" rel="noopener noreferrer"*/}
+										   {/*href="http://192.168.1.158/">视频确认</a>*/}
+									{/*</Row>*/}
 								</Col>
 							</Row>
 						</div>

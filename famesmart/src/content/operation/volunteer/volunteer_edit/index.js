@@ -8,8 +8,8 @@ import {
 	Popconfirm,
 } from 'antd'
 import ATable from './aTable'
-import '../../../../App.css'
-
+import  './../../../../App.css'
+import appData from './../../../../assert/Ajax';
 const { Content } = Layout;
 
 export default class volunteer_edit extends Component{

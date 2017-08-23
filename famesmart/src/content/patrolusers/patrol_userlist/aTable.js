@@ -135,7 +135,7 @@ export default class pointTable extends Component {
 		}
 	}
 
-	//分页器activity/list?page=num
+	//分页器
 	_pageChange(pageNumber){
 		let userMess = this.userMess;
 		let afteruri = 'users?page=' + pageNumber ;
@@ -163,7 +163,6 @@ export default class pointTable extends Component {
             fontSize: '15px',
         }
         function handleSearch(){
-            console.log()
         }
 		return (
 		<div style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>

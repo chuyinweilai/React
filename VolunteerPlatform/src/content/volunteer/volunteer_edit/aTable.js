@@ -15,9 +15,9 @@ import {
 	InputNumber,
 	AutoComplete 
 } from 'antd';
-import appData from './../../../assert/Ajax'
 import moment from 'moment';
-import '../../../App.css'
+import appData from './../../../assert/Ajax';
+import  './../../../App.css'
 
 const FormItem = Form.Item;
 const Option = Select.Option;
@@ -164,9 +164,9 @@ class pointTable extends Component {
 			this.setState({
 				type: value
 			})
-		} else if(type == "vol_type"){
+		} else if(type == "vol_tag"){
 			this.setState({
-				vol_type: value
+				vol_tag: value
 			})
 		}
 	}
@@ -179,14 +179,15 @@ class pointTable extends Component {
 				if(this.mess.message !==  undefined){
 					let	afteruri  = 'vcity/edituser'
 					let body = {
-						"comm_code":  this.userMess.comm_code,
-						"type": this.state.type,
-						"name": this.state.name,
+						"wx_id":this.activeMess.wx_id,
 						"mobile": this.state.mobile,
+						"comm_code":  this.userMess.comm_code,
 						"vol_tag": this.state.vol_tag,
 						"occupation": this.state.occupation,
+						"type": this.state.type,
 						"ic_card": this.state.ic_card,
 						"email": this.state.email,
+						"name": this.state.name,
 					}
 					appData._dataPost(afteruri, body, (res) =>{
 						if(res >= 0 ){
@@ -324,7 +325,9 @@ class pointTable extends Component {
 						{getFieldDecorator('vol_tag',{
 							initialValue: this.state.vol_tag == ""?"普通志愿者": this.state.vol_tag,
 						})(
-							<Select onChange={this._selectChange.bind(this,'vol_tag')}  disabled={this.state.indisable}>
+							<Select onChange={this._selectChange.bind(this,'vol_tag')} 
+							//disabled={this.state.indisable}
+							>
 								<Option key="普通志愿者">普通志愿者</Option>
 								<Option key="楼组长">楼组长</Option>
 							</Select>

@@ -41,82 +41,30 @@ export default class QRCode_list extends Component {
 				}
 			},
 			{
-				colSpan:1,
-				title: '手机',
-				dataIndex: 'mobile',
-			},
-			{
   				colSpan: 1,
-				title: '姓名',
-				dataIndex: 'name',
-				render:(text) => {
-					return(
-						<text style={{color: '#1e8fe6',}}>{text}</text>
-					)
-				}
+				title: '电子钥匙数',
+				dataIndex: 'qr_total',
 			}, 
 			{
   				colSpan: 1,
-				title: '性别',
-				dataIndex: 'gender',
-			}, 
-			{
-  				colSpan: 1,
-				title: 'IC卡',
-				dataIndex: 'ic_card',
-			}, 
-			{
-  				colSpan: 1,
-				title: '居住类型',
-				dataIndex: 'type',
-				render:(text,record) => {
-					let test = ''
-					if(text === 'Y' ){
-						test = '业主'
-					}  else if(text === 'Z'){
-						test = '租户'
-					} 
-					return <div>{test}</div>
-				}
-			}, 
-			{
-  				colSpan: 1,
-				title: '楼栋',
+				title: '楼栋编号',
 				dataIndex: 'apt_code',
 			}, 
 			{
   				colSpan: 1,
-				title: '楼层',
-				dataIndex: 'floor',
+				title: '楼栋信息',
+				dataIndex: 'apt_info',
 			}, 
 			{
   				colSpan: 1,
-				title: '房间号',
-				dataIndex: 'room',
+				title: '楼层数',
+				dataIndex: 'floors',
 			}, 
 			{
   				colSpan: 1,
-				title: '职业',
-				dataIndex: 'occupation',
+				title: '房间数',
+				dataIndex: 'rooms',
 			}, 
-			{
-				colSpan:1,
-				title: 'EMAIL',
-				dataIndex: 'email',
-			},
-			{
-				colSpan:1,
-				title: '志愿者类型',
-				dataIndex: 'vol_tag ',
-				render:(text,record) => {
-					return <text>{record.vol_tag}</text>
-				}
-			}, 
-			{
-				colSpan:1,
-				title: '注册时间',
-				dataIndex: 'register_date',
-			},
 			{
 				title:"操作",
 				key:"action",
@@ -155,11 +103,12 @@ export default class QRCode_list extends Component {
 	//获取后台信息
 	_getEvent(){
 		let userMess = this.userMess;
-		let afteruri = 'vcity/listuser';
+		let afteruri = 'func/aptinfo';
 		let body = {
 			 "comm_code": userMess.comm_code
 		}
 		appData._dataPost(afteruri,body,(res) => {
+			console.log(res)
 			let data = res.data
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let len = data.length;
@@ -194,10 +143,10 @@ export default class QRCode_list extends Component {
 		}
 	}
 
-	//分页器activity/list?page=num
+	//分页器 activity/list?page=num
 	_pageChange(pageNumber){
 		let userMess = this.userMess;
-		let afteruri = 'vcity/listuser?page=' + pageNumber ;
+		let afteruri = 'func/aptinfo?page=' + pageNumber ;
 		let body = {
 			 "comm_code": userMess.comm_code
 		}

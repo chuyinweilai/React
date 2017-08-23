@@ -106,7 +106,7 @@ export default class accumulate_list extends Component {
 	//分页器activity/list?page=num
 	_pageChange(pageNumber){
 		let userMess = this.userMess;
-		let afteruri = 'activity/list?page=' + pageNumber ;
+		let afteruri = 'wxuser/topscore?page=' + pageNumber ;
 		let body = {
 			 "comm_code": userMess.comm_code
 		}

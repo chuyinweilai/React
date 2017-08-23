@@ -66,5 +66,5 @@ export default class volunteer_new extends Component{
 			</div>
 		)
 	}
-}
+} 
 

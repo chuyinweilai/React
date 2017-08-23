@@ -199,7 +199,6 @@ export default class IC_cards_resident_list extends Component {
 	}
 
 	_filter(val,index){
-		console.log(val,index)
 	}
 
 	render() {

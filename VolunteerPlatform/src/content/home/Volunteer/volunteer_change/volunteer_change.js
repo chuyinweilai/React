@@ -29,12 +29,10 @@ export default class volunteer_change extends Component{
 			'comm_code': mess.comm_code,
 		}
 		appData._dataPost(afteruri,body,(res) =>{
-			console.log(res)
 			let datas = [];
 			res.forEach((value)=>{
 				let obj = {
 					pv: Math.ceil((value.sign_cnt/value.join_limit)*100),
-					//  + '%',
 					name: value.activity_no,
 				}
 				datas.unshift(obj)

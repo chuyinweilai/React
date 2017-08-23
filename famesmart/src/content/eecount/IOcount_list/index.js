@@ -16,7 +16,7 @@ import appData from './../../../assert/Ajax';
 
 const { Content } = Layout;
 
-export default class eecount_list extends Component{
+export default class IOcount_list extends Component{
 	constructor(props){
 		super(props);
 		this.state={
@@ -48,7 +48,7 @@ export default class eecount_list extends Component{
 			<Layout style={{ padding: '0 24px 24px' }}>
 				<Breadcrumb style={{ margin: '12px 0' }} className="printHidden">
 					<Breadcrumb.Item>门禁管理</Breadcrumb.Item>
-					<Breadcrumb.Item>出入记录</Breadcrumb.Item>
+					<Breadcrumb.Item>实时记录</Breadcrumb.Item>
 				</Breadcrumb>
 				<Content>
 					<ATable  message={this.mess} Router={this.Router}/>

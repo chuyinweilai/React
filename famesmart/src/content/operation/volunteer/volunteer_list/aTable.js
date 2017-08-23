@@ -7,13 +7,14 @@ import {
 	Button, 
 	Row,
 	Col,
+	Modal,
 	Popconfirm, 
 	Pagination,
 	Menu, 
 	Dropdown 
 } from 'antd'
 import appData from './../../../../assert/Ajax';
-import '../../../../App.css'
+import  './../../../../App.css'
 
 require('./index.css');
 export default class pointTable extends Component {
@@ -27,6 +28,9 @@ export default class pointTable extends Component {
 			pageSum:1,
 			pageNum:1,
 			comm_name:'',
+
+			record:{},
+			_visible:false,
 		};
 
 		this.columns = [
@@ -121,10 +125,26 @@ export default class pointTable extends Component {
 				key:"action",
   				colSpan: 3,
 				render:(text, record)=>{
+					let title = '激活';
+					let disable = false;
+					let type = 'primary'
+					if(record.ic_card == "" ){
+							title = '激活';
+							disable = true;
+					} else {
+						if(record.a_flag){
+							title = '已激活';
+							disable = true;
+						} else{
+							title = '激活';
+							disable = false;
+						}
+					}
 					return (
 						<Row type="flex" justify="space-between">
+							<Button type="primary" disabled={disable} onClick={() =>this._action('running',record)}>{title}</Button>
 							<Button onClick={() =>this._action('change',record)}>编辑</Button>
-							<Button onClick={() =>this._action('cancel',record)}>注销</Button>
+							<Button onClick={() =>this.setState({ record: record,	_visible:true,})}>注销</Button>
 						</Row>
 					)
 				}
@@ -174,6 +194,8 @@ export default class pointTable extends Component {
 	_action(type,mess){
 		if(type === "change"){
 			this._jump('volunteer_edit', mess)
+		} else if(type === "add"){
+			this._jump('volunteer_edit', mess)
 		}else if(type === "cancel"){
 			let afteruri = 'vcity/canceluser';
 			let body = {
@@ -184,10 +206,38 @@ export default class pointTable extends Component {
 				if(res){
 					this._getEvent()
 					this.setState({
-						pageNum: 1
+						pageNum: 1,
+						_visible: false,
 					})
 				} else {
 					alert('操作失败')
+				}
+			})
+		} else if(type === 'running'){
+			let afteruri = 'wxuser/add';
+			let body = {
+				"open_id": 0,
+				"ic_card":  mess.ic_card,
+				"wx_id": mess.wx_id,
+				"nickname":  mess.mobile,
+				"name": mess.name,
+				"gender": mess.gender,
+				"mobile": mess.mobile,
+				"comm_code": mess.comm_code,
+				"apt_code": mess.apt_code,
+				"unit_code": mess.unit_code,
+				"floor": mess.floor,
+				"room": mess.room,
+				"type": mess.type,
+				"comm_name": this.userMess.comm_name,
+				"apt_info": mess.apt_code,
+			}
+			appData._dataPost(afteruri, body, (res) => {
+				if(res){
+					this._getEvent()
+					this.setState({
+						pageNum:1
+					})
 				}
 			})
 		}
@@ -220,11 +270,15 @@ export default class pointTable extends Component {
 		<div style={{ padding: 24, margin: 0, minHeight: 80 }}>
 			<Row type="flex" justify="space-between" gutter={1}>
 				<Col  className="printHidden">
-					<text style={{fontSize: 24, color: '#aaa'}}>米社运维/</text>
 					<text style={{fontSize: 24, color: '#1e8fe6'}}>志愿者管理</text>
 				</Col>
 				<Col className="printHidden">
-					<Button style={{height: 32}} onClick={()=>window.print()}>打印</Button>
+					<span style={{ marginRight: 10}}>
+							<Button style={{height: 32, backgroundColor: '#1e8fe6', color: 'white'}}  onClick = {()=>this._action('add')}>新增</Button>
+					</span>
+					<span>
+							<Button  style={{height: 32}} onClick={() => window.print()}>打印</Button>
+					</span>
 				</Col>
 			</Row>
 			<Row>
@@ -232,8 +286,19 @@ export default class pointTable extends Component {
 			</Row>
 			<Table bordered dataSource={this.state.dataSource} columns={columns} rowKey='key' pagination={false} style={{marginBottom: 20}}/> 
 			<Row type="flex" justify="end">
-			<Pagination showQuickJumper defaultCurrent={1} current={this.state.pageNum} total={this.state.total} onChange={this._pageChange.bind(this)} />
+				<Pagination showQuickJumper defaultCurrent={1} current={this.state.pageNum} total={this.state.total} onChange={this._pageChange.bind(this)} />
 			</Row>
+
+			 <Modal
+				visible={this.state._visible}
+				title="注销志愿者"
+				onCancel={() => this.setState({_visible: false})}
+				onOk={() =>this._action('cancel',this.state.record)}
+			>
+				<span>是否注销？</span>
+			</Modal> 
+
+
 		</div>
 		);
 	}

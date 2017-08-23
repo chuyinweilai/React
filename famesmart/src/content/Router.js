@@ -1,5 +1,7 @@
 import React,{Component} from 'react';
-import Home from './home/home'
+import Home_1 from './home/home'
+import Home_2 from './home/home2'
+import Home_3 from './home/home3'
 import Login from './login/login'
 import{
 	Statistics_record_list,
@@ -51,15 +53,17 @@ import {
 } from './system'
 
 //------------------------------------
+
+import{
+    IOcount_detial,
+    IOcount_list,
+	IOstatistic_list,
+    IOhotspot_list,
+} from './eecount'
+
 import{
     Civilization_list,
 } from './civilization'
-
-import{
-    IOcount_edit,
-    IOcount_list,
-	IOstatistic_list,
-} from './eecount'
 
 import{
     Doorlock_list,
@@ -105,8 +109,12 @@ export default class mainPage extends Component{
 
 	_router(name){
 		//首页
-		if(name === 'home')	
-			return <Home message={this.mess} Router={this.Router}/>
+		if(name === 'home1')	
+			return <Home_1 message={this.mess} Router={this.Router}/>
+		else if(name === 'home2')	
+			return <Home_2 message={this.mess} Router={this.Router}/>
+		else if(name === 'home3')	
+			return <Home_3 message={this.mess} Router={this.Router}/>
 
 		//登录页面
 		else if(name === 'login')	
@@ -181,12 +189,14 @@ export default class mainPage extends Component{
 		else if(name === 'device_root_list')	
 			return <Device_root_list message={this.mess} Router={this.Router}/>
 		
-        else if(name === 'IOcount_edit')
-            return <IOcount_edit message={this.mess} Router={this.Router}/>
+        else if(name === 'IOcount_detial')
+            return <IOcount_detial message={this.mess} Router={this.Router}/>
         else if(name === 'IOcount_list')
             return <IOcount_list message={this.mess} Router={this.Router}/>
         else if(name === 'IOstatistic_list')
             return <IOstatistic_list message={this.mess} Router={this.Router}/>
+        else if(name === 'IOhotspot_list')
+            return <IOhotspot_list message={this.mess} Router={this.Router}/>
         else if(name === 'patrol_list')
             return <Patrol_list message={this.mess} Router={this.Router}/>
         else if(name === 'patrol_edit')
@@ -211,6 +221,8 @@ export default class mainPage extends Component{
 		//注销
 		else if(name === 'cancel')	
 			return <Cancel message={this.mess} Router={this.Router}/>
+
+		//定位
 		else if(name === 'coordinate')	
 			return <Coordinate message={this.mess} Router={this.Router}/>
 		else return null

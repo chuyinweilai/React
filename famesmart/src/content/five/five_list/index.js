@@ -47,8 +47,7 @@ export default class five_list extends Component{
 		return (
 			<Layout style={{ padding: '0 24px 24px' }}>
 				<Breadcrumb style={{ margin: '12px 0' }} className="printHidden">
-					<Breadcrumb.Item>违规管理</Breadcrumb.Item>
-					<Breadcrumb.Item>文明管理</Breadcrumb.Item>
+					<Breadcrumb.Item>五违管理</Breadcrumb.Item>
 				</Breadcrumb>
 				<Content>
 					<ATable  message={this.mess} Router={this.Router}/>

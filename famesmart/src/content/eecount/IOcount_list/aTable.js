@@ -45,13 +45,13 @@ export default class pointTable extends Component {
 			{
 				colSpan:1,
 				title: '门禁ID',
-				dataIndex: 'access_number',
+				dataIndex: 'id',
 			},
 			{
   				colSpan: 1,
 				title: '门禁类型',
-				dataIndex: 'action_type',
-			}, 
+				dataIndex: 'access_type',
+			},
 			{
   				colSpan: 1,
 				title: '门禁位置',
@@ -60,7 +60,7 @@ export default class pointTable extends Component {
             {
                 colSpan:1,
                 title: '卡号',
-                dataIndex: 'card_id',
+                dataIndex: 'access_number',
             },
 			{
   				colSpan: 1,
@@ -70,12 +70,26 @@ export default class pointTable extends Component {
             {
                 colSpan: 1,
                 title: '归属业主楼号',
-                dataIndex: 'apt_code',
+                render:(text, record)=>{
+                	var str_number = record.owner_code.split('-')[0]
+                    return (
+						<Row type="flex" justify="center">
+							<text>{str_number}</text>
+						</Row>
+                    )
+                }
             },
             {
   				colSpan: 1,
 				title: '归属业主楼号房间号',
-				dataIndex: 'apt_code',
+                render:(text, record)=>{
+                    var room_number = record.owner_code.split('-')[1] + '-' + record.owner_code.split('-')[2]
+                        return (
+							<Row type="flex" justify="center">
+								<text>{room_number}</text>
+							</Row>
+                        )
+                }
 			}, 
 			{
   				colSpan: 1,
@@ -98,18 +112,16 @@ export default class pointTable extends Component {
 		
 		this.Router;
 		this.mess = null;
+        this.TokenMess = '';
 	}
 
 	componentWillMount(){
-		this.Router = this.props.Router;
-		this.mess = this.props.message;
-		appData._Storage('get',"userMess",(res) =>{
-			this.setState({
-				comm_name: res.comm_name
-			})
-			this.userMess = res
-			this._getEvent()
-		})
+        this.Router = this.props.Router;
+        this.mess = this.props.message;
+        appData_local._Storage('get',"Token",(res) =>{
+            this.TokenMess = res
+            this._getEvent()
+        })
 	}
 
 	_jump(nextPage,mess){
@@ -118,12 +130,14 @@ export default class pointTable extends Component {
 
 	//获取后台信息
 	_getEvent(){
+        let TokenMess = this.TokenMess;
 		let userMess = this.userMess;
-		let afteruri = 'entrance_records/residents';
+		let afteruri = 'entrance_records/search';
 		let body = {
-			 // "comm_code": userMess.comm_code
+            "owner_group":"居民",
+            "per_page":20
 		}
-        appData_local._dataGet(afteruri,(res) => {
+        appData_local._dataPost(afteruri,body,(res) => {
 			let data = res.data
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let len = data.length;
@@ -132,13 +146,13 @@ export default class pointTable extends Component {
 				dataSource: data,
 				count:len,
 			})
-		})
+		},TokenMess)
 	}
 	
 	//操作栏功能
 	_action(type,mess){
 		if(type === "change"){
-			this._jump('eecount_edit', mess)
+			this._jump('IOcount_detial', mess)
 		}else if(type === "cancel"){
 			let afteruri = 'vcity/canceluser';
 			let body = {
@@ -183,7 +197,6 @@ export default class pointTable extends Component {
             fontSize: '15px',
         }
         function handleSearch(){
-            console.log()
         }
 		return (
 		<div style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>

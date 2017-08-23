@@ -138,6 +138,8 @@ export default class pointTable extends Component {
 						test = '签到中'
 					} else if(text == 2){
 						test = '无效'
+					} else if(text == 3){
+						test = '已结束'
 					}
 					return <div>{test}</div>
 				}
@@ -158,7 +160,7 @@ export default class pointTable extends Component {
   				colSpan: 2,
 				render:(text, record)=>{
 					let disable = [];
-					if(record.vld_flag == 2){
+					if(record.vld_flag == 2 || record.vld_flag == 3){
 						return (
 							<Row type="flex" gutter={6} justify="center">
 								<Col>

@@ -182,7 +182,6 @@ export default class pointTable extends Component {
             fontSize: '15px',
         }
         function handleSearch(){
-            console.log()
         }
 
 		return (

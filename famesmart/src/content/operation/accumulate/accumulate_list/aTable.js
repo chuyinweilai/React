@@ -14,23 +14,26 @@ import {
 	Dropdown,
 	Breadcrumb, 
 } from 'antd'
-import appData from './../../../../assert/Ajax';
 import '../../../../App.css'
+import appData from './../../../../assert/Ajax';
 
 export default class pointTable extends Component {
 	constructor(props) {
 		super(props);
+		const ws = new WebSocket("ws://139.196.241.190:30300");
+		
 		this.state = {
 			dataSource: [],
 			count: 1,
 			total:0,
 			listMess:{},
-			pageSum:1,
 			pageNum:1,
+
+			alarm_data: "",
 			disable: false,
-			loading: false,
+			ws_ok : false,
+            ws:ws,
 		};
-		// ID	手机	姓名	性别	当前积分	操作		
 
 		this.columns = [
 			{
@@ -108,6 +111,33 @@ export default class pointTable extends Component {
 			})
 			this.userMess = res
 			this._getEvent()
+			this._alarm_data()
+		})
+	}
+
+	//过期提醒
+	_outDate(){
+		let afteruri = 'func/jftx/set';
+		let body = {
+			comm_code: this.userMess.comm_code
+		}
+		this.setState({
+			loading: true,
+		})
+		fetch('http://cloudapi.famesmart.com/Vcity/PC/jftx.php',{
+			method: 'GET',
+		})
+		.catch( error => {
+			this.setState({
+				loading: false,
+				disable: false,
+			})
+		});
+		
+		appData._dataPost(afteruri, body, (res)=>{
+			if(res){
+				this._alarm_data()
+			}
 		})
 	}
 
@@ -115,16 +145,27 @@ export default class pointTable extends Component {
 		this.Router(nextPage,mess,this.mess.nextPage)
 	}
 	
+	_alarm_data(){
+		let afteruri = 'func/jftx/get';
+		let body = {
+			"comm_code": this.userMess.comm_code
+		}
+		appData._dataPost(afteruri, body, (res)=>{
+			this.setState({
+				alarm_data: res[0].mind_at,
+			})
+		})
+	}
+
 	//获取后台信息
 	_getEvent(){
 		let userMess = this.userMess;
 		let afteruri = 'vcity/scoresheet';
+		let afteruri_data = 'func/jftx/get';
 		let body = {
 			 "comm_code": userMess.comm_code
 		}
 		appData._dataPost(afteruri,body,(res) => {
-			let pageSum = Math.ceil(res.total/res.per_page)
-
 			let data = res.data
 			data.forEach((value)=>{
 				value.address = value.comm_name + value.apt_info+value.floor+value.room
@@ -151,12 +192,11 @@ export default class pointTable extends Component {
 	//分页器activity/list?page=num
 	_pageChange(pageNumber){
 		let userMess = this.userMess;
-		let afteruri = 'vcity/listuser?page=' + pageNumber ;
+		let afteruri = 'vcity/scoresheet?page=' + pageNumber ;
 		let body = {
 			 "comm_code": userMess.comm_code,
 		}
 		appData._dataPost(afteruri,body,(res) => {
-			let pageSum = Math.ceil(res.total/res.per_page)
 			let data = res.data;
 			let len = data.length;
 			this.setState({
@@ -168,22 +208,6 @@ export default class pointTable extends Component {
 		})
 	}
 
-	//过期提醒
-	_outDate(){
-		this.setState({
-			loading: true,
-		})
-		fetch('http://cloudapi.famesmart.com/Vcity/PC/jftx.php',{
-			method: 'GET',
-		})
-		.catch( error => {
-			this.setState({
-				loading: false,
-				disable: false,
-			})
-		})
-	}
-
 	render() {
 		const { dataSource } = this.state;
 		let columns = this.columns;
@@ -191,11 +215,11 @@ export default class pointTable extends Component {
 		<div style={{ padding: 24, margin: 0, minHeight: 80 }}>
 			<Row type="flex" justify="space-between" gutter={1}>
 				<Col className="printHidden">
-					<text style={{fontSize: 24, color: '#aaa'}}>米社运维/</text>
 					<text style={{fontSize: 24, color: '#1e8fe6'}}>积分管理</text>
 				</Col>
 				<Col className="printHidden">
-					<Button style={{height: 32, marginRight:30, background:'#ea7c6b', color: 'white'}} onClick={()=>this.setState({disable: true})}>
+					<text style={{marginRight: 10}}>上次提醒时间： {this.state.alarm_data}</text>
+					<Button type="danger" style={{height: 32, marginRight:30}} onClick={()=>this.setState({disable: true})}>
 						到期提醒
 					</Button>
 					<Button style={{height: 32}} onClick={() =>  window.print()}>打印</Button>
@@ -219,7 +243,7 @@ export default class pointTable extends Component {
 				total={this.state.total} 
 				onChange={this._pageChange.bind(this)} />
 			</Row>
-
+			
 			<Modal
 				title="到期提醒"
 				visible = {this.state.disable}
