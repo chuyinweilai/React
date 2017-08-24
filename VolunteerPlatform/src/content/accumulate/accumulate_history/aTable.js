@@ -11,10 +11,11 @@ import {
 	Pagination,
 	Popconfirm, 
 } from 'antd'
-import '../../../App.css'
+// import '../../../App.css'
+import $ from 'jquery';
 import ACell from './aCell';
 import appData from './../../../assert/Ajax';
-
+import './index.css'
 export default class pointTable extends Component {
 	constructor(props) {
 		super(props);
@@ -93,7 +94,6 @@ export default class pointTable extends Component {
 			}
 		];
 	}
-	
 	
 	componentWillMount(){
 		this.Router = this.props.Router;
@@ -184,23 +184,53 @@ export default class pointTable extends Component {
 				type ='手动积分'
 				score =  "+" + aValue.activity_score
 			}
-			let aurl = "http://cloudapi.famesmart.com/Mirai/PC/printPage/index.html?comm_name=" +this.state.comm_name + "&mobile=" + this.state.mobile + "&change_date=" + aValue.change_date + "&type=" + type + "&score=" + score;
 			return (
 				<Modal
+					 wrapClassName= "accu_history" 
 					title="积分变动"
 					style={{height: 300}}
 					visible={this.state._visible}
-					onOk={()=>window.print()}
+					onOk = {this._printf.bind(this)}
 					onCancel={() =>this.setState({_visible: false})}
 					okText="打印" 
 					cancelText="确认"
 				>
-					<iframe style={{border: 'none',height: 250, overflow: 'hidden'}} src={encodeURI(aurl)}></iframe> 
+					 {/* <iframe id="print_window" style={{border: 'none',height: 250, overflow: 'hidden'}} src={encodeURI(aurl)}></iframe>   */}
+					 <div className="print_window">
+						 <div className="print_head">
+							<h4 className="print_title">景城品雅苑志愿者中心</h4>
+							<div className="aline">——————————————</div>
+						 </div>
+						<Row className="print_body">
+							<Col className="print_text">所在社区: {this.state.comm_name}</Col>
+							<Col className="print_text">手机号: {this.state.mobile}</Col>
+							<Col className="print_text">积分时间: {aValue.change_date.substring(0,10)}</Col>
+							<Col className="print_text">积分类型: {type}</Col>
+							<Col className="print_text">积分分值: {score}</Col>
+							<Col className="print_sign">兑换者签名</Col>
+						</Row> 
+						<div  className="print_bottom">
+							<div style={{height: '100px'}}></div>
+							<div className="aline">——————————————</div>
+						</div>
+					 </div>
 				</Modal>
 			)
 		}
 	}
 	
+	_printf(){
+		let el = document.getElementsByClassName("print_window")[0];
+		let iframe = document.createElement('IFRAME');
+		let doc = null;
+		document.body.appendChild(iframe);
+		doc = iframe.contentWindow.document;
+		doc.write('<div>' + el.innerHTML + '</div>');
+		doc.close();
+		iframe.contentWindow.focus();
+		iframe.contentWindow.print();
+	}
+
 	render() {
 		const { dataSource } = this.state;
 		let columns = this.columns;

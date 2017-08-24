@@ -164,49 +164,19 @@ export default class pointTable extends Component {
   				colSpan: 2,
 				render:(text, record)=>{
 					let disable = [];
-					if(record.vld_flag == 2 || record.vld_flag == 3){
-						return (
-							<Row type="flex" gutter={6} justify="center">
-								<Col>
-									<Button onClick={() =>this._action('sign',record)} disabled = {true}>签到</Button>
-								</Col>
-								<Col>
-									<Button onClick={() =>this._action('change',record)} disabled = {true}>修改</Button>
-								</Col>
-								<Col>
-									<Button onClick={() =>this.setState({	record: record,	_visible:true,})} disabled = {true}>取消</Button>
-								</Col>
-							</Row>
-						)
-					} else if(record.sign_cnt == 0 && record.join_cnt == 0 ){
-						return (
-							<Row type="flex" gutter={6} justify="center">
-								<Col>
-									<Button onClick={() =>this._action('sign',record)} disabled = {true}>签到</Button>
-								</Col>
-								<Col>
-									<Button onClick={() =>this._action('change',record)} disabled = {false}>修改</Button>
-								</Col>
-								<Col>
-									<Button onClick={() =>this._action('cancel',record)} disabled = {false}>取消</Button>
-								</Col>
-							</Row>
-						)
-					} else {
-						return (
-							<Row type="flex" gutter={6} justify="center">
-								<Col>
-									<Button onClick={() =>this._action('sign',record)} disabled = {false}>签到</Button>
-								</Col>
-								<Col>
-									<Button onClick={() =>this._action('change',record)} disabled = {true}>修改</Button>
-								</Col>
-								<Col>
-									<Button onClick={() =>this._action('cancel',record)} disabled = {true}>取消</Button>
-								</Col>
-							</Row>
-						)
-					}
+					return (
+						<Row type="flex" gutter={6} justify="center">
+							<Col>
+								<Button onClick={() =>this._action('sign',record)}>签到</Button>
+							</Col>
+							<Col>
+								<Button onClick={() =>this._action('change',record)}>修改</Button>
+							</Col>
+							<Col>
+								<Button onClick={() =>this._action('cancel',record)}>取消</Button>
+							</Col>
+						</Row>
+					)
 				}
 			}
 		];

@@ -17,7 +17,6 @@ import {
 	InputNumber,
 	AutoComplete 
 } from 'antd';
-import Selects from './aCell';
 import appData from './../../../assert/Ajax'
 import moment from 'moment';
 import '../../../App.css'
@@ -38,8 +37,11 @@ class pointTable extends Component {
 			point:'',
 			type: 1,
 			typeVals: '社区服务',
-			rule_sorce: 5,
-			rule_no:1,
+
+			score: 5,
+			score_type:1,
+			score_name:'',
+
 			theme: '',
 			content: '',
 			limite: 1,
@@ -49,13 +51,16 @@ class pointTable extends Component {
 			thumbUrl:'',
 			pic_path:'',
 			address: '',
-
+			score_list:[],
 			pic_list:[],
-			disable: false,
+			updataType: true,
 		};
 		this.userMess;
 		this.Router;
 		this.mess = null;
+		this.Children = [];
+		this.score_list=[];
+		
 	}
 
 	componentWillMount(){
@@ -90,8 +95,8 @@ class pointTable extends Component {
 			this.setState({
 				open_add:mess.open_add,
 				point: mess.comm_name,
-				rule_sorce: mess.score,
-				rule_no: mess.score_type,
+				score: mess.score,
+				score_type: mess.score_type,
 				type: mess.type,
 				typeVals: typeVal,
 				theme: mess.title,
@@ -103,6 +108,7 @@ class pointTable extends Component {
 				activity_no:  mess.activity_no,
 				pic_path:mess.pic_path,
 			})
+			this._select_1(mess.score_type);
 		} else {
 			let adate = new Date()
 			let time = adate.getFullYear() + "-" + (adate.getMonth()+1) + "-" + adate.getDate()
@@ -110,11 +116,44 @@ class pointTable extends Component {
 				open_date: time,
 				vld_start: time,
 				vld_end: time,
+				updataType: false,
 			})
+			this._select_1(1);
 		}
-
 	}
 
+	//活动类型
+	_select_1(num){
+		let afteruri = 'vcity/listrule';
+		appData._Storage('get', 'userMess',(res)=>{
+			let body={
+				comm_code: res.comm_code
+			}
+			appData._dataPost(afteruri,body,(data) =>{
+				let others = {
+					comm_code:"M0001",
+					rule_name:"其他",
+					score_type:0,
+					rule_no: 0
+				}
+				data.push(others)
+				let array = []
+				data.forEach((vals, index)=> {
+					if(vals.rule_no == num){
+						this.setState({
+							score_name: vals.rule_name,
+						})
+					}
+					let opt = <Option key={vals.rule_no}>{vals.rule_name}</Option>;
+					array.push(opt)
+				});
+				this.setState({
+					score_list: array,
+				})
+			})
+		})
+	}
+	
 	_jump(nextPage,mess){
 		if(nextPage == 'back'){
 			this.props.Router(this.props.message.historyPage,mess,this.props.message.nextPage)
@@ -125,9 +164,9 @@ class pointTable extends Component {
 
 	//文本
 	_input(name,e){
-		if(name === 'rule_sorce'){
+		if(name === 'score'){
 			this.setState({
-				rule_sorce: e
+				score: e
 			})
 		} else if(name === 'theme'){
 			let value = e.target.value;
@@ -174,11 +213,11 @@ class pointTable extends Component {
 
 	//选择活动类型，积分
 	_selectChange(value, type){
-		if(type == 'rule_no'){
+		if(type == 'score_type'){
 			if(value == 0){
 				this.setState({
 					rule_ctrl: false,
-					rule_no: value.rule_no,
+					score_type: value.score_type,
 				})
 				this.props.form.setFieldsValue({
 					accumulate: 0,
@@ -189,8 +228,8 @@ class pointTable extends Component {
 				});
 				this.setState({
 					rule_ctrl: true,
-					rule_no: value.rule_no,
-					rule_sorce: value.rule_score,
+					score_type: value.score_type,
+					score: value.rule_score,
 				})
 			}
 		} else if(type == 'type'){
@@ -222,6 +261,7 @@ class pointTable extends Component {
 			action: 'http://cloudapi.famesmart.com/api/activity/filesave',
 			listType: 'picture',
 			defaultFileList : arr,	
+			disabled: this.state.updataType,
 			onRemove :(file)=>{
 				let arr = this.state.pic_list;
 				let aurl = file.url;
@@ -277,14 +317,7 @@ class pointTable extends Component {
 			let json = JSON.parse(response);
 			let pic_list = that.state.pic_list;
 			pic_list.push( json.path)
-			// let pic_paths = that.state.pic_path;
-			// if(pic_paths.length){
-			// 	pic_paths +=( "," + json.path);
-			// } else {
-			// 	pic_paths += json.path;
-			// }
 			that.setState({
-				// pic_path: pic_paths,
 				pic_list: pic_list,
 				disable: false,
 			})
@@ -293,69 +326,97 @@ class pointTable extends Component {
 
 	//提交创建新活动
 	_add_active(type,e){
-		e.preventDefault();
-		this.props.form.validateFields((err, values) => {
-			if (!err) {
-				let afteruri  = '';
-				let body  = {}
-				let adate = new Date()
-				let time = adate.getFullYear() + "-" + (adate.getMonth()+1) + "-" + adate.getDate()
+		let bol = this.state.updataType;
+		if(!bol){
+			e.preventDefault();
+			this.props.form.validateFields((err, values) => {
+				if (!err) {
+					let afteruri  = '';
+					let body  = {}
+					let adate = new Date()
+					let time = adate.getFullYear() + "-" + (adate.getMonth()+1) + "-" + adate.getDate()
 
-				let pic_list = this.state.pic_list;
-				let pic_path = '';
-				pic_list.forEach((val, index)=>{
-					if(index){
-						pic_path += "," + val;
-					}else {
-						pic_path = val;
+					let pic_list = this.state.pic_list;
+					let pic_path = '';
+					pic_list.forEach((val, index)=>{
+						if(index){
+							pic_path += "," + val;
+						}else {
+							pic_path = val;
+						}
+					})
+					if(this.activeMess == undefined){
+							afteruri  = 'activity/add';
+							body = {
+								"comm_code":  this.userMess.comm_code,
+								"title":  this.state.theme,
+								"detail":  this.state.content,
+								"pic_path":pic_path,
+								"join_limit": this.state.limite,
+								"type": this.state.type,
+								"score_type": this.state.score_type,
+								"score": this.state.score,
+								"pub_date": time,
+								"open_date": this.state.open_date,
+								"vld_start":  this.state.vld_start,
+								"vld_end":  this.state.vld_end,
+								"open_add": this.state.open_add,
+							}
+					} else {
+							afteruri  = 'activity/update';
+							body= {
+								"comm_code":  this.userMess.comm_code,
+								"title":  this.state.theme,
+								"detail":  this.state.content,
+								"pic_path": pic_path,
+								"join_limit": this.state.limite,
+								"type": this.state.type,
+								"score_type": this.state.score_type,
+								"score": this.state.score,
+								"pub_date": time,
+								"open_date": this.state.open_date,
+								"vld_start":  this.state.vld_start,
+								"vld_end":  this.state.vld_end,
+								"activity_no": this.activeMess.activity_no,
+								"join_cnt": this.activeMess.join_cnt,
+								"sign_cnt": this.activeMess.sign_cnt,
+								"open_add": this.state.open_add,
+							}
 					}
-				})
-				if(this.activeMess == undefined){
-						afteruri  = 'activity/add';
-						body = {
-							"comm_code":  this.userMess.comm_code,
-							"title":  this.state.theme,
-							"detail":  this.state.content,
-							"pic_path":pic_path,
-							"join_limit": this.state.limite,
-							"type": this.state.type,
-							"score_type": this.state.rule_no,
-							"score": this.state.rule_sorce,
-							"pub_date": time,
-							"open_date": this.state.open_date,
-							"vld_start":  this.state.vld_start,
-							"vld_end":  this.state.vld_end,
-							"open_add": this.state.open_add,
+					appData._dataPost(afteruri, body, (res) =>{
+						if(res){
+							this._jump('back')
 						}
-				} else {
-						afteruri  = 'activity/update';
-						body= {
-							"comm_code":  this.userMess.comm_code,
-							"title":  this.state.theme,
-							"detail":  this.state.content,
-							"pic_path": pic_path,
-							"join_limit": this.state.limite,
-							"type": this.state.type,
-							"score_type": this.state.rule_no,
-							"score": this.state.rule_sorce,
-							"pub_date": time,
-							"open_date": this.state.open_date,
-							"vld_start":  this.state.vld_start,
-							"vld_end":  this.state.vld_end,
-							"activity_no": this.activeMess.activity_no,
-							"join_cnt": this.activeMess.join_cnt,
-							"sign_cnt": this.activeMess.sign_cnt,
-							"open_add": this.state.open_add,
-						}
+					})
 				}
-				appData._dataPost(afteruri, body, (res) =>{
-					if(res){
-						this._jump('back')
-					}
-				})
+			})
+		}
+	}
+
+	_render(){
+			if(this.state.updataType){
+				return (
+					<Row type="flex" justify="end" gutter={1} >
+						<Col span={2}>
+							<Button type="primary" onClick={()=>this.setState({updataType: false})} >编辑</Button>								
+						</Col>
+						<Col span={2}>
+							<Button onClick={()=>this._jump('back')}>返回</Button>
+						</Col>
+					</Row>
+				)
+			} else {
+				return (
+					<Row type="flex" justify="end" gutter={1} >
+						<Col span={2}>
+							<Button type="primary" onClick={this._add_active.bind(this,'add')}>提交</Button>
+						</Col>
+						<Col span={2}>
+							<Button onClick={()=>this.setState({updataType: true})}>取消</Button>
+						</Col>
+					</Row>
+				)
 			}
-		})
-		return null
 	}
 
 	render() { 
@@ -371,17 +432,21 @@ class pointTable extends Component {
 					<text style={{fontSize: 24, color: '#aaa'}}>活动管理/</text>
 					<text style={{fontSize: 24, color: '#1e8fe6'}}>新增（修改）活动</text>
 				</Col>
-				<Form  style={{paddingTop: '50px'}} onSubmit={this._add_active.bind(this,'add')}>
+				<Form  style={{paddingTop: '50px'}} >
 					<Row gutter={40}>
 						<Col span={8}>
 							<FormItem
 								{...formItemLayout}
 								label="积分类型">
-								{getFieldDecorator('rule_no',{
-									initialValue: this.state.rule_no
+								{getFieldDecorator('score_type',{
+									initialValue: this.state.score_name
 								})(
-									<Selects Childer = {this.state.children} SelectCtrl={(index)=>this._selectChange(index,"rule_no")}>
-									</Selects>
+									<Select 
+										onChange={(index)=>this._selectChange(index,"score_type")} 
+										disabled={this.state.updataType}
+										>
+										{this.state.score_list}
+									</Select>
 								)}
 							</FormItem>
 						</Col>
@@ -392,7 +457,7 @@ class pointTable extends Component {
 								{getFieldDecorator('type',{
 									initialValue: this.state.typeVals
 								})(
-									<Select onChange={(index)=>this._selectChange(index,"type")}>
+									<Select onChange={(index)=>this._selectChange(index,"type")} disabled={this.state.updataType}>
 										<Option key="1">社区服务</Option>
 										<Option key="2">公益活动</Option>
 										<Option key="3">其他</Option>
@@ -405,9 +470,9 @@ class pointTable extends Component {
 								{...formItemLayout}
 								label="活动积分">
 								{getFieldDecorator('accumulate',{
-									initialValue: this.state.rule_sorce
+									initialValue: this.state.score
 								})(
-									<InputNumber onChange={this._input.bind(this,'rule_sorce')} disabled={this.state.rule_ctrl}/>
+									<InputNumber onChange={this._input.bind(this,'score')} disabled={this.state.rule_ctrl}/>
 								)}
 							</FormItem>
 						</Col>
@@ -428,7 +493,7 @@ class pointTable extends Component {
 										}
 									]
 								})(
-									<Input placeholder="活动主题" onChange={this._input.bind(this,'theme')} />
+									<Input placeholder="活动主题" onChange={this._input.bind(this,'theme')} disabled={this.state.updataType}/>
 								)}
 							</FormItem>
 						</Col>
@@ -444,7 +509,7 @@ class pointTable extends Component {
 										}
 									]
 								})(
-									<Input placeholder="活动地点" onChange={this._input.bind(this,'address')} />
+									<Input placeholder="活动地点" onChange={this._input.bind(this,'address')} disabled={this.state.updataType} />
 								)}
 							</FormItem>
 						</Col> 
@@ -455,7 +520,7 @@ class pointTable extends Component {
 								{getFieldDecorator('limite',{
 									initialValue: this.state.limite
 								})(
-									<InputNumber min={1} placeholder="限制人数" onChange={this._input.bind(this,'limite')}  />
+									<InputNumber min={1} placeholder="限制人数" onChange={this._input.bind(this,'limite')} disabled={this.state.updataType} />
 								)}
 							</FormItem>
 						</Col>
@@ -469,7 +534,7 @@ class pointTable extends Component {
 								{getFieldDecorator('open_date',{
 									initialValue: moment(this.state.open_date, 'YYYY-MM-DD')
 								})(
-									<DatePicker placeholder="选择活动日期" /* showTime={true} format={dateFormat}*/ onChange={this._timeInput.bind(this,'open_date')}/>
+									<DatePicker placeholder="选择活动日期" disabled={this.state.updataType} onChange={this._timeInput.bind(this,'open_date')}/>
 								)}
 							</FormItem>
 						</Col>
@@ -480,7 +545,7 @@ class pointTable extends Component {
 								{getFieldDecorator('vld_start',{
 									initialValue: moment(this.state.vld_start, 'YYYY-MM-DD')
 								})(
-									<DatePicker  placeholder="报名开始日期"	showToday  onChange={this._timeInput.bind(this,'vld_start')}/>
+									<DatePicker  placeholder="报名开始日期"	showToday  onChange={this._timeInput.bind(this,'vld_start')} disabled={this.state.updataType}/>
 								)}
 							</FormItem>
 						</Col>
@@ -491,11 +556,12 @@ class pointTable extends Component {
 								{getFieldDecorator('vld_end',{
 									initialValue: moment(this.state.vld_end, 'YYYY-MM-DD')
 								})(
-									<DatePicker placeholder="报名结束日期"  onChange={this._timeInput.bind(this,'vld_end')}/>
+									<DatePicker placeholder="报名结束日期"  onChange={this._timeInput.bind(this,'vld_end')} disabled={this.state.updataType}/>
 								)}
 							</FormItem>
 						</Col>
 					</Row>
+
 					<Row gutter={40}>
 						{this._imgUp()}
 					</Row>
@@ -510,19 +576,22 @@ class pointTable extends Component {
 									{required: true, message:"请输入活动内容"}
 									]
 							})(
-								<TextArea rows={6} placeholder="输入活动内容" onChange={this._input.bind(this,'content')} />
+								<TextArea rows={6} placeholder="输入活动内容" onChange={this._input.bind(this,'content')} disabled={this.state.updataType}/>
 							)}
 						</FormItem>
 					</Row>
+
 					<FormItem>
-						<Row type="flex" justify="end" gutter={1} >
-							<Col span={2}>
-								<Button type="primary" disabled={this.state.disable} htmlType="submit">提交</Button>
-							</Col>
-							<Col span={2}>
-								<Button onClick={()=>this._jump('back')}>取消</Button>
-							</Col>
-						</Row>
+						{this.activeMess !== undefined?this._render():
+							<Row type="flex" justify="end" gutter={1} >
+								<Col span={2}>
+									<Button type="primary" onClick={this._add_active.bind(this,'add')}>提交</Button>
+								</Col>
+								<Col span={2}>
+									<Button onClick={()=>this._jump('back')}>返回</Button>
+								</Col>
+							</Row>
+						}
 					</FormItem>
 				</Form>
 			</div>

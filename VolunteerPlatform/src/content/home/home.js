@@ -59,7 +59,7 @@ export default class home extends Component{
 
 					<Row gutter={16}>
 						<Col span={7} >
-									<Active/> 
+									<Active message={this.mess} Router={this.Router}/> 
 						</Col>
 						 <Col span={10}>
 								<Row gutter={16} style={{height: 358,}}>

@@ -39,9 +39,6 @@ body {
     .ant-modal-close,
     .ant-modal-header,
     .printHidden {
-        visibility: hidden;
+        display: none;
     }
-    /* .ant-modal-body {
-        padding: 0
-    } */
 }

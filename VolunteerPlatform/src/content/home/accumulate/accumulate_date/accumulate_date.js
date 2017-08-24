@@ -109,6 +109,9 @@ export default class accumulate_list extends Component {
 			<text style={{fontSize: 20,paddingBottom: 5, }}>
 				积分过期提醒
 			</text>
+			<text style={{fontSize: 12,paddingBottom: 5, color:'red'}}>
+				(12月31日过期)
+			</text>
 			<Table
 				style={{ height: 154}}
 				bordered={true}

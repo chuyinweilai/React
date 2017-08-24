@@ -30,6 +30,7 @@ export default class pointTable extends Component {
 			count: 1,
 			pageNum:1,
 			total:0,
+			disable: false,
 		};
 		// 编号	手机	姓名	性别	IC卡号	职业	业主/租客	操作
 
@@ -90,12 +91,12 @@ export default class pointTable extends Component {
 				title:"操作",
 				key:"action",
 				render:(text, record)=>{
+					// if(this.activeMess.vld_flag == )
 					let state = '签到';
 					let disable = false;
 					if(record.status_flag == 1){
 						state = "已签到"
 					}
-					
 					if(this.activeMess.vld_flag == 3){
 						disable = true
 					} else {
@@ -105,7 +106,7 @@ export default class pointTable extends Component {
 					}
 					return(
 						<span>
-							<Button disabled={disable} onClick={()=>this._volSign(text)}>{state}</Button>
+							<Button disabled={this.state.disable} onClick={()=>this._volSign(text)}>{state}</Button>
 						</span>
 					)
 				}
@@ -160,7 +161,6 @@ export default class pointTable extends Component {
 	//活动结束
 	_over(){
 		let afteruri = 'activity/finish';
-		// this.activeMess
 		let body = {   
 			"comm_code": this.activeMess.comm_code,
             "activity_no": this.activeMess.activity_no
@@ -173,7 +173,6 @@ export default class pointTable extends Component {
 	}	
 
 	_volSign(obj){
-		// this.activeMess = mess;
 		let body ={
 			"wx_id": obj.wx_id,
 			"activity_no": Number(this.activeMess.activity_no),
@@ -218,8 +217,8 @@ export default class pointTable extends Component {
 						<text style={{fontSize: 24, color: '#1e8fe6'}}>签到</text>
 					</Col>
 					<Col className="printHidden">
-							 <Button type="danger" style={{height: 32,marginRight: 30}} onClick={() => this._over()}>结束活动</Button> 
-							<Button  style={{height: 32}} onClick={() => window.print()}>打印</Button>
+						<Button type="danger" style={{height: 32,marginRight: 30}} onClick={() => this._over()} disabled={this.state.disable}>结束活动</Button> 
+						<Button  style={{height: 32}} onClick={() => window.print()}>打印</Button>
 					</Col>
 				</Row>
 				<Row>
@@ -235,10 +234,14 @@ export default class pointTable extends Component {
 						</Row>
 					</Col>
 				</Row>
-				<Table bordered columns={this.columns} dataSource={this.state.dataSource}/>
-				{/* <Row type="flex" justify="end"> */}
-					{/* <Pagination showQuickJumper defaultCurrent={1} current={this.state.pageNum} total={this.state.total} onChange={this._pageChange.bind(this)} /> */}
-				{/* </Row> */}
+				<Row>
+					<Col>
+					</Col>
+				</Row>
+				<Table bordered columns={this.columns} dataSource={this.state.dataSource} pagination={false}/>
+				 <Row type="flex" justify="end"> 
+					 <Pagination showQuickJumper defaultCurrent={1} current={this.state.pageNum} total={this.state.total} onChange={this._pageChange.bind(this)} /> 
+				 </Row> 
 			</div>
 		);
 	}

@@ -29,6 +29,7 @@ export default class active extends Component {
 		};
 		this.Router;
 		this.mess = null;
+		this.activeMess = null;
 	}
 
 	componentWillMount(){
@@ -53,11 +54,7 @@ export default class active extends Component {
 		}
 		appData._dataPost(afteruri,body,(res) => {
 			let data =res.activity;
-			// let arr = [];
-			// data.forEach((value) =>{
-			// 	let obj = this._listView(value);
-			// 	arr.push(obj)
-			// })
+			this.activeMess = data;
 			let obj = this._listView(data);
 			this.setState({
 				dataSource: obj,
@@ -79,25 +76,29 @@ export default class active extends Component {
 		}
 		return (
 			<li className="box">
-				<div className="imagebox" >
+				<Row className="imagebox" >
 					<img className="image" src={peruri+ arr[0]}/>  
-				</div>
-				<div>
-					<span style={{fontSize: 16,fontWeight: 'bold', marginRight: 20}}>{data.title}</span>
-					<span style={{color: "#fdac41", fontSize: 16,}}>#{typeText}#</span>
-				</div>
-				<div>
-					<span style={{fontSize: 14,fontWeight: 'bold', marginRight: 20}}>
+				</Row>
+				<Row style={{textAlign:'left'}}>
+					<Col style={{fontSize: 16,fontWeight: 'bold', marginRight: 20}}>{data.title}</Col>
+					<Col style={{color: "#fdac41", fontSize: 16,}}>#{typeText}#</Col>
+				</Row>
+				<Row type="flex" justify="space-between">
+					<Col style={{fontSize: 14,fontWeight: 'bold', marginRight: 20}}>
 						<Icon type="user" style={{ fontSize: 16}} />
 						报名{data.join_cnt}
-					</span>
-					<span style={{fontSize: 14,fontWeight: 'bold', marginRight: 20}}>
+					</Col>
+					<Col style={{fontSize: 14,fontWeight: 'bold', marginRight: 20}}>
 						<Icon type="heart-o" style={{ fontSize: 16}} />
 						签到{data.sign_cnt}
-					</span>
-				</div>
+					</Col>
+				</Row>
 			</li>
 		)
+	}
+
+	_detail(){
+		this._jump("activity_add",this.activeMess)
 	}
 
 	render() {
@@ -110,9 +111,11 @@ export default class active extends Component {
 					即将开始
 				</text>
 			</div>
-			<ul style={{float:'left'}}>
-				{this.state.dataSource}
-			</ul>
+			<button style={{background: 'none', border: 'none', cursor: 'pointer'}} onClick={()=>this._detail()}>
+				<ul style={{float:'left'}}>
+					{this.state.dataSource}
+				</ul>
+			</button>
 		</div>
 		);
 	}

@@ -23,12 +23,6 @@ body {
     min-height: 80
 }
 
-@media print {
-    .printHidden {
-        visibility: hidden;
-    }
-}
-
 .ant-table-tbody>tr>td {
     text-align: left
 }
@@ -40,4 +34,10 @@ body {
 .ant-table-thead>tr>th {
     background-color: #1e8fe6;
     color: white
+}
+
+@media print {
+    .printHidden {
+        display: none;
+    }
 }

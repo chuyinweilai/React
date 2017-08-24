@@ -108,7 +108,6 @@ export default class QRCode_list extends Component {
 			 "comm_code": userMess.comm_code
 		}
 		appData._dataPost(afteruri,body,(res) => {
-			console.log(res)
 			let data = res.data
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let len = data.length;

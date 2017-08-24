@@ -117,9 +117,6 @@ class pointTable extends Component {
 				ch_number: e,
 			})
 
-			// this.props.form.setFieldsValue({
-			// 	ch_score: score*e
-			// })
 		}
 	}
 
@@ -230,10 +227,14 @@ class pointTable extends Component {
 						{getFieldDecorator('ch_number',{
 							initialValue: this.state.ch_number
 						})(
+							<Row>
 							<InputNumber 
 								min = {1}
+								defaultValue={1}
 								max = {this.state.maxNumber}
 							 	onChange={this._input.bind(this,"ch_number")}/>
+								<text>剩余{this.state.maxNumber}件</text>
+							</Row>
 						)}
 					</FormItem>
 
@@ -251,7 +252,7 @@ class pointTable extends Component {
 
 				<Row type="flex" justify="end" gutter={1} className="printHidden">
 					<Col span={2}>
-						<Button style={{backgroundColor:'#1e8fe6', color: 'white'}} onClick={() =>this.setState({visible: true})} disabled={this.state.btnAble}>确认</Button>
+						<Button style={this.state.btnAble?{backgroundColor:'#aaa', color: 'white'}:{backgroundColor:'#1e8fe6', color: 'white'}} onClick={() =>this.setState({visible: true})} disabled={this.state.btnAble}>确认</Button>
 					</Col>
 					<Col span={2}>
 						<Button onClick={()=>this._jump('back')}>取消</Button>

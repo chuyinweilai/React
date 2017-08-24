@@ -127,18 +127,18 @@ export default class pointTable extends Component {
 		fetch('http://cloudapi.famesmart.com/Vcity/PC/jftx.php',{
 			method: 'GET',
 		})
-		.then(res =>{
-			this.setState({
-				loading: false,
-				disable: false,
-			})
-		})
 		.catch( error => {
+			// this.setState({
+			// 	loading: false,
+			// 	disable: false,
+			// })
+		});
+		setTimeout(()=>{
 			this.setState({
 				loading: false,
 				disable: false,
 			})
-		});
+		},1000)
 		
 		appData._dataPost(afteruri, body, (res)=>{
 			if(res){
@@ -228,7 +228,7 @@ export default class pointTable extends Component {
 					<Button type="danger" style={{height: 32, marginRight:30}} onClick={()=>this.setState({disable: true})}>
 						到期提醒
 					</Button>
-					<Button style={{height: 32}} onClick={() =>  window.print()}>打印</Button>
+					<Button style={{height: 32}} onClick={() => window.print()}>打印</Button>
 				</Col>
 			</Row>
 			<Row>
