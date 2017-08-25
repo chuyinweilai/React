@@ -8,6 +8,7 @@ import {
 	Input, 
 	Menu, 
 	Button, 
+	Modal,
 	Pagination,
 	Dropdown,
 	Popconfirm, 
@@ -30,7 +31,7 @@ export default class pointTable extends Component {
 			count: 1,
 			pageNum:1,
 			total:0,
-			disable: false,
+			volType: false,
 		};
 		// 编号	手机	姓名	性别	IC卡号	职业	业主/租客	操作
 
@@ -97,8 +98,8 @@ export default class pointTable extends Component {
 					if(record.status_flag == 1){
 						state = "已签到"
 					}
-					if(this.activeMess.vld_flag == 3){
-						disable = true
+					if(this.activeMess.vld_flag == 3 || this.activeMess.vld_flag == 2){
+							disable = true
 					} else {
 						if(record.status_flag == 1){
 							disable = true
@@ -106,7 +107,7 @@ export default class pointTable extends Component {
 					}
 					return(
 						<span>
-							<Button disabled={this.state.disable} onClick={()=>this._volSign(text)}>{state}</Button>
+							<Button disabled={disable} onClick={()=>this._volSign(text)}>{state}</Button>
 						</span>
 					)
 				}
@@ -123,6 +124,11 @@ export default class pointTable extends Component {
 			activity_no:  mess.activity_no,
 			title: mess.title,
 		})
+		if(mess.vld_flag == 3 || mess.vld_flag == 2){
+			this.setState({
+				volType: true,
+			})
+		} 
 		appData._Storage('get','userMess',(res) => {
 			this.userMess = res;
 			this._login(res,mess)
@@ -217,7 +223,7 @@ export default class pointTable extends Component {
 						<text style={{fontSize: 24, color: '#1e8fe6'}}>签到</text>
 					</Col>
 					<Col className="printHidden">
-						<Button type="danger" style={{height: 32,marginRight: 30}} onClick={() => this._over()} disabled={this.state.disable}>结束活动</Button> 
+						<Button type="danger" style={{height: 32,marginRight: 30}} onClick={()=> {this.setState({_modal: true})}} disabled={this.state.volType}>结束活动</Button> 
 						<Button  style={{height: 32}} onClick={() => window.print()}>打印</Button>
 					</Col>
 				</Row>
@@ -242,6 +248,15 @@ export default class pointTable extends Component {
 				 <Row type="flex" justify="end"> 
 					 <Pagination showQuickJumper defaultCurrent={1} current={this.state.pageNum} total={this.state.total} onChange={this._pageChange.bind(this)} /> 
 				 </Row> 
+				 <Modal
+					visible = {this.state._modal}
+				 	onOk={() => this._over()}
+					onCancel = {()=> {this.setState({_modal: false})}}
+				 >
+					<Row>
+						<Col>是否确认结束活动？</Col>
+					</Row>
+				 </Modal>
 			</div>
 		);
 	}

@@ -204,6 +204,7 @@ class pointTable extends Component {
 				if(this.mess.message !==  undefined){
 					let	afteruri  = 'vcity/edituser'
 					let body = {
+						"wx_id":this.activeMess.wx_id,
 						"comm_code":  this.userMess.comm_code,
 						"type": this.state.type,
 						"name": this.state.name,
@@ -219,7 +220,6 @@ class pointTable extends Component {
 						"birthday": this.state.birthday,
 						"sfz_id": this.state.sfz_id,
 					}
-					console.log(body)
 					appData._dataPost(afteruri, body, (res) =>{
 						if(res >= 0 ){
 							this._jump('back')
@@ -243,7 +243,6 @@ class pointTable extends Component {
 						"birthday": this.state.birthday,
 						"sfz_id": this.state.sfz_id,
 					}
-					console.log(body)
 					appData._dataPost(afteruri, body, (res) =>{
 						if(res >= 0 ){
 							this._jump('back')
@@ -299,7 +298,7 @@ class pointTable extends Component {
 
 					<FormItem
 						{...formItemLayout}
-						label="身份">
+						label="身份证号">
 						{getFieldDecorator('sfz_id',{
 							initialValue: this.state.sfz_id,
 							rules: [

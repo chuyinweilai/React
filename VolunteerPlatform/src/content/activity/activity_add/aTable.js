@@ -7,6 +7,7 @@ import {
 	Form, 
 	Input, 
 	Select, 
+	Modal,
 	Button, 
 	Tooltip, 
 	Upload, 
@@ -54,13 +55,14 @@ class pointTable extends Component {
 			score_list:[],
 			pic_list:[],
 			updataType: true,
+			volType: false,
+			_modal: false,			
 		};
 		this.userMess;
 		this.Router;
 		this.mess = null;
 		this.Children = [];
 		this.score_list=[];
-		
 	}
 
 	componentWillMount(){
@@ -86,6 +88,11 @@ class pointTable extends Component {
 				typeVal= '公益活动'
 			} else if(mess.type == 3){
 				typeVal= '其他'
+			}
+			if(mess.vld_flag == 2 ||mess.vld_flag == 3){
+				this.setState({
+					volType: true
+				})
 			}
 			if(mess.pic_path !== "" ){
 				this.setState({
@@ -393,12 +400,34 @@ class pointTable extends Component {
 		}
 	}
 
+	//操作栏功能
+	_action(type){
+		if(type === "cancel"){
+			let afteruri = "activity/cancel";
+			let body ={   
+				"comm_code": this.activeMess.comm_code,
+            	"activity_no":  this.activeMess.activity_no
+			}
+			appData._dataPost(afteruri,body,(res)=>{
+				if(res){
+					this.setState({
+						_modal: false,
+					})
+					this._jump('back')
+				}
+			})
+		}
+	}
+
 	_render(){
 			if(this.state.updataType){
 				return (
 					<Row type="flex" justify="end" gutter={1} >
 						<Col span={2}>
-							<Button type="primary" onClick={()=>this.setState({updataType: false})} >编辑</Button>								
+							<Button type="danger" onClick={()=> {this.setState({_modal: true})}}  disabled={this.state.volType}>取消</Button>
+						</Col>
+						<Col span={2}>
+							<Button type="primary" onClick={()=>this.setState({updataType: false})} disabled={this.state.volType}>编辑</Button>								
 						</Col>
 						<Col span={2}>
 							<Button onClick={()=>this._jump('back')}>返回</Button>
@@ -408,6 +437,9 @@ class pointTable extends Component {
 			} else {
 				return (
 					<Row type="flex" justify="end" gutter={1} >
+						<Col span={2}>
+							<Button type="danger" onClick={()=> {this.setState({_modal: true})}}>取消</Button>
+						</Col>
 						<Col span={2}>
 							<Button type="primary" onClick={this._add_active.bind(this,'add')}>提交</Button>
 						</Col>
@@ -594,6 +626,15 @@ class pointTable extends Component {
 						}
 					</FormItem>
 				</Form>
+				 <Modal
+					visible = {this.state._modal}
+				 	onOk={this._action.bind(this,'cancel')}
+					onCancel = {()=> {this.setState({_modal: false})}}
+				 >
+					<Row>
+						<Col>是否确认结束活动？</Col>
+					</Row>
+				 </Modal>
 			</div>
 		);
 	}

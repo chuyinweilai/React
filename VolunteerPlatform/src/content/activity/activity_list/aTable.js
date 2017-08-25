@@ -172,9 +172,6 @@ export default class pointTable extends Component {
 							<Col>
 								<Button onClick={() =>this._action('change',record)}>修改</Button>
 							</Col>
-							<Col>
-								<Button onClick={() =>this._action('cancel',record)}>取消</Button>
-							</Col>
 						</Row>
 					)
 				}
