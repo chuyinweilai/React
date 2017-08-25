@@ -80,21 +80,43 @@ export default class pointTable extends Component {
 				title: '操作',
 				colSpan:2,
 				render: (text, record, index) => {
-					return (
-					(
-						<Row type="flex" justify="space-around">
-							<Button onClick={() => this._accuCtrl("add",record)}>
-								 手动积分
-							</Button>
-							<Button onClick={() => this._accuCtrl("del",record)}>
-								积分兑换
-							</Button>
-							<Button onClick={() => this._accuCtrl("history",record)}>
-								积分历史
-							</Button>
-						</Row>
-					)
-					);
+					if(this.userMess.auth_lvl == 7){
+						return (
+							<Row type="flex" justify="space-around">
+								<Button onClick={() => this._accuCtrl("add",record)}>
+									手动积分
+								</Button>
+								<Button onClick={() => this._accuCtrl("history",record)}>
+									积分历史
+								</Button>
+							</Row>
+						)
+					} else if(this.userMess.auth_lvl == 8){
+						return (
+							<Row type="flex" justify="space-around">
+								 <Button onClick={() => this._accuCtrl("del",record)}>
+									积分兑换
+								</Button> 
+								<Button onClick={() => this._accuCtrl("history",record)}>
+									积分历史
+								</Button>
+							</Row>
+						)
+					}else if(this.userMess.auth_lvl == 9){
+						return (
+							<Row type="flex" justify="space-around">
+								<Button onClick={() => this._accuCtrl("add",record)}>
+									手动积分
+								</Button>
+								 <Button onClick={() => this._accuCtrl("del",record)}>
+									积分兑换
+								</Button> 
+								<Button onClick={() => this._accuCtrl("history",record)}>
+									积分历史
+								</Button>
+							</Row>
+						)
+					}
 				},
 			}
 		];
@@ -128,10 +150,6 @@ export default class pointTable extends Component {
 			method: 'GET',
 		})
 		.catch( error => {
-			// this.setState({
-			// 	loading: false,
-			// 	disable: false,
-			// })
 		});
 		setTimeout(()=>{
 			this.setState({
