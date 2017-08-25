@@ -29,15 +29,6 @@ class App extends Component {
 		}
 	}
 
-	componentWillMount(){
-		setInterval(()=>{
-			let time = 2000*Math.random()
-			setTimeout(()=>{
-				this._onNotification()
-			},time)
-		},10000)
-	}
-
 	_Router(nextPage,mess,historyPage){
 		let obj= {
 			nextPage: nextPage,
@@ -51,28 +42,6 @@ class App extends Component {
 
 	onCollapse(collapsed) {
 		this.setState({ collapsed });
-	}
-
-	_onNotification (){
-		let  a = Math.ceil(Math.random()*10);
-		let title = '';
-		let note = ''
-		if(a < 3 ){
-			title =  '五违报警';
-			note = "发现车辆违规停靠";
-		} else if(a>=3 && a < 6){
-			title = '文明报警'
-			note = "发现草地违规占用";
-		} else if( a>=6){
-			title = '设备报警'
-			note = "B区摄像头离线";
-		}
-		notification.open({
-			message: title,
-			description: note,
-			placement:'bottomRight',
-			icon: <Icon type="close-circle" style={{ color: '#f04134' }} />,
-		});
 	}
 
 	render() {

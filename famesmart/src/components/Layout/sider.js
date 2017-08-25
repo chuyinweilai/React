@@ -45,7 +45,7 @@ export default class siders extends Component{
 						onSelect = {this._click.bind(this)}
 					>
 
-						<Menu.Item key="home3"><Icon type="star-o" />首页3</Menu.Item>
+						<Menu.Item key="home3"><Icon type="star-o" />首页</Menu.Item>
 						<SubMenu key = "operation" title={<span><Icon type="appstore" /><span>米社运维</span></span>}>
 							<Menu.Item key="activity_list"><Icon type="star-o" />活动管理</Menu.Item>
 							<Menu.Item key="accumulate_list"><Icon type="heart-o" />积分管理</Menu.Item>
@@ -74,8 +74,8 @@ export default class siders extends Component{
 						style={{ height: '100%', borderRight: 0 }}
 						onSelect = {this._click.bind(this)}
 					>
-						<Menu.Item key="home1"><Icon type="star-o" />首页1</Menu.Item>
-						<Menu.Item key="home2"><Icon type="star-o" />首页2</Menu.Item>
+						<Menu.Item key="home1"><Icon type="star-o" />首页</Menu.Item>
+						<Menu.Item key="home2"><Icon type="star-o" />首页</Menu.Item>
 
 						<Menu.Item key="five_list"><Icon type="star-o" />五违管理</Menu.Item>
 						<Menu.Item key="civilization_list"><Icon type="star-o" />文明管理</Menu.Item>
@@ -109,8 +109,8 @@ export default class siders extends Component{
 						onSelect = {this._click.bind(this)}
 					>
 
-						<Menu.Item key="home1"><Icon type="star-o" />首页1</Menu.Item>
-						<Menu.Item key="home2"><Icon type="star-o" />首页2</Menu.Item>
+						<Menu.Item key="home1"><Icon type="star-o" />首页</Menu.Item>
+						<Menu.Item key="home2"><Icon type="star-o" />首页</Menu.Item>
 
 						<Menu.Item key="five_list"><Icon type="star-o" />五违管理</Menu.Item>
 						<Menu.Item key="civilization_list"><Icon type="star-o" />文明管理</Menu.Item>

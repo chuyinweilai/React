@@ -217,7 +217,7 @@ export default class IC_cards_resident_list extends Component {
 						</Col>
 					</Row>
 
-					<Row style={{marginTop:20, marginBottom: 20}}>
+					{/* <Row style={{marginTop:20, marginBottom: 20}}>
 						<Collapse>
 							<Panel header="This is panel header 1" key="1">
 								<Checkbox.Group onChange={this._filter.bind(this)}>
@@ -245,7 +245,7 @@ export default class IC_cards_resident_list extends Component {
 						</Collapse>
 
 						<Button type="primary">检索</Button>
-					</Row>
+					</Row> */}
 					
 					<Row>
 						<Col span={8} style={{margin:'10px'}}> </Col>

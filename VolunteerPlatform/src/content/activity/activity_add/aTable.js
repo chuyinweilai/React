@@ -424,7 +424,7 @@ class pointTable extends Component {
 				return (
 					<Row type="flex" justify="end" gutter={1} >
 						<Col span={2}>
-							<Button type="danger" onClick={()=> {this.setState({_modal: true})}}  disabled={this.state.volType}>取消</Button>
+							<Button type="danger" onClick={()=> {this.setState({_modal: true})}}  disabled={this.state.volType}>活动注销</Button>
 						</Col>
 						<Col span={2}>
 							<Button type="primary" onClick={()=>this.setState({updataType: false})} disabled={this.state.volType}>编辑</Button>								
@@ -438,13 +438,13 @@ class pointTable extends Component {
 				return (
 					<Row type="flex" justify="end" gutter={1} >
 						<Col span={2}>
-							<Button type="danger" onClick={()=> {this.setState({_modal: true})}}>取消</Button>
+							<Button type="danger" onClick={()=> {this.setState({_modal: true})}}>活动注销</Button>
 						</Col>
 						<Col span={2}>
 							<Button type="primary" onClick={this._add_active.bind(this,'add')}>提交</Button>
 						</Col>
 						<Col span={2}>
-							<Button onClick={()=>this.setState({updataType: true})}>取消</Button>
+							<Button onClick={()=>this.setState({updataType: true})}>退出编辑</Button>
 						</Col>
 					</Row>
 				)

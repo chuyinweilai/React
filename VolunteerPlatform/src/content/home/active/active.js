@@ -52,13 +52,15 @@ export default class active extends Component {
 		let body = {
 			 "comm_code": userMess.comm_code
 		}
-		appData._dataPost(afteruri,body,(res) => {
-			let data =res.activity;
-			this.activeMess = data;
-			let obj = this._listView(data);
-			this.setState({
-				dataSource: obj,
-			})
+		appData._dataPost(afteruri,body,(arr) => {
+			if(arr.length){
+				let res = arr[0]
+				this.activeMess = res;
+				let obj = this._listView(res);
+				this.setState({
+					dataSource: obj,
+				})
+			}
 		})
 	}
 	

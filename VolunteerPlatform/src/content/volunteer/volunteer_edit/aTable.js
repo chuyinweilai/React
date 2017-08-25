@@ -254,8 +254,6 @@ class pointTable extends Component {
 		return null
 	}
 
-	/*
-	*/
 	render() { 
 		const { getFieldDecorator, } = this.props.form;
 		const formItemLayout = {

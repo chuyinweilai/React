@@ -144,7 +144,7 @@ class pointTable extends Component {
 				this.setState({
 					visible: false,
 				})
-				// this._jump('back') 
+				this._jump('back') 
 			}
 		})
 	}
