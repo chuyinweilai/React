@@ -11,9 +11,10 @@ import {
 	Pagination,
 	Popconfirm, 
 } from 'antd'
+// import '../../../App.css'
+import $ from 'jquery';
 import appData from './../../../../assert/Ajax';
-import '../../../../App.css'
-
+import './index.css'
 export default class pointTable extends Component {
 	constructor(props) {
 		super(props);
@@ -25,8 +26,7 @@ export default class pointTable extends Component {
 			used_score:0,
 			dataSource: [],
 			count: 0,
-			detail_val:{},
-
+			detail_val:{}
 		};
 
 		this.columns = [
@@ -94,9 +94,7 @@ export default class pointTable extends Component {
 		];
 	}
 	
-	
 	componentWillMount(){
-		let printf = this.state.printf;
 		this.Router = this.props.Router;
 		this.mess = this.props.message;
 		appData._Storage('get',"userMess",(res) =>{
@@ -124,7 +122,8 @@ export default class pointTable extends Component {
 		let afteruri = 'vcity/scorelist';
 		let body = {
 			"wx_id": userMess.wx_id,
-			"comm_code": userMess.comm_code,
+			// "comm_code": userMess.comm_code,
+			comm_code: "M0002"
 		}
 		appData._dataPost(afteruri,body,(res) => {
 			let data = res.data
@@ -155,7 +154,8 @@ export default class pointTable extends Component {
 		let userMess = this.userMess;
 		let afteruri = 'vcity/scorelist?page=' + pageNumber ;
 		let body = {
-			 "comm_code": userMess.comm_code
+			//  "comm_code": userMess.comm_code
+			comm_code: "M0002"
 		}
 		appData._dataPost(afteruri,body,(res) => {
 			let pageSum = Math.ceil(res.total/res.per_page)
@@ -185,21 +185,51 @@ export default class pointTable extends Component {
 				type ='手动积分'
 				score =  "+" + aValue.activity_score
 			}
-			// encodeURI(encodeURI(this.state.comm_name))
-			let aurl = "http://cloudapi.famesmart.com/Mirai/PC/printPage/index.html?comm_name=" +this.state.comm_name + "&mobile=" + this.state.mobile + "&change_date=" + aValue.change_date + "&type=" + type + "&score=" + score;
 			return (
 				<Modal
+					 wrapClassName= "accu_history" 
 					title="积分变动"
+					style={{height: 300}}
 					visible={this.state._visible}
-					onOk={()=>window.print()}
+					onOk = {this._printf.bind(this)}
 					onCancel={() =>this.setState({_visible: false})}
 					okText="打印" 
 					cancelText="确认"
 				>
-					<iframe style={{border: 'none',height: 200}} src={encodeURI(aurl)}></iframe> 
+					 {/* <iframe id="print_window" style={{border: 'none',height: 250, overflow: 'hidden'}} src={encodeURI(aurl)}></iframe>   */}
+					 <div className="print_window">
+						 <div className="print_head">
+							<h4 className="print_title">景城品雅苑志愿者中心</h4>
+							<div className="aline">——————————————</div>
+						 </div>
+						<Row className="print_body">
+							<Col className="print_text">所在社区: {this.state.comm_name}</Col>
+							<Col className="print_text">手机号: {this.state.mobile}</Col>
+							<Col className="print_text">积分时间: {aValue.change_date.substring(0,10)}</Col>
+							<Col className="print_text">积分类型: {type}</Col>
+							<Col className="print_text">积分分值: {score}</Col>
+							<Col className="print_sign">兑换者签名</Col>
+						</Row> 
+						<div  className="print_bottom">
+							<div style={{height: '100px'}}></div>
+							<div className="aline">——————————————</div>
+						</div>
+					 </div>
 				</Modal>
 			)
 		}
+	}
+	
+	_printf(){
+		let el = document.getElementsByClassName("print_window")[0];
+		let iframe = document.createElement('IFRAME');
+		let doc = null;
+		document.body.appendChild(iframe);
+		doc = iframe.contentWindow.document;
+		doc.write('<div>' + el.innerHTML + '</div>');
+		doc.close();
+		iframe.contentWindow.focus();
+		iframe.contentWindow.print();
 	}
 
 	render() {
@@ -209,7 +239,7 @@ export default class pointTable extends Component {
 		<div style={{padding: 24, margin: 0, minHeight: 80 }}>
 			<Row type="flex" justify="space-between" gutter={1}>
 				<Col className="printHidden">
-					<text style={{fontSize: 24, color: '#aaa'}}>米社运维/积分管理/</text>
+					<text style={{fontSize: 24, color: '#aaa'}}>积分管理/</text>
 					<text style={{fontSize: 24, color: '#1e8fe6'}}>积分历史</text>
 				</Col>
 				<Col span={2} className="printHidden">

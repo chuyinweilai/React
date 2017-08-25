@@ -30,7 +30,8 @@ export default class volunteer_list extends Component{
 		this.mess = this.props.message;
 		appData._Storage('get', "userMess",(res) =>{
 			this.setState({
-				comm_name: res.comm_name
+				// comm_name: res.comm_name
+				comm_name: "M0002"
 			})
 		})
 	}

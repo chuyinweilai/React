@@ -170,7 +170,7 @@ export default class pointTable extends Component {
 								<Button onClick={() =>this._action('sign',record)}>签到</Button>
 							</Col>
 							<Col>
-								<Button onClick={() =>this._action('change',record)}>修改</Button>
+								<Button onClick={() =>this._action('change',record)}>详情</Button>
 							</Col>
 						</Row>
 					)

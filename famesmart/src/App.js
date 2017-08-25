@@ -7,7 +7,6 @@ Menu,
 Icon,
 Button,
 Breadcrumb,
-notification,
 } from 'antd';
 
 import Headers from './components/Layout/header';

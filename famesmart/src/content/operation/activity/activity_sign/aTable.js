@@ -8,11 +8,13 @@ import {
 	Input, 
 	Menu, 
 	Button, 
+	Modal,
 	Pagination,
 	Dropdown,
 	Popconfirm, 
 } from 'antd'
-import appData from './../../../../assert/Ajax';
+
+import appData from './../../../../assert/Ajax'
 import '../../../../App.css'
 
 const { Column, ColumnGroup } = Table;
@@ -28,6 +30,7 @@ export default class pointTable extends Component {
 			count: 1,
 			pageNum:1,
 			total:0,
+			volType: false,
 		};
 		// 编号	手机	姓名	性别	IC卡号	职业	业主/租客	操作
 
@@ -88,11 +91,18 @@ export default class pointTable extends Component {
 				title:"操作",
 				key:"action",
 				render:(text, record)=>{
+					// if(this.activeMess.vld_flag == )
 					let state = '签到';
 					let disable = false;
-					 if(record.status_flag == 1){
+					if(record.status_flag == 1){
 						state = "已签到"
-						disable = "true"
+					}
+					if(this.activeMess.vld_flag == 3 || this.activeMess.vld_flag == 2){
+							disable = true
+					} else {
+						if(record.status_flag == 1){
+							disable = true
+						}
 					}
 					return(
 						<span>
@@ -113,11 +123,17 @@ export default class pointTable extends Component {
 			activity_no:  mess.activity_no,
 			title: mess.title,
 		})
+		if(mess.vld_flag == 3 || mess.vld_flag == 2){
+			this.setState({
+				volType: true,
+			})
+		} 
 		appData._Storage('get','userMess',(res) => {
 			this.userMess = res;
 			this._login(res,mess)
 			this.setState({
-				comm_name: res.comm_name,
+				// comm_name: res.comm_name,
+				comm_name: "M0002"
 			})
 		})
 	}
@@ -125,10 +141,10 @@ export default class pointTable extends Component {
 	_login(data,mess){
 		let afteruri = 'activity/check'
 		let body = {
-			comm_code: mess.comm_code,
+			// comm_code: mess.comm_code,
+			comm_code: "M0002",	
 			activity_no:mess.activity_no,
 		}
-
 		appData._dataPost(afteruri, body, (res) =>{
 			let pageSum = Math.ceil(res.length/res.per_page)
 			let len = res.length;
@@ -149,16 +165,22 @@ export default class pointTable extends Component {
 		}
 	}
 
-	_showPage(){
-		if(this.state.pageCtrl){
-			<Table bordered columns={this.columns} dataSource={this.state.dataSource} />
-		} else {
-
+	//活动结束
+	_over(){
+		let afteruri = 'activity/finish';
+		let body = {   
+			// "comm_code": this.activeMess.comm_code,
+			comm_code: "M0002",	
+            "activity_no": this.activeMess.activity_no
 		}
-	}
+		appData._dataPost(afteruri, body, (res)=>{
+			if(res){
+				this._jump('back')
+			}
+		})
+	}	
 
 	_volSign(obj){
-		// this.activeMess = mess;
 		let body ={
 			"wx_id": obj.wx_id,
 			"activity_no": Number(this.activeMess.activity_no),
@@ -199,11 +221,12 @@ export default class pointTable extends Component {
 			<div style={{padding: 24, margin: 0, minHeight: 80 }}>
 				<Row type="flex" justify="space-between" gutter={1}>
 					<Col  className="printHidden">
-						<text style={{fontSize: 24, color: '#aaa'}}>米社运维/活动管理/</text>
+						<text style={{fontSize: 24, color: '#aaa'}}>活动管理/</text>
 						<text style={{fontSize: 24, color: '#1e8fe6'}}>签到</text>
 					</Col>
 					<Col className="printHidden">
-							<Button  style={{height: 32}} onClick={() => window.print()}>打印</Button>
+						<Button type="danger" style={{height: 32,marginRight: 30}} onClick={()=> {this.setState({_modal: true})}} disabled={this.state.volType}>结束活动</Button> 
+						<Button  style={{height: 32}} onClick={() => window.print()}>打印</Button>
 					</Col>
 				</Row>
 				<Row>
@@ -219,10 +242,23 @@ export default class pointTable extends Component {
 						</Row>
 					</Col>
 				</Row>
-				<Table bordered columns={this.columns} dataSource={this.state.dataSource}/>
-				{/* <Row type="flex" justify="end"> */}
-					{/* <Pagination showQuickJumper defaultCurrent={1} current={this.state.pageNum} total={this.state.total} onChange={this._pageChange.bind(this)} /> */}
-				{/* </Row> */}
+				<Row>
+					<Col>
+					</Col>
+				</Row>
+				<Table bordered columns={this.columns} dataSource={this.state.dataSource} pagination={false}/>
+				 <Row type="flex" justify="end"> 
+					 <Pagination showQuickJumper defaultCurrent={1} current={this.state.pageNum} total={this.state.total} onChange={this._pageChange.bind(this)} /> 
+				 </Row> 
+				 <Modal
+					visible = {this.state._modal}
+				 	onOk={() => this._over()}
+					onCancel = {()=> {this.setState({_modal: false})}}
+				 >
+					<Row>
+						<Col>是否确认结束活动？</Col>
+					</Row>
+				 </Modal>
 			</div>
 		);
 	}

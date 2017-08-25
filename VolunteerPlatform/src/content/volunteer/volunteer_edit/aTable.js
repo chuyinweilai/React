@@ -130,7 +130,8 @@ class pointTable extends Component {
 				name: value
 			})
 		} else if(name === 'gender'){
-			let value = e.target.value;
+			// let value = e.target.value;
+			console.log(value)
 			this.setState({
 				gender: value
 			})
@@ -285,11 +286,11 @@ class pointTable extends Component {
 						{...formItemLayout}
 						label="性别">
 						{getFieldDecorator('gender',{
-							initialValue: this.state.gender == ""?"male": this.state.gender,
+							initialValue: this.state.gender == ""?"男": this.state.gender,
 						})(
 							<Select onChange={this._selectChange.bind(this,'gender')}>
-								<Option key="male">男</Option>
-								<Option key="lady">女</Option>
+								<Option key="男">男</Option>
+								<Option key="女">女</Option>
 							</Select>
 						)}
 					</FormItem>

@@ -43,6 +43,8 @@ class pointTable extends Component {
 			occupation: '',
 			ic_card: '',
 			birthday:'',
+			select_children:[],
+			sfz_id: 0,
 
 			indisable: false,
 			disable: false,
@@ -60,8 +62,10 @@ class pointTable extends Component {
 		this.activeMess = mess;
 		appData._Storage('get', "userMess",(res) =>{
 			this.userMess = res
+			this._select()
 			this.setState({
 				comm_name: res.comm_name
+
 			})
 		})
 		if(mess !== undefined){
@@ -86,12 +90,32 @@ class pointTable extends Component {
 				floor: mess.floor,
 				room: mess.room,
 				birthday: mess.birthday,
-
+				sfz_id: mess.sfz_id,
 				indisable: true,
 			})
 		}
 	}
-
+	
+	//楼栋下拉框
+	_select(){
+		let afteruri = 'func/aptinfo2';
+		let body = {
+			//  "comm_code": this.userMess.comm_code,
+			comm_code: "M0002",	
+		}
+		appData._dataPost(afteruri,body,(res) => {
+			let array = []
+			res.forEach((vals, index)=> {
+				let opt = <Option key={vals.apt_code}>{vals.apt_code}</Option>;
+				array.push(opt)
+			});
+			this.setState({
+				select_children: array,
+			})
+		})
+		
+	}
+	
 	_jump(nextPage,mess){
 		if(nextPage == 'back'){
 			this.props.Router(this.props.message.historyPage,mess,this.props.message.nextPage)
@@ -112,10 +136,9 @@ class pointTable extends Component {
 			this.setState({
 				gender: value
 			})
-		}  else if(name === 'apt_code'){
-			let value = e.target.value;
+		}else if(name == "sfz_id"){
 			this.setState({
-				apt_code: value
+				sfz_id: value
 			})
 		}  else if(name === 'floor'){
 			let value = e.target.value;
@@ -168,6 +191,10 @@ class pointTable extends Component {
 			this.setState({
 				vol_tag: value
 			})
+		} else if(type == "apt_code"){
+			this.setState({
+				apt_code: value
+			})
 		}
 	}
 
@@ -179,25 +206,9 @@ class pointTable extends Component {
 				if(this.mess.message !==  undefined){
 					let	afteruri  = 'vcity/edituser'
 					let body = {
-						"comm_code":  this.userMess.comm_code,
-						"type": this.state.type,
-						"name": this.state.name,
-						"mobile": this.state.mobile,
-						"vol_tag": this.state.vol_tag,
-						"occupation": this.state.occupation,
-						"ic_card": this.state.ic_card,
-						"email": this.state.email,
-						"wx_id": this.activeMess.wx_id
-					}
-					appData._dataPost(afteruri, body, (res) =>{
-						if(res >= 0 ){
-							this._jump('back')
-						}
-					})
-				} else {
-					let	afteruri  = 'vcity/adduser'
-					let body = {
-						"comm_code":  this.userMess.comm_code,
+						"wx_id":this.activeMess.wx_id,
+						// "comm_code":  this.userMess.comm_code,
+						comm_code: "M0002",	
 						"type": this.state.type,
 						"name": this.state.name,
 						"mobile": this.state.mobile,
@@ -210,6 +221,32 @@ class pointTable extends Component {
 						"floor":  this.state.floor,
 						"room":  this.state.room,
 						"birthday": this.state.birthday,
+						"sfz_id": this.state.sfz_id,
+					}
+					appData._dataPost(afteruri, body, (res) =>{
+						if(res >= 0 ){
+							this._jump('back')
+						}
+					})
+				} else {
+					let	afteruri  = 'vcity/adduser'
+					let body = {
+						// "comm_code":  this.userMess.comm_code,
+						comm_code: "M0002",	
+
+						"type": this.state.type,
+						"name": this.state.name,
+						"mobile": this.state.mobile,
+						"vol_tag": this.state.vol_tag,
+						"occupation": this.state.occupation,
+						"ic_card": this.state.ic_card,
+						"email": this.state.email,
+						"gender": this.state.gender,
+						"apt_code":  this.state.apt_code,
+						"floor":  this.state.floor,
+						"room":  this.state.room,
+						"birthday": this.state.birthday,
+						"sfz_id": this.state.sfz_id,
 					}
 					appData._dataPost(afteruri, body, (res) =>{
 						if(res >= 0 ){
@@ -245,7 +282,7 @@ class pointTable extends Component {
 							initialValue: this.state.name,
 							rules: [{ required: true, message: '请输入姓名信息!' }],
 						})(
-							<Input onChange={this._input.bind(this,"name")} disabled={this.state.indisable}/>
+							<Input onChange={this._input.bind(this,"name")}/>
 						)}
 					</FormItem>
 
@@ -255,10 +292,24 @@ class pointTable extends Component {
 						{getFieldDecorator('gender',{
 							initialValue: this.state.gender == ""?"male": this.state.gender,
 						})(
-							<Select onChange={this._selectChange.bind(this,'gender')} disabled={this.state.indisable}>
+							<Select onChange={this._selectChange.bind(this,'gender')}>
 								<Option key="male">男</Option>
 								<Option key="lady">女</Option>
 							</Select>
+						)}
+					</FormItem>
+
+					<FormItem
+						{...formItemLayout}
+						label="身份证号">
+						{getFieldDecorator('sfz_id',{
+							initialValue: this.state.sfz_id,
+							rules: [
+								{ required: true, message: '请填写身份证信息!' },
+								{ pattern: /^[1-9]\d{7}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}$|^[1-9]\d{5}[1-9]\d{3}((0\d)|(1[0-2]))(([0|1|2]\d)|3[0-1])\d{3}([0-9]|X)$/, message: '身份证格式有误！'}
+							],
+						})(
+							<Input onChange={this._input.bind(this,'sfz_id')}/>
 						)}
 					</FormItem>
 
@@ -272,7 +323,7 @@ class pointTable extends Component {
 								{ pattern: /^1[3|4|5|8][0-9]\d{8}$/, message: '手机号格式有误！'}
 							],
 						})(
-							<Input onChange={this._input.bind(this,'mobile')}  disabled={this.state.indisable}/>
+							<Input onChange={this._input.bind(this,'mobile')}/>
 						)}
 					</FormItem>
 
@@ -283,7 +334,11 @@ class pointTable extends Component {
 							initialValue: this.state.apt_code,
 							rules: [{ required: true, message: '请填写楼号!' }],
 						})(
-							<Input onChange={this._input.bind(this,'apt_code')}  disabled={this.state.indisable}/>
+							<Select onChange={this._selectChange.bind(this,'apt_code')}
+								mode="combobox"
+							>
+								{this.state.select_children}
+							</Select>
 						)}
 					</FormItem>
 
@@ -294,7 +349,7 @@ class pointTable extends Component {
 							initialValue: this.state.floor,
 							rules: [{ required: true, message: '请填写楼层!' }],
 						})(
-							<Input onChange={this._input.bind(this,'floor')}  disabled={this.state.indisable}/>
+							<Input onChange={this._input.bind(this,'floor')} />
 						)}
 					</FormItem>
 
@@ -305,7 +360,7 @@ class pointTable extends Component {
 							initialValue: this.state.room,
 							rules: [{ required: true, message: '请填写房间号!' }],
 						})(
-							<Input onChange={this._input.bind(this,'room')}  disabled={this.state.indisable}/>
+							<Input onChange={this._input.bind(this,'room')} />
 						)}
 					</FormItem>
 
@@ -328,7 +383,9 @@ class pointTable extends Component {
 						{getFieldDecorator('vol_tag',{
 							initialValue: this.state.vol_tag == ""?"普通志愿者": this.state.vol_tag,
 						})(
-							<Select onChange={this._selectChange.bind(this,'vol_tag')}>
+							<Select onChange={this._selectChange.bind(this,'vol_tag')}
+							//disabled={this.state.indisable}
+							>
 								<Option key="普通志愿者">普通志愿者</Option>
 								<Option key="楼组长">楼组长</Option>
 							</Select>

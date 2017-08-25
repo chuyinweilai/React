@@ -9,7 +9,8 @@ import {
 	Col,
 	Popconfirm, 
 	Pagination,
-	Menu, 
+	Menu,
+	Modal, 
 	Dropdown 
 } from 'antd'
 import appData from './../../../../assert/Ajax';
@@ -27,6 +28,9 @@ export default class pointTable extends Component {
 			listMess:{},
 			pageSum:1,
 			pageNum:1,
+
+			record:{},
+			_visible:false,
 		};
 
 		this.columns = [
@@ -130,7 +134,7 @@ export default class pointTable extends Component {
 				colSpan:1,
 				title: '活动状态',
 				dataIndex: 'vld_flag',
-				render:(text,record) => {
+				render:(text,  ) => {
 					let test = ''
 					if(text == 0 ){
 						test = '有效'
@@ -160,49 +164,16 @@ export default class pointTable extends Component {
   				colSpan: 2,
 				render:(text, record)=>{
 					let disable = [];
-					if(record.vld_flag == 2 || record.vld_flag == 3){
-						return (
-							<Row type="flex" gutter={6} justify="center">
-								<Col>
-									<Button onClick={() =>this._action('sign',record)} disabled = {true}>签到</Button>
-								</Col>
-								<Col>
-									<Button onClick={() =>this._action('change',record)} disabled = {true}>修改</Button>
-								</Col>
-								<Col>
-									<Button onClick={() =>this._action('cancel',record)} disabled = {true}>取消</Button>
-								</Col>
-							</Row>
-						)
-					} else if(record.sign_cnt == 0 && record.join_cnt == 0 ){
-						return (
-							<Row type="flex" gutter={6} justify="center">
-								<Col>
-									<Button onClick={() =>this._action('sign',record)} disabled = {true}>签到</Button>
-								</Col>
-								<Col>
-									<Button onClick={() =>this._action('change',record)} disabled = {false}>修改</Button>
-								</Col>
-								<Col>
-									<Button onClick={() =>this._action('cancel',record)} disabled = {false}>取消</Button>
-								</Col>
-							</Row>
-						)
-					} else {
-						return (
-							<Row type="flex" gutter={6} justify="center">
-								<Col>
-									<Button onClick={() =>this._action('sign',record)} disabled = {false}>签到</Button>
-								</Col>
-								<Col>
-									<Button onClick={() =>this._action('change',record)} disabled = {true}>修改</Button>
-								</Col>
-								<Col>
-									<Button onClick={() =>this._action('cancel',record)} disabled = {true}>取消</Button>
-								</Col>
-							</Row>
-						)
-					}
+					return (
+						<Row type="flex" gutter={6} justify="center">
+							<Col>
+								<Button onClick={() =>this._action('sign',record)}>签到</Button>
+							</Col>
+							<Col>
+								<Button onClick={() =>this._action('change',record)}>修改</Button>
+							</Col>
+						</Row>
+					)
 				}
 			}
 		];
@@ -239,7 +210,8 @@ export default class pointTable extends Component {
 		let userMess = this.userMess;
 		let afteruri = 'activity/list';
 		let body = {
-			"comm_code": userMess.comm_code,
+			// "comm_code": userMess.comm_code,
+			comm_code: "M0002",	
 		}
 		appData._dataPost(afteruri,body,(res) => {
 			let pageSum = Math.ceil(res.total/res.per_page)
@@ -262,11 +234,15 @@ export default class pointTable extends Component {
 		}else if(type === "cancel"){
 			let afteruri = "activity/cancel"
 			let body ={   
-				"comm_code": mess.comm_code,
+				// "comm_code": mess.comm_code,
+				comm_code: "M0002",	
             	"activity_no":  mess.activity_no
 			}
 			appData._dataPost(afteruri,body,(res)=>{
 				if(res){
+					this.setState({
+						_visible: false,
+					})
 					this._getEvent()
 				}
 			})
@@ -279,7 +255,8 @@ export default class pointTable extends Component {
 		let afteruri = 'activity/list?page=' + pageNumber ;
 		
 		let body = {
-			 "comm_code": userMess.comm_code
+			//  "comm_code": userMess.comm_code
+			  comm_code: "M0002",	
 		}
 		appData._dataPost(afteruri,body,(res) => {
 			let pageSum = Math.ceil(res.total/res.per_page)
@@ -301,16 +278,15 @@ export default class pointTable extends Component {
 		<div style={{background: '#fff',padding: 24,margin: 0,minHeight: 80}}>
 			<Row type="flex" justify="space-between" gutter={1}>
 				<Col  className="printHidden">
-					<text style={{fontSize: 24, color: '#aaa'}}>米社运维/</text>
 					<text style={{fontSize: 24, color: '#1e8fe6'}}>活动管理</text>
 				</Col>
 				<Col className="printHidden">
-				<span style={{ marginRight: 10}}>
-						<Button style={{height: 32, backgroundColor: '#1e8fe6', color: 'white'}}  onClick = {()=>this._addAct('add')}>新增活动</Button>
-				</span>
-				<span>
-						<Button  style={{height: 32}} onClick={() => window.print()}>打印</Button>
-				</span>
+					<span style={{ marginRight: 10}}>
+							<Button style={{height: 32, backgroundColor: '#1e8fe6', color: 'white'}}  onClick = {()=>this._addAct('add')}>新增活动</Button>
+					</span>
+					<span>
+							<Button  style={{height: 32}} onClick={() => window.print()}>打印</Button>
+					</span>
 				</Col>
 			</Row>
 			<Row>
@@ -331,6 +307,15 @@ export default class pointTable extends Component {
 				total={this.state.total} 
 				onChange={this._pageChange.bind(this)} />
 			</Row>
+			
+			 <Modal
+				visible={this.state._visible}
+				title="活动取消"
+				onCancel={() => this.setState({_visible: false})}
+				onOk={() =>this._action('cancel',this.state.record)}
+			>
+				<span>是否取消？</span>
+			</Modal> 
 		</div>
 		);
 	}

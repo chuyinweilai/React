@@ -1,0 +1,46 @@
+  .accu_history {
+      margin: 0
+  }
+  
+  .print_window .print_title {
+      height: 30px;
+      text-align: center;
+      margin-bottom: 20px;
+  }
+  
+  .print_head .aline {
+      height: 10px;
+  }
+  
+  .print_bottom .aline {
+      height: 10px;
+  }
+  
+  .print_head,
+  .print_bottom {
+      display: none;
+  }
+  
+  .print_window .print_body .print_text {
+      height: 30px;
+      font-size: 12px;
+  }
+  
+  @media print {
+      .ant-modal-content,
+      .accu_history .ant-modal-close,
+      .accu_history .ant-modal-header,
+      .accu_history .ant-modal-footer,
+      {
+          display: none;
+      }
+      .print_window .print_head .print_bottom {
+          display: block;
+      }
+      .print_window .print_body .print_text {
+          height: 60px;
+      }
+      .accu_history .ant-modal-body {
+          padding: 0;
+      }
+  }

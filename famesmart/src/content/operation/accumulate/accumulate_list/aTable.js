@@ -80,21 +80,43 @@ export default class pointTable extends Component {
 				title: '操作',
 				colSpan:2,
 				render: (text, record, index) => {
-					return (
-					(
-						<Row type="flex" justify="space-around">
-							<Button onClick={() => this._accuCtrl("add",record)}>
-								 手动积分
-							</Button>
-							<Button onClick={() => this._accuCtrl("del",record)}>
-								积分兑换
-							</Button>
-							<Button onClick={() => this._accuCtrl("history",record)}>
-								积分历史
-							</Button>
-						</Row>
-					)
-					);
+					if(this.userMess.auth_lvl == 7){
+						return (
+							<Row type="flex" justify="space-around">
+								<Button onClick={() => this._accuCtrl("add",record)}>
+									手动积分
+								</Button>
+								<Button onClick={() => this._accuCtrl("history",record)}>
+									积分历史
+								</Button>
+							</Row>
+						)
+					} else if(this.userMess.auth_lvl == 8){
+						return (
+							<Row type="flex" justify="space-around">
+								 <Button onClick={() => this._accuCtrl("del",record)}>
+									积分兑换
+								</Button> 
+								<Button onClick={() => this._accuCtrl("history",record)}>
+									积分历史
+								</Button>
+							</Row>
+						)
+					}else if(this.userMess.auth_lvl == 9){
+						return (
+							<Row type="flex" justify="space-around">
+								<Button onClick={() => this._accuCtrl("add",record)}>
+									手动积分
+								</Button>
+								 <Button onClick={() => this._accuCtrl("del",record)}>
+									积分兑换
+								</Button> 
+								<Button onClick={() => this._accuCtrl("history",record)}>
+									积分历史
+								</Button>
+							</Row>
+						)
+					}
 				},
 			}
 		];
@@ -119,7 +141,8 @@ export default class pointTable extends Component {
 	_outDate(){
 		let afteruri = 'func/jftx/set';
 		let body = {
-			comm_code: this.userMess.comm_code
+			// comm_code: this.userMess.comm_code
+			comm_code: "M0002"
 		}
 		this.setState({
 			loading: true,
@@ -128,11 +151,13 @@ export default class pointTable extends Component {
 			method: 'GET',
 		})
 		.catch( error => {
+		});
+		setTimeout(()=>{
 			this.setState({
 				loading: false,
 				disable: false,
 			})
-		});
+		},1000)
 		
 		appData._dataPost(afteruri, body, (res)=>{
 			if(res){
@@ -148,12 +173,15 @@ export default class pointTable extends Component {
 	_alarm_data(){
 		let afteruri = 'func/jftx/get';
 		let body = {
-			"comm_code": this.userMess.comm_code
+			// "comm_code": this.userMess.comm_code
+			comm_code: "M0002"
 		}
 		appData._dataPost(afteruri, body, (res)=>{
-			this.setState({
-				alarm_data: res[0].mind_at,
-			})
+			if(res.length){
+				this.setState({
+					alarm_data: res[0].mind_at,
+				})
+			}
 		})
 	}
 
@@ -163,7 +191,8 @@ export default class pointTable extends Component {
 		let afteruri = 'vcity/scoresheet';
 		let afteruri_data = 'func/jftx/get';
 		let body = {
-			 "comm_code": userMess.comm_code
+			//  "comm_code": userMess.comm_code
+			comm_code: "M0002"
 		}
 		appData._dataPost(afteruri,body,(res) => {
 			let data = res.data
@@ -194,7 +223,8 @@ export default class pointTable extends Component {
 		let userMess = this.userMess;
 		let afteruri = 'vcity/scoresheet?page=' + pageNumber ;
 		let body = {
-			 "comm_code": userMess.comm_code,
+			// "comm_code": userMess.comm_code,
+			comm_code: "M0002",	
 		}
 		appData._dataPost(afteruri,body,(res) => {
 			let data = res.data;
@@ -222,7 +252,7 @@ export default class pointTable extends Component {
 					<Button type="danger" style={{height: 32, marginRight:30}} onClick={()=>this.setState({disable: true})}>
 						到期提醒
 					</Button>
-					<Button style={{height: 32}} onClick={() =>  window.print()}>打印</Button>
+					<Button style={{height: 32}} onClick={() => window.print()}>打印</Button>
 				</Col>
 			</Row>
 			<Row>

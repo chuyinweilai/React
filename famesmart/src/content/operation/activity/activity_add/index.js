@@ -8,7 +8,7 @@ import {
 	Popconfirm,
 } from 'antd'
 import ATable from './aTable'
-import '../../../../App.css'
+import  '../../../../App.css'
 
 const { Content } = Layout;
 

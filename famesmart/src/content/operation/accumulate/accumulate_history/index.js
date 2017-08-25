@@ -10,8 +10,8 @@ import {
 	Popconfirm,
 } from 'antd'
 import ATable from './aTable'
-import appData from './../../../../assert/Ajax';
 import '../../../../App.css'
+import appData from './../../../../assert/Ajax';
 
 const { Content } = Layout;
 

@@ -144,6 +144,7 @@ class pointTable extends Component {
 					rule_no: 0
 				}
 				data.push(others)
+				this.Children = data;
 				let array = []
 				data.forEach((vals, index)=> {
 					if(vals.rule_no == num){
@@ -221,24 +222,29 @@ class pointTable extends Component {
 	//选择活动类型，积分
 	_selectChange(value, type){
 		if(type == 'score_type'){
-			if(value == 0){
-				this.setState({
-					rule_ctrl: false,
-					score_type: value.score_type,
-				})
-				this.props.form.setFieldsValue({
-					accumulate: 0,
-				});
-			} else {
-				this.props.form.setFieldsValue({
-					accumulate: value.rule_score,
-				});
-				this.setState({
-					rule_ctrl: true,
-					score_type: value.score_type,
-					score: value.rule_score,
-				})
-			}
+			let score_list = this.Children;
+			score_list.forEach((val, index)=>{
+				if(val.rule_no == value){
+					if(value == 0){
+						this.setState({
+							rule_ctrl: false,
+							score_type: val.score_type,
+						})
+						this.props.form.setFieldsValue({
+							accumulate: 0,
+						});
+					} else {
+						this.props.form.setFieldsValue({
+							accumulate: val.rule_score,
+						});
+						this.setState({
+							rule_ctrl: true,
+							score_type: val.score_type,
+							score: val.rule_score,
+						})
+					}
+				}
+			})
 		} else if(type == 'type'){
 			this.setState({
 				type: value
@@ -462,7 +468,7 @@ class pointTable extends Component {
 			<div style={{ padding: 24, margin: 0, minHeight: 80 }}>
 				<Col  className="printHidden">
 					<text style={{fontSize: 24, color: '#aaa'}}>活动管理/</text>
-					<text style={{fontSize: 24, color: '#1e8fe6'}}>新增（修改）活动</text>
+					<text style={{fontSize: 24, color: '#1e8fe6'}}>活动详情</text>
 				</Col>
 				<Form  style={{paddingTop: '50px'}} >
 					<Row gutter={40}>

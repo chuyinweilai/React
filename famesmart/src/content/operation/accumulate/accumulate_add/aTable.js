@@ -12,22 +12,21 @@ import {
 	Tooltip, 
 	Cascader, 
 	Checkbox, 
+	DatePicker,
 	InputNumber,
 	AutoComplete,
 	Breadcrumb, 
 } from 'antd';
-import appData from './../../../../assert/Ajax';
-import '../../../../App.css'
+// import Selects from './aCell';
+import appData from './../../../../assert/Ajax'
 import moment from 'moment';
+import '../../../../App.css'
 import '../../../../index.css'
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 const AutoCompleteOption = AutoComplete.Option;
 const { TextArea } = Input;
-// const dateFormat = 'YYYY-MM-DD h:mm:ss';
-// moment().format('MMMM Do YYYY, h:mm:ss a');
-
 
 class pointTable extends Component {
 	constructor(props) {
@@ -51,7 +50,6 @@ class pointTable extends Component {
 		this.change_mess = [];
 	}
 
-		//gift/list
 	componentWillMount(){
 		this.Router = this.props.Router;
 		this.mess = this.props.message;
@@ -72,7 +70,8 @@ class pointTable extends Component {
 	_getEvents(mess){
 		let afteruri = 'vcity/listrule'
 		let body = {
-			comm_code: mess.comm_code
+			// comm_code: mess.comm_code
+			comm_code: "M0002"
 		}
 		appData._dataPost(afteruri,body,(res) => {
 			let others = {
@@ -132,7 +131,8 @@ class pointTable extends Component {
 		let afteruri  = 'volunteer/sign2';
 		let body = {
 			"wx_id": this.choMess.wx_id,
-			"comm_code": this.choMess.comm_code,
+			// "comm_code": this.choMess.comm_code,
+			comm_code: "M0002",
 			"operator": this.userMess.user_id,
 			"activity_score": this.state.rule_score,
 			"activity_no": this.state.rule_no,
@@ -142,7 +142,7 @@ class pointTable extends Component {
 				this.setState({
 					visible: false,
 				})
-				// this._jump('back') 
+				this._jump('back') 
 			}
 		})
 	}
@@ -157,7 +157,7 @@ class pointTable extends Component {
 			<div style={{padding: 24, margin: 0, minHeight: 80 }}>
 				<Row type="flex" justify="space-between" gutter={1}>
 					<Col className="printHidden">
-						<text style={{fontSize: 24, color: '#aaa'}}>米社运维/积分管理/</text>
+						<text style={{fontSize: 24, color: '#aaa'}}>积分管理/</text>
 						<text style={{fontSize: 24, color: '#1e8fe6'}}>手动积分</text>
 					</Col>
 				</Row>
@@ -228,11 +228,6 @@ class pointTable extends Component {
 					<Col style={{height: 30}}>积分变动值: {this.state.rule_score}</Col>
 					<Col style={{height: 30}}>剩余积分: {this.state.rule_score + this.choMess.score}</Col>
 					<Col style={{height: 60}}>签名</Col>
-					<Row className="printHidden">
-						<Col>
-							<Button onClick={()=>window.print()}>打印</Button>
-						</Col>
-					</Row>
 				</Modal>
 			</div>
 		);

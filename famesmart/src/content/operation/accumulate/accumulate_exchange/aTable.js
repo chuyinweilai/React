@@ -12,19 +12,18 @@ import {
 	Tooltip, 
 	Cascader, 
 	Checkbox, 
+	DatePicker,
 	InputNumber,
 	AutoComplete 
 } from 'antd';
-import appData from './../../../../assert/Ajax';
-import '../../../../App.css'
+import appData from './../../../../assert/Ajax'
 import moment from 'moment';
+import '../../../../App.css'
 
 const FormItem = Form.Item;
 const Option = Select.Option;
 const AutoCompleteOption = AutoComplete.Option;
 const { TextArea } = Input;
-// const dateFormat = 'YYYY-MM-DD h:mm:ss';
-// moment().format('MMMM Do YYYY, h:mm:ss a');
 
 
 class pointTable extends Component {
@@ -71,7 +70,8 @@ class pointTable extends Component {
 	_getEvents(mess){
 		let afteruri = "gift/list"
 		let body = {
-			comm_code: mess.comm_code
+			// comm_code: mess.comm_code
+			comm_code: "M0002"
 		}
 		appData._dataPost(afteruri,body,(data) => {
 			this.change_mess = data
@@ -115,9 +115,6 @@ class pointTable extends Component {
 				ch_number: e,
 			})
 
-			// this.props.form.setFieldsValue({
-			// 	ch_score: score*e
-			// })
 		}
 	}
 
@@ -152,12 +149,13 @@ class pointTable extends Component {
 	}
 
 	//提交创建新活动
-
 	_upData(){
 		let afteruri  = 'gift/change';
 		let body = {
 			"wx_id": this.choMess.wx_id,
-			"comm_code":this.choMess.comm_code,
+			// "comm_code":this.choMess.comm_code,			
+			comm_code: "M0002",
+
 			"gift_no":this.state.gift_no,
 			"operator":this.userMess.user_id,
 			"change_num":this.state.ch_number,
@@ -170,7 +168,7 @@ class pointTable extends Component {
 				})
 			let data = this.userMess;
 			this._getEvents(data)
-				// this._jump('back') 
+				this._jump('back') 
 			}
 		})
 	}
@@ -185,7 +183,7 @@ class pointTable extends Component {
 			<div style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>
 				<Row type="flex" justify="space-between" gutter={1}>
 					<Col className="printHidden">
-						<text style={{fontSize: 24, color: '#aaa'}}>米社运维/积分管理/</text>
+						<text style={{fontSize: 24, color: '#aaa'}}>积分管理/</text>
 						<text style={{fontSize: 24, color: '#1e8fe6'}}>积分兑换</text>
 					</Col>
 				</Row>
@@ -229,10 +227,14 @@ class pointTable extends Component {
 						{getFieldDecorator('ch_number',{
 							initialValue: this.state.ch_number
 						})(
+							<Row>
 							<InputNumber 
 								min = {1}
+								defaultValue={1}
 								max = {this.state.maxNumber}
 							 	onChange={this._input.bind(this,"ch_number")}/>
+								<text>剩余{this.state.maxNumber}件</text>
+							</Row>
 						)}
 					</FormItem>
 
@@ -250,7 +252,7 @@ class pointTable extends Component {
 
 				<Row type="flex" justify="end" gutter={1} className="printHidden">
 					<Col span={2}>
-						<Button style={{backgroundColor:'#1e8fe6', color: 'white'}} onClick={() =>this.setState({visible: true})} disabled={this.state.btnAble}>确认</Button>
+						<Button style={this.state.btnAble?{backgroundColor:'#aaa', color: 'white'}:{backgroundColor:'#1e8fe6', color: 'white'}} onClick={() =>this.setState({visible: true})} disabled={this.state.btnAble}>确认</Button>
 					</Col>
 					<Col span={2}>
 						<Button onClick={()=>this._jump('back')}>取消</Button>
@@ -264,15 +266,10 @@ class pointTable extends Component {
 					onCancel={() =>this.setState({visible: false})}
 					okText="提交"
 					cancelText="取消">
-					 <text style={{height: 30}}>手机号: {this.state.mobile}</text>
-					<text style={{height: 30}}>兑换商品: {this.state.ch_name}</text>
-					<text style={{height: 30}}>兑换积分: {this.state.ch_score}</text>
-					<text style={{height: 60}}>兑换者签名</text> 
-					<Row className="printHidden">
-						<Col>
-							<Button onClick={()=>window.print()}>打印</Button>
-						</Col>
-					</Row>
+					<Col style={{height: 30}}>手机号: {this.state.mobile}</Col>
+					<Col style={{height: 30}}>兑换商品: {this.state.ch_name}</Col>
+					<Col style={{height: 30}}>兑换积分: {this.state.ch_score}</Col>
+					<Col style={{height: 60}}>兑换者签名</Col>
 				</Modal>
 			</div>
 		);
