@@ -70,8 +70,7 @@ class pointTable extends Component {
 	_getEvents(mess){
 		let afteruri = 'vcity/listrule'
 		let body = {
-			// comm_code: mess.comm_code
-			comm_code: "M0002"
+			comm_code: mess.comm_code
 		}
 		appData._dataPost(afteruri,body,(res) => {
 			let others = {
@@ -131,8 +130,7 @@ class pointTable extends Component {
 		let afteruri  = 'volunteer/sign2';
 		let body = {
 			"wx_id": this.choMess.wx_id,
-			// "comm_code": this.choMess.comm_code,
-			comm_code: "M0002",
+			"comm_code": this.choMess.comm_code,
 			"operator": this.userMess.user_id,
 			"activity_score": this.state.rule_score,
 			"activity_no": this.state.rule_no,

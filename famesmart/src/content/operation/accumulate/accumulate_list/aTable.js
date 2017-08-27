@@ -128,6 +128,7 @@ export default class pointTable extends Component {
 		this.Router = this.props.Router;
 		this.mess = this.props.message;
 		appData._Storage('get',"userMess",(res) =>{
+			console.log(res)
 			this.setState({
 				comm_name: res.comm_name
 			})
@@ -141,8 +142,7 @@ export default class pointTable extends Component {
 	_outDate(){
 		let afteruri = 'func/jftx/set';
 		let body = {
-			// comm_code: this.userMess.comm_code
-			comm_code: "M0002"
+			comm_code: this.userMess.comm_code
 		}
 		this.setState({
 			loading: true,
@@ -173,8 +173,7 @@ export default class pointTable extends Component {
 	_alarm_data(){
 		let afteruri = 'func/jftx/get';
 		let body = {
-			// "comm_code": this.userMess.comm_code
-			comm_code: "M0002"
+			"comm_code": this.userMess.comm_code
 		}
 		appData._dataPost(afteruri, body, (res)=>{
 			if(res.length){
@@ -191,8 +190,7 @@ export default class pointTable extends Component {
 		let afteruri = 'vcity/scoresheet';
 		let afteruri_data = 'func/jftx/get';
 		let body = {
-			//  "comm_code": userMess.comm_code
-			comm_code: "M0002"
+			 "comm_code": userMess.comm_code
 		}
 		appData._dataPost(afteruri,body,(res) => {
 			let data = res.data
@@ -223,8 +221,7 @@ export default class pointTable extends Component {
 		let userMess = this.userMess;
 		let afteruri = 'vcity/scoresheet?page=' + pageNumber ;
 		let body = {
-			// "comm_code": userMess.comm_code,
-			comm_code: "M0002",	
+			"comm_code": userMess.comm_code,
 		}
 		appData._dataPost(afteruri,body,(res) => {
 			let data = res.data;

@@ -32,7 +32,6 @@ export default class siders extends Component{
 		appData._Storage('get',"LoginType",(res)=>{
 			LoginType = res
 		})
-		// if(LoginType == "cloude"){
 			if(this.userMess.auth_lvl == 0){
 				return (
 					<Menu
@@ -46,12 +45,10 @@ export default class siders extends Component{
 					>
 
 						<Menu.Item key="home3"><Icon type="star-o" />首页</Menu.Item>
-
 						<Menu.Item key="cancel"><Icon type="close-circle-o"/>注销</Menu.Item>
 					</Menu>
 				)
 			}
-		// } else if(LoginType == "server") {
 			if(this.userMess.auth_lvl == 1){
 				return (
 					<Menu
@@ -64,7 +61,7 @@ export default class siders extends Component{
 						onSelect = {this._click.bind(this)}
 					>
 						<Menu.Item key="home2"><Icon type="star-o" />首页</Menu.Item>
-
+						
 						<Menu.Item key="five_list"><Icon type="star-o" />五违管理</Menu.Item>
 						<Menu.Item key="civilization_list"><Icon type="star-o" />文明管理</Menu.Item>
 						<Menu.Item key="report_list"><Icon type="star-o" />报警汇总</Menu.Item>
@@ -101,7 +98,6 @@ export default class siders extends Component{
 						<Menu.Item key="five_list"><Icon type="star-o" />五违管理</Menu.Item>
 						<Menu.Item key="civilization_list"><Icon type="star-o" />文明管理</Menu.Item>
 						<Menu.Item key="report_list"><Icon type="star-o" />报警汇总</Menu.Item>
-						<Menu.Item key="coordinate"><Icon type="environment-o" />定位服务</Menu.Item>
 
 						<SubMenu key = "IO" title={<span><Icon type="credit-card" /><span>出入管理</span></span>}>
 							<Menu.Item key="IOcount_list"><Icon type="key" />实时记录</Menu.Item>
@@ -145,12 +141,10 @@ export default class siders extends Component{
 			} else {
 				return null
 			}
-		// }  else {
-		// 	return null
-		// }
 	}
 
 	render(){
 		return this._siderList()
+		
 	}
 }

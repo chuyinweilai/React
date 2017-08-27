@@ -59,14 +59,14 @@ class App extends Component {
 					</Header>
 					<Layout style={{backgroundColor:'#fff'}}>
 						<Sider 
-							collapsible = 'true'
+							collapsible
 							collapsed={this.state.collapsed}
 							onCollapse={this.onCollapse.bind(this)}
 							width={200} 
 							className="siders printHidden"
 							>
-							<Siders message={this.state.message} Router={(nextPage,mess, historyPage) => this._Router(nextPage,mess,historyPage)}>
-							</Siders>
+								<Siders message={this.state.message} Router={(nextPage,mess, historyPage) => this._Router(nextPage,mess,historyPage)}>
+								</Siders>
 						</Sider>
 						<Router message={this.state.message} Router={(nextPage,mess,historyPage) => this._Router(nextPage,mess,historyPage)}/>
 					</Layout>

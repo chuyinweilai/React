@@ -228,7 +228,7 @@ class pointTable extends Component {
 					if(value == 0){
 						this.setState({
 							rule_ctrl: false,
-							score_type: val.score_type,
+							score_type: val.rule_no,
 						})
 						this.props.form.setFieldsValue({
 							accumulate: 0,

@@ -3,10 +3,6 @@ import Home_1 from './home/home'
 import Home_2 from './home/home2'
 import Home_3 from './home/home3'
 import Login from './login/login'
-import{
-	Statistics_record_list,
-	Realtime_record_list,
-} from './IO'
 
 import {
 	Accumulate_history,
@@ -119,12 +115,6 @@ export default class mainPage extends Component{
 		//登录页面
 		else if(name === 'login')	
 			return <Login message={this.mess} Router={this.Router}/>
-
-		//出入管理
-		else if(name === 'statistics_record_list')	
-			return <Statistics_record_list message={this.mess} Router={this.Router}/>
-		else if(name === 'realtime_record_list')	
-			return <Realtime_record_list message={this.mess} Router={this.Router}/>
 
 		//卡片管理
 		else if(name === 'IC_cards_resident_list')	

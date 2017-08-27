@@ -31,8 +31,8 @@ export default class community_resident_list extends Component {
 			pageSum:1,
 			pageNum:1,
 			comm_name:'',
-			SearchType: 'apt_code',
-			SearchText:'输入住宅号查询。如：1-3-301'
+			SearchType: 'name',
+			SearchText:'输入业主姓名查询。'
 		};
 
 		this.columns = [
@@ -134,7 +134,7 @@ export default class community_resident_list extends Component {
 	// 搜索框
 	_searchMob(val){
 		let TokenMess = this.TokenMess;
-		let afteruri = 'user/search';
+		let afteruri = 'users/search';
 		let body = {}
 		let searchType =  this.state.SearchType;
 		if( searchType == "name"){
@@ -205,7 +205,7 @@ export default class community_resident_list extends Component {
 							<Button style={{height: 32}} onClick={()=>window.print()}>打印</Button>
 						</Col>
 					</Row>
-					{/* <Row  className="printHidden" style={{height: 32, margin: 10}}>
+					<Row  className="printHidden" style={{height: 32, margin: 10}}>
 						<Col span={24} style={{textAlign:'right'}}>
 							<Search
 								className="printHidden"
@@ -214,19 +214,14 @@ export default class community_resident_list extends Component {
 								onSearch={value => this._searchMob(value)}
 							/>
 							<Select
-								defaultValue="apt_code"
+								defaultValue="name"
 								style={{width: 100, marginLeft: 20}}
 								onChange={this._handleChange.bind(this)}
 							>
 								<Option key="name">姓名</Option>
 								<Option key="mobile">手机号</Option>
-								<Option key="auth_lvl">权限等级</Option>
-								<Option key="org">组织</Option>
 							</Select>
 						</Col>
-					</Row> */}
-					<Row>
-						<Col span={8} style={{margin:'10px'}}> </Col>
 					</Row>
 					<Table bordered dataSource={this.state.dataSource} columns={columns} rowKey='key' pagination={false} style={{marginBottom: 20}}/> 
 					<Row type="flex" justify="end">

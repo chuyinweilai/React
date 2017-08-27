@@ -44,6 +44,7 @@ export default class QRcode_record extends Component {
 		this.columns = [
 			{
 				title:'ID',
+				colSpan: 1,
 				dataIndex: 'ID',
 				render:(text,record,index)=>(
 					<text>{index+1}</text>
@@ -140,8 +141,7 @@ export default class QRcode_record extends Component {
 		let userMess = this.userMess;
 		let afteruri = 'cards/qr/list';
 		let body = {
-			// "comm_code": userMess.comm_code,
-			comm_code: "M0002"
+			"comm_code": userMess.comm_code,
 		}
 		appData._dataPost(afteruri,body,(res) => {
 			let pageSum = Math.ceil(res.total/res.per_page)
@@ -168,8 +168,7 @@ export default class QRcode_record extends Component {
 		let afteruri = 'activity/list?page=' + pageNumber ;
 		
 		let body = {
-			//  "comm_code": userMess.comm_code
-			  comm_code: "M0002"
+			 "comm_code": userMess.comm_code
 		}
 		appData._dataPost(afteruri,body,(res) => {
 			let pageSum = Math.ceil(res.total/res.per_page)

@@ -132,8 +132,7 @@ export default class pointTable extends Component {
 			this.userMess = res;
 			this._login(res,mess)
 			this.setState({
-				// comm_name: res.comm_name,
-				comm_name: "M0002"
+				comm_name: res.comm_name,
 			})
 		})
 	}
@@ -141,8 +140,7 @@ export default class pointTable extends Component {
 	_login(data,mess){
 		let afteruri = 'activity/check'
 		let body = {
-			// comm_code: mess.comm_code,
-			comm_code: "M0002",	
+			comm_code: mess.comm_code,
 			activity_no:mess.activity_no,
 		}
 		appData._dataPost(afteruri, body, (res) =>{
@@ -169,8 +167,7 @@ export default class pointTable extends Component {
 	_over(){
 		let afteruri = 'activity/finish';
 		let body = {   
-			// "comm_code": this.activeMess.comm_code,
-			comm_code: "M0002",	
+			"comm_code": this.activeMess.comm_code,
             "activity_no": this.activeMess.activity_no
 		}
 		appData._dataPost(afteruri, body, (res)=>{

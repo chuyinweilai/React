@@ -105,8 +105,7 @@ export default class QRCode_list extends Component {
 		let userMess = this.userMess;
 		let afteruri = 'func/aptinfo';
 		let body = {
-			//  "comm_code": userMess.comm_code,
-			comm_code: "M0002"
+			 "comm_code": userMess.comm_code,
 		}
 		appData._dataPost(afteruri,body,(res) => {
 			let data = res.data
@@ -128,8 +127,7 @@ export default class QRCode_list extends Component {
 			let afteruri = 'vcity/canceluser';
 			let body = {
 				"mobile": mess.mobile,
-				// "comm_code": mess.comm_code,
-				comm_code: "M0002"
+				"comm_code": mess.comm_code,
 			}
 			appData._dataPost(afteruri,body,(res) => {
 				if(res){
@@ -149,8 +147,7 @@ export default class QRCode_list extends Component {
 		let userMess = this.userMess;
 		let afteruri = 'func/aptinfo?page=' + pageNumber ;
 		let body = {
-			//  "comm_code": userMess.comm_code
-			comm_code: "M0002"
+			 "comm_code": userMess.comm_code
 		}
 		appData._dataPost(afteruri,body,(res) => {
 			let pageSum = Math.ceil(res.total/res.per_page)

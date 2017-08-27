@@ -176,8 +176,7 @@ export default class pointTable extends Component {
 		let userMess = this.userMess;
 		let afteruri = 'vcity/listuser';
 		let body = {
-			//  "comm_code": userMess.comm_code,
-			comm_code: "M0002",	
+			 "comm_code": userMess.comm_code,
 		}
 		appData._dataPost(afteruri,body,(res) => {
 			let data = res.data
@@ -201,8 +200,7 @@ export default class pointTable extends Component {
 			let afteruri = 'vcity/canceluser';
 			let body = {
 				"mobile": mess.mobile,
-				// "comm_code": mess.comm_code,
-				comm_code: "M0002",	
+				"comm_code": mess.comm_code,
 			}
 			appData._dataPost(afteruri,body,(res) => {
 				if(res){
@@ -225,8 +223,7 @@ export default class pointTable extends Component {
 				"name": mess.name,
 				"gender": mess.gender,
 				"mobile": mess.mobile,
-				// "comm_code": mess.comm_code,
-				comm_code: "M0002",	
+				"comm_code": mess.comm_code,
 				"apt_code": mess.apt_code,
 				"unit_code": mess.unit_code,
 				"floor": mess.floor,
@@ -251,8 +248,7 @@ export default class pointTable extends Component {
 		let userMess = this.userMess;
 		let afteruri = 'vcity/listuser?page=' + pageNumber ;
 		let body = {
-			//  "comm_code": userMess.comm_code,
-			comm_code: "M0002",	
+			 "comm_code": userMess.comm_code,
 		}
 		appData._dataPost(afteruri,body,(res) => {
 			let pageSum = Math.ceil(res.total/res.per_page)

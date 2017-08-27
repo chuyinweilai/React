@@ -100,8 +100,7 @@ class pointTable extends Component {
 	_select(){
 		let afteruri = 'func/aptinfo2';
 		let body = {
-			//  "comm_code": this.userMess.comm_code,
-			comm_code: "M0002",	
+			 "comm_code": this.userMess.comm_code,
 		}
 		appData._dataPost(afteruri,body,(res) => {
 			let array = []
@@ -207,8 +206,7 @@ class pointTable extends Component {
 					let	afteruri  = 'vcity/edituser'
 					let body = {
 						"wx_id":this.activeMess.wx_id,
-						// "comm_code":  this.userMess.comm_code,
-						comm_code: "M0002",	
+						"comm_code":  this.userMess.comm_code,
 						"type": this.state.type,
 						"name": this.state.name,
 						"mobile": this.state.mobile,
@@ -231,9 +229,7 @@ class pointTable extends Component {
 				} else {
 					let	afteruri  = 'vcity/adduser'
 					let body = {
-						// "comm_code":  this.userMess.comm_code,
-						comm_code: "M0002",	
-
+						"comm_code":  this.userMess.comm_code,
 						"type": this.state.type,
 						"name": this.state.name,
 						"mobile": this.state.mobile,

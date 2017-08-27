@@ -210,8 +210,7 @@ export default class pointTable extends Component {
 		let userMess = this.userMess;
 		let afteruri = 'activity/list';
 		let body = {
-			// "comm_code": userMess.comm_code,
-			comm_code: "M0002",	
+			"comm_code": userMess.comm_code,
 		}
 		appData._dataPost(afteruri,body,(res) => {
 			let pageSum = Math.ceil(res.total/res.per_page)
@@ -234,8 +233,7 @@ export default class pointTable extends Component {
 		}else if(type === "cancel"){
 			let afteruri = "activity/cancel"
 			let body ={   
-				// "comm_code": mess.comm_code,
-				comm_code: "M0002",	
+				"comm_code": mess.comm_code,
             	"activity_no":  mess.activity_no
 			}
 			appData._dataPost(afteruri,body,(res)=>{
@@ -255,8 +253,7 @@ export default class pointTable extends Component {
 		let afteruri = 'activity/list?page=' + pageNumber ;
 		
 		let body = {
-			//  "comm_code": userMess.comm_code
-			  comm_code: "M0002",	
+			 "comm_code": userMess.comm_code
 		}
 		appData._dataPost(afteruri,body,(res) => {
 			let pageSum = Math.ceil(res.total/res.per_page)

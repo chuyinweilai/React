@@ -122,8 +122,7 @@ export default class pointTable extends Component {
 		let afteruri = 'vcity/scorelist';
 		let body = {
 			"wx_id": userMess.wx_id,
-			// "comm_code": userMess.comm_code,
-			comm_code: "M0002"
+			"comm_code": userMess.comm_code,
 		}
 		appData._dataPost(afteruri,body,(res) => {
 			let data = res.data
@@ -154,8 +153,7 @@ export default class pointTable extends Component {
 		let userMess = this.userMess;
 		let afteruri = 'vcity/scorelist?page=' + pageNumber ;
 		let body = {
-			//  "comm_code": userMess.comm_code
-			comm_code: "M0002"
+			 "comm_code": userMess.comm_code
 		}
 		appData._dataPost(afteruri,body,(res) => {
 			let pageSum = Math.ceil(res.total/res.per_page)

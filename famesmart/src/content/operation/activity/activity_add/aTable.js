@@ -77,8 +77,7 @@ class pointTable extends Component {
 		appData._Storage('get', "userMess",(res) =>{
 			this.userMess = res
 			this.setState({
-				// comm_name: res.comm_name
-				comm_name: "M0002"
+				comm_name: res.comm_name
 			})
 		})
 		if(mess !== undefined){
@@ -135,8 +134,7 @@ class pointTable extends Component {
 		let afteruri = 'vcity/listrule';
 		appData._Storage('get', 'userMess',(res)=>{
 			let body={
-				// comm_code: res.comm_code,
-				comm_code: "M0002",	
+				comm_code: res.comm_code,
 			}
 			appData._dataPost(afteruri,body,(data) =>{
 				let others = {
@@ -223,24 +221,29 @@ class pointTable extends Component {
 	//选择活动类型，积分
 	_selectChange(value, type){
 		if(type == 'score_type'){
-			if(value == 0){
-				this.setState({
-					rule_ctrl: false,
-					score_type: value.score_type,
-				})
-				this.props.form.setFieldsValue({
-					accumulate: 0,
-				});
-			} else {
-				this.props.form.setFieldsValue({
-					accumulate: value.rule_score,
-				});
-				this.setState({
-					rule_ctrl: true,
-					score_type: value.score_type,
-					score: value.rule_score,
-				})
-			}
+			let score_list = this.Children;
+			score_list.forEach((val, index)=>{
+				if(val.rule_no == value){
+					if(value == 0){
+						this.setState({
+							rule_ctrl: false,
+							score_type: val.rule_no,
+						})
+						this.props.form.setFieldsValue({
+							accumulate: 0,
+						});
+					} else {
+						this.props.form.setFieldsValue({
+							accumulate: val.rule_score,
+						});
+						this.setState({
+							rule_ctrl: true,
+							score_type: val.rule_no,
+							score: val.rule_score,
+						})
+					}
+				}
+			})
 		} else if(type == 'type'){
 			this.setState({
 				type: value
@@ -357,8 +360,7 @@ class pointTable extends Component {
 					if(this.activeMess == undefined){
 							afteruri  = 'activity/add';
 							body = {
-								// "comm_code":  this.userMess.comm_code,
-								comm_code: "M0002",	
+								"comm_code":  this.userMess.comm_code,
 								"title":  this.state.theme,
 								"detail":  this.state.content,
 								"pic_path":pic_path,
@@ -375,8 +377,7 @@ class pointTable extends Component {
 					} else {
 							afteruri  = 'activity/update';
 							body= {
-								// "comm_code":  this.userMess.comm_code,
-								comm_code: "M0002",	
+								"comm_code":  this.userMess.comm_code,
 								"title":  this.state.theme,
 								"detail":  this.state.content,
 								"pic_path": pic_path,
@@ -409,8 +410,7 @@ class pointTable extends Component {
 		if(type === "cancel"){
 			let afteruri = "activity/cancel";
 			let body ={   
-				// "comm_code": this.activeMess.comm_code,
-				comm_code: "M0002",	
+				"comm_code": this.activeMess.comm_code,
             	"activity_no":  this.activeMess.activity_no
 			}
 			appData._dataPost(afteruri,body,(res)=>{

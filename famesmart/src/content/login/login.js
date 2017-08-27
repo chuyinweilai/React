@@ -48,6 +48,7 @@ class Login extends Component {
                                 error: true
                             })
                         } else {
+                            res.user["comm_code"] = "M0002"
                             appData._Storage('set',"Token",res.token)
                             appData._Storage('set',"userMess",res.user)
                             appData._Storage('set',"LoginType",'server')
