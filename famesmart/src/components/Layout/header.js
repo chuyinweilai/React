@@ -14,37 +14,26 @@ export default class headers extends Component{
 	}
 	componentWillMount(){
 		appData._Storage('get',"userMess",(res) =>{
-			appData._Storage('get',"LoginType",(val) =>{
-				if(val == 'cloude'){
-					this.setState({
-						comm_name: res.comm_name,
-						user_id: res.user_id
-					})
-				}else if(val == "server"){
-					this.setState({
-						comm_name: res.name,
-						user_id: res.id
-					})
-				}
+			this.setState({
+				comm_name: res.comm_name,
+				user_id: res.user_id
 			})
 		})
 	}
 
 	render(){
 		return (
-		<Header className="header" >
-			<Row>
-				<Col span={4}>
-					 <img style={{margin:10,width: '80%', height: 40, display:'inline-block'}} className="logo" src="./icon/LOGO.jpg"/> 
-				</Col>
-				<Col span={13}>
+		<Header className="header" style={{padding: 0}}>
+				<span>
+					<img style={{width:100, height: 30, display:'inline-block', margin: 10, marginTop: 20}} className="logo" src="./icon/LOGO.png"/> 
+				</span>
+				<span>
 					<text style={{color: 'white', fontSize: 30, display:'inline-block'}}>智慧社区管理平台</text> 
-				</Col>
-				<Col span={5}>
+				</span>
+				<span>
 					<span style={{color: 'white', marginRight: 20}}>所在社区：{this.state.comm_name}</span>
 					<span style={{color: 'white', marginRight: 20}}>操作员：{this.state.user_id}</span>
-				</Col>
-			</Row>
+				</span>
 		</Header>
 		)
 	}

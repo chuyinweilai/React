@@ -239,7 +239,7 @@ class pointTable extends Component {
 						});
 						this.setState({
 							rule_ctrl: true,
-							score_type: val.score_type,
+							score_type: val.rule_no,
 							score: val.rule_score,
 						})
 					}
