@@ -61,6 +61,7 @@ export default class Selects extends React.Component {
 	//选择活动类型，积分
 	_selectChange(index){
 		let type = this.state.type_list;
+		console.log(type)
 		if(index == 0){
 			this._select(index)
 		} else {

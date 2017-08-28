@@ -18,6 +18,7 @@ import appData from './../../../assert/Ajax';
 import ACell from './aCell';
 import  '../../../App.css'
 const { Option, OptGroup } = Select
+const Search = Input.Search;
 require('./index.css');
 export default class pointTable extends Component {
 	constructor(props) {
@@ -30,6 +31,9 @@ export default class pointTable extends Component {
 			pageSum:1,
 			pageNum:1,
 			comm_name:'',
+
+			SearchType: 'status',
+			SearchText: '输入状态查询。'
 		};
 
 		this.columns = [
@@ -111,7 +115,7 @@ export default class pointTable extends Component {
 		let body = {
             "owner_group":"物业",
             "duration":"all",
-            "per_page":5
+            "per_page":10
 		}
         appData_local._dataPost(afteruri,body,(res) => {
             let data = res.data
@@ -165,6 +169,59 @@ export default class pointTable extends Component {
 		})
 	}
 
+	// 搜索框
+	_searchMob(val){
+		let TokenMess = this.TokenMess;
+		let afteruri = 'entrance_records/search';
+		let body = {}
+		let searchType =  this.state.SearchType;
+		if( searchType == "status"){
+			body = {
+            	"owner_group":"居民",
+				"status": val,
+			}
+		} else if( searchType == "alert_lvl"){
+			body = {
+				"owner_group":"居民",
+				"alert_lvl": val,
+			}
+		} else if(val == 'month'){
+			body = {
+				"owner_group":"居民",
+				"month": val
+			}
+		}
+		appData_local._dataPost(afteruri,body,(res) => {
+			let pageSum = Math.ceil(res.total/res.per_page)
+			let data = res.data;
+			let len = data.length;
+			this.setState({
+				total:res.total,
+				dataSource: data,
+				count:len,
+			})
+		},TokenMess)
+	}
+
+	_handleChange(val){
+		if(val == 'status'){
+			this.setState({
+				SearchType: 'status',
+				SearchText: '输入状态查询。'
+			})
+		} else if(val == 'alert_lvl'){
+			this.setState({
+				SearchType: 'alert_lvl',
+				SearchText: '输入等级查询。'
+			})
+		} else if(val == 'month'){
+			this.setState({
+				SearchType: 'month',
+				SearchText:'输入时间查询。'
+			})
+		}
+	}
+
 	render() {
 		const { dataSource } = this.state;
 		let columns = this.columns;
@@ -173,41 +230,39 @@ export default class pointTable extends Component {
             fontSize: '15px',
         }
         function handleSearch(){
+            console.log()
         }
 		return (
-		<div style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>
+		<div>
 			<Row type="flex" justify="space-between" gutter={1}>
-				<Col lg={8} md={12} sm={16} xs={24} style={{ marginBottom: 16 }}>
+				<Col  className="printHidden">
+					<text style={{fontSize: 24, color: '#aaa'}}>巡更管理/</text>
+					<text style={{fontSize: 24, color: '#1e8fe6'}}>巡更记录</text>
+				</Col>
+				<Col className="printHidden">
+					<Button style={{height: 32}} onClick={()=>window.print()}>打印</Button>
+				</Col>
+			</Row>
+			<Row  className="printHidden" style={{height: 32, margin: 10}}>
+				<Col span={24} style={{textAlign:'right'}}>
+					<Search
+						className="printHidden"
+						placeholder={this.state.SearchText}
+						style={{ minWidth: 200, maxWidth: 300 }}
+						onSearch={value => this._searchMob(value)}
+					/>
 					<Select
-						mode="multiple"
-						size="large"
-						style={{ width: '80%' }}
-						placeholder="Please select"
+						defaultValue="status"
+						style={{width: 100, marginLeft: 20}}
+						onChange={this._handleChange.bind(this)}
 					>
-						<OptGroup label="状态" style={lableS}>
-							<Option style={{ marginLeft: 16 }} value="(status='新建')">新建</Option>
-							<Option style={{ marginLeft: 16 }} value="(status='分发')">分发</Option>
-							<Option style={{ marginLeft: 16 }} value="(status='关闭')">关闭</Option>
-						</OptGroup>
-						<OptGroup label="等级" style={lableS} >
-							<Option style={{ marginLeft: 16 }} value="(alert_lvl='高')">高</Option>
-							<Option style={{ marginLeft: 16 }} value="(alert_lvl='中')">中</Option>
-							<Option style={{ marginLeft: 16 }} value="(alert_lvl='低')">低</Option>
-						</OptGroup>
-						<OptGroup label="时间" style={lableS} >
-							<Option style={{ marginLeft: 16 }} value="month">最近一个月</Option>
-						</OptGroup>
+						<Option key="status">状态</Option>
+						<Option key="alert_lvl">等级</Option>
+						<Option key="month">时间</Option>
 					</Select>
-					<Button size="large" type="primary" onClick={handleSearch}>搜索</Button>
 				</Col>
-				<Col span={2} className="printHidden">
-					<Button type="primary" onClick={() => this._print()}>打印</Button>
-				</Col>
-
 			</Row>
-			<Row>
-				<Col span={8} style={{margin:'10px'}}> </Col>
-			</Row>
+			
 			<Table bordered  dataSource={this.state.dataSource} columns={columns} rowKey='key' pagination={false} style={{marginBottom: 20}}/>
 			<Row type="flex" justify="end">
 			<Pagination showQuickJumper defaultCurrent={1} current={this.state.pageNum} total={this.state.total} onChange={this._pageChange.bind(this)} />

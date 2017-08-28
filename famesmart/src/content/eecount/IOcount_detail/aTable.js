@@ -136,7 +136,9 @@ export default class pointTable extends Component {
         let TokenMess = this.TokenMess;
         let userMess = this.userMess;
         let afteruri = 'entrance_records/search';
+        console.log('id:'+mess.id)
         let searchstr = '"device_id":'+'"'+mess.id+'"'
+        console.log('searchstr:'+searchstr)
         let body = {
             "owner_group":"居民",
             "per_page":20,
@@ -144,6 +146,8 @@ export default class pointTable extends Component {
         }
         appData_local._dataPost(afteruri,body,(res) => {
             let data = res.data
+            console.log(res)
+            // return null
             let pageSum = Math.ceil(res.total/res.per_page)
             let len = data.length;
             this.setState({
@@ -207,6 +211,7 @@ export default class pointTable extends Component {
             fontSize: '15px',
         }
         function handleSearch(){
+            console.log()
         }
         return (
             <div style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>

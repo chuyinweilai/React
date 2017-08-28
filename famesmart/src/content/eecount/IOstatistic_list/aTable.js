@@ -18,6 +18,8 @@ import appData from './../../../assert/Ajax';
 import ACell from './aCell';
 import  '../../../App.css'
 const { Option, OptGroup } = Select
+const Search = Input.Search;
+
 require('./index.css');
 export default class pointTable extends Component {
 	constructor(props) {
@@ -30,6 +32,9 @@ export default class pointTable extends Component {
 			pageSum:1,
 			pageNum:1,
 			comm_name:'',
+
+			SearchType: 'status',
+			SearchText:'输入状态查询。'
 		};
 
 		this.columns = [
@@ -162,6 +167,60 @@ export default class pointTable extends Component {
 			})
 		})
 	}
+	
+	// 搜索框
+	_searchMob(val){
+		let TokenMess = this.TokenMess;
+		let afteruri = 'users/search';
+		let body = {}
+		let searchType =  this.state.SearchType;
+		if( searchType == "name"){
+			body = {
+				"name": val,
+			}
+		} else if( searchType == "mobile"){
+			body = {
+				"mobile": val,
+			}
+		} else if(val == 'auth_lvl'){
+			body = {
+				auth_lvl: val
+			}
+		} else if(val == 'org'){
+			body = {
+				org: val
+			}
+		}
+		appData_local._dataPost(afteruri,body,(res) => {
+			let pageSum = Math.ceil(res.total/res.per_page)
+			let data = res.data;
+			let len = data.length;
+			this.setState({
+				total:res.total,
+				dataSource: data,
+				count:len,
+			})
+		},TokenMess)
+	}
+
+	_handleChange(val){
+		if(val == 'status'){
+			this.setState({
+				SearchType: 'status',
+				SearchText: '输入状态查询。'
+			})
+		} else if(val == 'alert_lvl'){
+			this.setState({
+				SearchType: 'alert_lvl',
+				SearchText: '输入等级查询。'
+			})
+		} else if(val == 'month'){
+			this.setState({
+				SearchType: 'month',
+				SearchText:'输入时间查询。'
+			})
+		}
+	}
 
 	render() {
 		const { dataSource } = this.state;
@@ -170,11 +229,28 @@ export default class pointTable extends Component {
             color: '#00A0E9',
             fontSize: '15px',
         }
-        function handleSearch(){
-        }
 		return (
 		<div style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>
-			<Row type="flex" justify="space-between" gutter={1}>
+			<Row  className="printHidden" style={{height: 32, margin: 10}}>
+				<Col span={24} style={{textAlign:'right'}}>
+					<Search
+						className="printHidden"
+						placeholder={this.state.SearchText}
+						style={{ minWidth: 200, maxWidth: 300 }}
+						onSearch={value => this._searchMob(value)}
+					/>
+					<Select
+						defaultValue="status"
+						style={{width: 100, marginLeft: 20}}
+						onChange={this._handleChange.bind(this)}
+					>
+						<Option key="status">状态</Option>
+						<Option key="alert_lvl">等级</Option>
+						<Option key="month">时间</Option>
+					</Select>
+				</Col>
+			</Row>
+			{/* <Row type="flex" justify="space-between" gutter={1}>
 				<Col lg={8} md={12} sm={16} xs={24} style={{ marginBottom: 16 }}>
 					<Select
 						mode="multiple"
@@ -202,7 +278,7 @@ export default class pointTable extends Component {
 					<Button type="primary" onClick={() => this._print()}>打印</Button>
 				</Col>
 
-			</Row>
+			</Row> */}
 			<Row>
 				<Col span={8} style={{margin:'10px'}}> </Col>
 			</Row>

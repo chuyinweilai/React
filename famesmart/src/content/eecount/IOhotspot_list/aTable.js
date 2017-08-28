@@ -18,6 +18,8 @@ import appData from './../../../assert/Ajax';
 import ACell from './aCell';
 import  '../../../App.css'
 const { Option, OptGroup } = Select
+const Search = Input.Search;
+
 require('./index.css');
 export default class pointTable extends Component {
 	constructor(props) {
@@ -30,7 +32,10 @@ export default class pointTable extends Component {
 			listMess:{},
 			pageSum:1,
 			pageNum:1,
-			comm_name:'',
+            comm_name:'',
+            
+			SearchType: 'name',
+			SearchText:'输入业主姓名查询。'
 		};
 
         this.mycolumns = [
@@ -200,7 +205,6 @@ export default class pointTable extends Component {
 		let userMess = this.userMess;
         let afteruri = 'entrance_records/statistics';
 		if(text == 'device'){
-
             let body = {
                 "column":"device",
                 "top":3
@@ -212,7 +216,6 @@ export default class pointTable extends Component {
                 })
             },TokenMess)
 		}else if(text == 'people'){
-
             let body = {
                 "owner_group":"居民",
                 "top":3
@@ -252,11 +255,11 @@ export default class pointTable extends Component {
 	//分页器activity/list?page=num
 	_pageChange(pageNumber){
 		let userMess = this.userMess;
-		let afteruri = 'users?page=' + pageNumber ;
+		let afteruri = 'vcity/canceluser?page=' + pageNumber ;
 		// let body = {
 		// 	 "comm_code": userMess.comm_code
 		// }
-		appData._dataGet(afteruri,(res) => {
+		appData._dataPost(afteruri,(res) => {
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let data = res.data;
 			let len = data.length;
@@ -269,6 +272,65 @@ export default class pointTable extends Component {
 		})
 	}
 
+	// 搜索框
+	_searchMob(val){
+		let TokenMess = this.TokenMess;
+		let afteruri = 'users/search';
+		let body = {}
+		let searchType =  this.state.SearchType;
+		if( searchType == "name"){
+			body = {
+				"name": val,
+			}
+		} else if( searchType == "mobile"){
+			body = {
+				"mobile": val,
+			}
+		} else if(val == 'auth_lvl'){
+			body = {
+				auth_lvl: val
+			}
+		} else if(val == 'org'){
+			body = {
+				org: val
+			}
+		}
+		appData_local._dataPost(afteruri,body,(res) => {
+			let pageSum = Math.ceil(res.total/res.per_page)
+			let data = res.data;
+			let len = data.length;
+			this.setState({
+				total:res.total,
+				dataSource: data,
+				count:len,
+			})
+		},TokenMess)
+	}
+
+	_handleChange(val){
+		if(val == 'name'){
+			this.setState({
+				SearchType: 'name',
+				SearchText: '请输入用户名'
+			})
+		} else if(val == 'mobile'){
+			this.setState({
+				SearchType: 'mobile',
+				SearchText: '请输入手机号'
+			})
+		} else if(val == 'auth_lvl'){
+			this.setState({
+				SearchType: 'auth_lvl',
+				SearchText:'输入权限等级'
+			})
+		} else if(val == 'org'){
+			this.setState({
+				SearchType: 'org',
+				SearchText:'输入组织名称'
+			})
+		}
+    }
+    
 	render() {
 		const { dataSource } = this.state;
 		let columns = this.columns;
@@ -278,20 +340,31 @@ export default class pointTable extends Component {
             color: '#00A0E9',
             fontSize: '15px',
         }
-        function handleSearch(){
-        }
 		return (
 		<div style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>
-			<Row>
-				<Col span={8} style={{margin:'10px'}}> </Col>
-			</Row>
+            <Row  className="printHidden" style={{height: 32, margin: 10}}>
+                <Col span={24} style={{textAlign:'right'}}>
+                    <Search
+                        className="printHidden"
+                        placeholder={this.state.SearchText}
+                        style={{ minWidth: 200, maxWidth: 300 }}
+                        onSearch={value => this._searchMob(value)}
+                    />
+                    <Select
+                        defaultValue="name"
+                        style={{width: 100, marginLeft: 20}}
+                        onChange={this._handleChange.bind(this)}
+                    >
+                        <Option key="name">姓名</Option>
+                        <Option key="mobile">手机号</Option>
+                    </Select>
+                </Col>
+            </Row>
 			<h3>当日热点门禁</h3>
 			<Table columns={columns} dataSource={this.state.dataSource} size="middle" />
 			<h3>当日热点住户</h3>
 			<Table columns={householdcolumns} dataSource={this.state.peopleSource} size="middle" />
-			{/*<Table bordered dataSource={this.state.dataSource} columns={mycolumns} rowKey='key' pagination={false} style={{marginBottom: 20}}/> */}
 			<Row type="flex" justify="end">
-			{/*<Pagination showQuickJumper defaultCurrent={1} current={this.state.pageNum} total={this.state.total} onChange={this._pageChange.bind(this)} />*/}
 			</Row>
 		</div>
 		);

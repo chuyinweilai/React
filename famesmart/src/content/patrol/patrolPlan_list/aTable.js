@@ -18,6 +18,8 @@ import appData from './../../../assert/Ajax';
 import ACell from './aCell';
 import  '../../../App.css'
 const { Option, OptGroup } = Select
+const Search = Input.Search;
+
 require('./index.css');
 export default class pointTable extends Component {
 	constructor(props) {
@@ -30,6 +32,9 @@ export default class pointTable extends Component {
 			pageSum:1,
 			pageNum:1,
 			comm_name:'',
+			
+			SearchType: 'id',
+			SearchText:'输入门禁ID查询。'
 		};
 
 		this.columns = [
@@ -139,6 +144,7 @@ export default class pointTable extends Component {
             "per_page":"10"
 		}
         appData_local._dataPost(afteruri,body,(res) => {
+			console.log(res)
 			let pageSum = Math.ceil(res.total/res.per_page)
 			let data = res.data;
 			let len = data.length;
@@ -151,6 +157,59 @@ export default class pointTable extends Component {
 		},TokenMess)
 	}
 
+	// 搜索框
+	_searchMob(val){
+		let TokenMess = this.TokenMess;
+        let afteruri = 'devices/audit_plan';
+		let body = {}
+		let searchType =  this.state.SearchType;
+		if( searchType == "id"){
+			body = {
+				"per_page":"10",
+				"id": val,
+			}
+		} else if( searchType == "loc_description"){
+			body = {
+				"per_page":"10",
+				"loc_description": val,
+			}
+		} else if(searchType == 'audit_time'){
+			body = {
+				"per_page":"10",
+				"audit_time": val
+			}
+		}
+		appData_local._dataPost(afteruri,body,(res) => {
+			let pageSum = Math.ceil(res.total/res.per_page)
+			let data = res.data;
+			let len = data.length;
+			this.setState({
+				total:res.total,
+				dataSource: data,
+				count:len,
+			})
+		},TokenMess)
+	}
+
+	_handleChange(val){
+		if(val == 'id'){
+			this.setState({
+				SearchType: 'id',
+				SearchText: '输入门禁ID查询。'
+			})
+		} else if(val == 'loc_description'){
+			this.setState({
+				SearchType: 'loc_description',
+				SearchText: '输入巡更位置查询。'
+			})
+		} else if(val == 'audit_time'){
+			this.setState({
+				SearchType: 'audit_time',
+				SearchText:'输入时间查询。'
+			})
+		}
+	}
+
 	render() {
 		const { dataSource } = this.state;
 		let columns = this.columns;
@@ -158,41 +217,35 @@ export default class pointTable extends Component {
             color: '#00A0E9',
             fontSize: '15px',
         }
-        function handleSearch(){
-        }
 		return (
-		<div style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>
+		<div>
 			<Row type="flex" justify="space-between" gutter={1}>
-				<Col lg={8} md={12} sm={16} xs={24} style={{ marginBottom: 16 }}>
-					<Select
-						mode="multiple"
-						size="large"
-						style={{ width: '80%' }}
-						placeholder="Please select"
-					>
-						<OptGroup label="状态" style={lableS}>
-							<Option style={{ marginLeft: 16 }} value="(status='新建')">新建</Option>
-							<Option style={{ marginLeft: 16 }} value="(status='分发')">分发</Option>
-							<Option style={{ marginLeft: 16 }} value="(status='关闭')">关闭</Option>
-						</OptGroup>
-						<OptGroup label="等级" style={lableS} >
-							<Option style={{ marginLeft: 16 }} value="(alert_lvl='高')">高</Option>
-							<Option style={{ marginLeft: 16 }} value="(alert_lvl='中')">中</Option>
-							<Option style={{ marginLeft: 16 }} value="(alert_lvl='低')">低</Option>
-						</OptGroup>
-						<OptGroup label="时间" style={lableS} >
-							<Option style={{ marginLeft: 16 }} value="month">最近一个月</Option>
-						</OptGroup>
-					</Select>
-					<Button size="large" type="primary" onClick={handleSearch}>搜索</Button>
+				<Col  className="printHidden">
+					<text style={{fontSize: 24, color: '#aaa'}}>巡更管理/</text>
+					<text style={{fontSize: 24, color: '#1e8fe6'}}>巡更计划</text>
 				</Col>
-				<Col span={2} className="printHidden">
-					<Button type="primary" onClick={() => this._print()}>打印</Button>
+				<Col className="printHidden">
+					<Button style={{height: 32}} onClick={()=>window.print()}>打印</Button>
 				</Col>
-
 			</Row>
-			<Row>
-				<Col span={8} style={{margin:'10px'}}> </Col>
+			<Row  className="printHidden" style={{height: 32, margin: 10}}>
+				<Col span={24} style={{textAlign:'right'}}>
+					<Search
+						className="printHidden"
+						placeholder={this.state.SearchText}
+						style={{ minWidth: 200, maxWidth: 300 }}
+						onSearch={value => this._searchMob(value)}
+					/>
+					<Select
+						defaultValue="id"
+						style={{width: 100, marginLeft: 20}}
+						onChange={this._handleChange.bind(this)}
+					>
+						<Option key="id">门禁ID</Option>
+						<Option key="loc_description">巡更位置</Option>
+						<Option key="audit_time">时间</Option>
+					</Select>
+				</Col>
 			</Row>
 			<Table bordered  dataSource={this.state.dataSource} columns={columns} rowKey='key' pagination={false} style={{marginBottom: 20}}/>
 			<Row type="flex" justify="end">

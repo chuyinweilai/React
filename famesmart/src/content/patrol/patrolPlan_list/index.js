@@ -45,11 +45,7 @@ export default class patrolPlan_list extends Component{
 
 	render(){
 		return (
-			<Layout style={{ padding: '0 24px 24px' }}>
-				<Breadcrumb style={{ margin: '12px 0' }} className="printHidden">
-					<Breadcrumb.Item>门禁管理</Breadcrumb.Item>
-					<Breadcrumb.Item>巡更计划</Breadcrumb.Item>
-				</Breadcrumb>
+			<Layout style={{ minHeight: 80, background: '#fff', padding: '24px 48px 48px' }}>
 				<Content>
 					<ATable  message={this.mess} Router={this.Router}/>
 				</Content>

@@ -101,7 +101,8 @@ export default class siders extends Component{
 
 						<SubMenu key = "IO" title={<span><Icon type="credit-card" /><span>出入管理</span></span>}>
 							<Menu.Item key="IOcount_list"><Icon type="key" />实时记录</Menu.Item>
-							<Menu.Item key="IOstatistic_list"><Icon type="key" />统计记录</Menu.Item>
+							{/* <Menu.Item key="IOstatistic_list"><Icon type="key" />统计记录</Menu.Item> */}
+							<Menu.Item key="IOhotspot_list"><Icon type="key" />热点监控</Menu.Item>
 						</SubMenu>
 						
 						<SubMenu key = "patrol" title={<span><Icon type="credit-card" /><span>巡更管理</span></span>}>

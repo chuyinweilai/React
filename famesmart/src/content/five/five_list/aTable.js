@@ -27,6 +27,8 @@ const {Option, OptGroup} = Select
 const RadioGroup = Radio.Group
 const FormItem = Form.Item
 const Panel = Collapse.panel;
+const Search = Input.Search;
+
 require('./index.css');
 
 export default class pointTable extends Component {
@@ -49,6 +51,11 @@ export default class pointTable extends Component {
             ic_card: 0,
             dev_id: 0,
             comments:'',
+
+            filter_lvl: [],
+            filter_area: [],            
+			SearchType: 'status',
+			SearchText: '输入状态查询。'
         };
 
         const handleMenuClick = (record, e) => {
@@ -188,9 +195,6 @@ export default class pointTable extends Component {
     callback(key) {
     }
 
-    onCheckChange(key) {
-    }
-
     _jump(nextPage, mess) {
         this.Router(nextPage, mess, this.mess.nextPage)
     }
@@ -221,6 +225,7 @@ export default class pointTable extends Component {
             visible: true,
         });
     }
+
     loop = (text) => {
         if (text != null) {
             // const array = item.created_at.split(' ')
@@ -240,12 +245,15 @@ export default class pointTable extends Component {
         }
         return null
     }
+
     error = (text) => {
         message.error(text);
     };
+    
     success = (text) => {
         message.success(text);
     };
+
     handleOk = () => {
         this.setState({loading: true});
         setTimeout(() => {
@@ -352,8 +360,15 @@ export default class pointTable extends Component {
         this.setState({reportReason: e.target.value});
     }
 
-    render() {
+    onCheckChange(type,key) {
+        if(type == 'alert_lvl'){
+            let filter_lvl = this.state.filter_lvl;
+        } else if(type == 'area_code '){
+            let filter_area = this.state.filter_area;
+        }
+    }
 
+    render() {
         const {reportReason} = this.state;
         const {dataSource} = this.state;
         let columns = this.columns;
@@ -406,37 +421,47 @@ export default class pointTable extends Component {
 
         const Panel = Collapse.Panel;
         return (
-            <div style={{background: '#fff', padding: 24, margin: 0, minHeight: 80}}>
+            <div>
                 <Row type="flex" justify="space-between" gutter={1}>
-
-                    <Col span={2} className="printHidden">
-                        <Button type="primary" onClick={() => this._print()}>打印</Button>
+                    <Col  className="printHidden">
+                        <text style={{fontSize: 24, color: '#aaa'}}>巡更管理/</text>
+                        <text style={{fontSize: 24, color: '#1e8fe6'}}>巡更记录</text>
                     </Col>
-
+                    <Col className="printHidden">
+                        <Button style={{height: 32}} onClick={()=>window.print()}>打印</Button>
+                    </Col>
                 </Row>
-                <Row>
-                    <Collapse defaultActiveKey={['1']} onChange={this.callback}>
+                
+                <Row style={{margin: 10}}>
+                    <Collapse onChange={this.callback}>
                         <Panel header="精确筛选" key="1">
-                            <Checkbox.Group onChange={this.onCheckChange}>
-                                <Row>
-                                    <Col span={8}><Checkbox value="A">中级</Checkbox></Col>
-                                    <Col span={8}><Checkbox value="B">高级</Checkbox></Col>
-                                    <Col span={8}><Checkbox value="C">低级</Checkbox></Col>
-                                    <Col span={8}><Checkbox value="D">A区</Checkbox></Col>
-                                    <Col span={8}><Checkbox value="E">B区</Checkbox></Col>
-                                    <Col span={8}><Checkbox value="F">C区</Checkbox></Col>
-                                    <Col span={8}><Checkbox value="G">D区</Checkbox></Col>
-                                    <Col span={8}><Checkbox value="H">E区</Checkbox></Col>
-                                    <Col span={8}><Checkbox value="I">F区</Checkbox></Col>
+                            <Checkbox.Group onChange={this.onCheckChange.bind(this,'alert_lvl')}>
+                                <Row style={{borderBottom: '1px solid #aaa',padding: "12px 0"}}>
+                                    <Col span={2} style={{fontWeight: 'bold', fontSize: 14}}>报警级别：</Col>
+                                    
+                                    <Col span={3}><Checkbox value={{alert_lvl:'低级'}} style={{fontSize: 14}}>低级</Checkbox></Col>
+                                    <Col span={3}><Checkbox value={{alert_lvl:'中级'}} style={{fontSize: 14}}>中级</Checkbox></Col>
+                                    <Col span={3}><Checkbox value={{alert_lvl:'高级'}} style={{fontSize: 14}}>高级</Checkbox></Col>
                                 </Row>
                             </Checkbox.Group>
+                            <Checkbox.Group onChange={this.onCheckChange.bind(this,'area_code')}>
+                                <Row style={{borderBottom: '1px solid #aaa',padding: "12px 0"}}>
+                                    <Col span={2} style={{fontWeight: 'bold', fontSize: 14}}>所属区域：</Col>
+                                    <Col span={3}><Checkbox value={{area_code:'A'}} style={{fontSize: 14}}>A区</Checkbox></Col>
+                                    <Col span={3}><Checkbox value={{area_code:'B'}} style={{fontSize: 14}}>B区</Checkbox></Col>
+                                    <Col span={3}><Checkbox value={{area_code:'C'}} style={{fontSize: 14}}>C区</Checkbox></Col>
+                                    <Col span={3}><Checkbox value={{area_code:'D'}} style={{fontSize: 14}}>D区</Checkbox></Col>
+                                    <Col span={3}><Checkbox value={{area_code:'E'}} style={{fontSize: 14}}>E区</Checkbox></Col>
+                                    <Col span={3}><Checkbox value={{area_code:'F'}} style={{fontSize: 14}}>F区</Checkbox></Col>
+                                </Row>
+                            </Checkbox.Group>
+                            <Row type="flex" justify="end">
+                                <Button style={{marginTop: '10px'}} size="large" type="primary" onClick={handleSearch}>搜索</Button>
+                            </Row>
                         </Panel>
                     </Collapse>
-                    <Button size="large" type="primary" onClick={handleSearch}>搜索</Button>
                 </Row>
-                <Row>
-                    <Col span={8} style={{margin: '10px'}}> </Col>
-                </Row>
+
                 <Table bordered dataSource={this.state.dataSource} columns={columns} rowKey='key' pagination={false}
                        style={{marginBottom: 20}}/>
                 <Row type="flex" justify="end">

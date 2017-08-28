@@ -187,6 +187,7 @@ export default class mainPage extends Component{
             return <IOstatistic_list message={this.mess} Router={this.Router}/>
         else if(name === 'IOhotspot_list')
             return <IOhotspot_list message={this.mess} Router={this.Router}/>
+			
         else if(name === 'patrol_list')
             return <Patrol_list message={this.mess} Router={this.Router}/>
         else if(name === 'patrol_edit')
