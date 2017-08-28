@@ -33,8 +33,8 @@ export default class pointTable extends Component {
 			pageNum:1,
 			comm_name:'',
 			
-			SearchType: 'status',
-			SearchText:'输入状态查询。'
+			SearchType: 'access_number',
+			SearchText:'输入卡号查询。'
 		};
 
 		this.columns = [
@@ -78,23 +78,23 @@ export default class pointTable extends Component {
                 render:(text, record)=>{
                 	var str_number = record.owner_code.split('-')[0]
                     return (
-						<Row type="flex" justify="center">
 							<text>{str_number}</text>
-						</Row>
                     )
                 }
             },
             {
   				colSpan: 1,
 				title: '归属业主楼号房间号',
-                render:(text, record)=>{
-                    var room_number = record.owner_code.split('-')[1] + '-' + record.owner_code.split('-')[2]
-                        return (
-							<Row type="flex" justify="center">
-								<text>{room_number}</text>
-							</Row>
-                        )
-                }
+				dataIndex: 'owner_code',
+                // render:(text, record)=>{
+				// 	console.log(record)
+                //     var room_number = record.owner_code.split('-')[1] + '-' + record.owner_code.split('-')[0]
+                //         return (
+				// 			<Row type="flex" justify="center">
+				// 				<text>{room_number}</text>
+				// 			</Row>
+                //         )
+                // }
 			}, 
 			{
   				colSpan: 1,
@@ -201,20 +201,17 @@ export default class pointTable extends Component {
 		let afteruri = 'entrance_records/search';
 		let body = {}
 		let searchType =  this.state.SearchType;
-		if( searchType == "status"){
-			body = {
-            	"owner_group":"居民",
-				"status": val,
-			}
-		} else if( searchType == "alert_lvl"){
+		if( searchType == "access_number"){
 			body = {
 				"owner_group":"居民",
-				"alert_lvl": val,
+				"per_page": 10,
+				"access_number": val,
 			}
-		} else if(val == 'month'){
+		} else if( searchType == "owner_code"){
 			body = {
 				"owner_group":"居民",
-				"month": val
+				"per_page": 10,
+				"owner_code": val,
 			}
 		}
 		appData_local._dataPost(afteruri,body,(res) => {
@@ -230,20 +227,15 @@ export default class pointTable extends Component {
 	}
 
 	_handleChange(val){
-		if(val == 'status'){
+		if(val == 'access_number'){
 			this.setState({
-				SearchType: 'status',
-				SearchText: '输入状态查询。'
+				SearchType: 'access_number',
+				SearchText: '输入卡号查询。'
 			})
-		} else if(val == 'alert_lvl'){
+		} else if(val == 'owner_code'){
 			this.setState({
-				SearchType: 'alert_lvl',
-				SearchText: '输入等级查询。'
-			})
-		} else if(val == 'month'){
-			this.setState({
-				SearchType: 'month',
-				SearchText:'输入时间查询。'
+				SearchType: 'owner_code',
+				SearchText: '输入楼号房间号查询。如："1-101"'
 			})
 		}
 	}
@@ -275,13 +267,12 @@ export default class pointTable extends Component {
 						onSearch={value => this._searchMob(value)}
 					/>
 					<Select
-						defaultValue="status"
+						defaultValue="access_number"
 						style={{width: 100, marginLeft: 20}}
 						onChange={this._handleChange.bind(this)}
 					>
-						<Option key="status">状态</Option>
-						<Option key="alert_lvl">等级</Option>
-						<Option key="month">时间</Option>
+						<Option key="access_number">卡号</Option>
+						<Option key="owner_code">楼号房间号</Option>
 					</Select>
 				</Col>
 			</Row>

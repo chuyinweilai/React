@@ -52,7 +52,13 @@ class Login extends Component {
                             appData._Storage('set',"Token",res.token)
                             appData._Storage('set',"userMess",res.user)
                             appData._Storage('set',"LoginType",'server')
-                            this.props.Router('home1')
+                            if(res.user.auth_lvl == 0){
+                                this.props.Router('home3')
+                            }else if(res.user.auth_lvl == 1){
+                                this.props.Router('home2')
+                            }else if(res.user.auth_lvl == 2){
+                                this.props.Router('home1')
+                            }
                         }
                     })
                 }
@@ -72,7 +78,13 @@ class Login extends Component {
                             appData._Storage('set',"userMess",res[0])
                             appData._Storage('set',"Token",'')
                             appData._Storage('set',"LoginType",'cloude')
-                            this.props.Router('home3')
+                            if(res[0].auth_lvl == 0){
+                                this.props.Router('home3')
+                            }else if(res[0].auth_lvl == 1){
+                                this.props.Router('home2')
+                            }else if(res[0].auth_lvl == 2){
+                                this.props.Router('home1')
+                            }
                         }
                     })
                 }

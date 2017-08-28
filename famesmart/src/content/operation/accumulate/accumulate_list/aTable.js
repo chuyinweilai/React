@@ -128,7 +128,6 @@ export default class pointTable extends Component {
 		this.Router = this.props.Router;
 		this.mess = this.props.message;
 		appData._Storage('get',"userMess",(res) =>{
-			console.log(res)
 			this.setState({
 				comm_name: res.comm_name
 			})

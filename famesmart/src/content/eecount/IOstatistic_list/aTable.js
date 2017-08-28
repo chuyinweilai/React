@@ -72,21 +72,16 @@ export default class pointTable extends Component {
                 title: '当月数字钥匙出入频次',
                 dataIndex: 'apt_code',
             },
-            {
-  				colSpan: 1,
-				title: '当月数字钥匙出入频次',
-				dataIndex: 'apt_code',
-			}, 
 			{
   				colSpan: 1,
 				title: '当日累计出入频次',
 				dataIndex: 'type',
 			},
-            {
-                colSpan: 1,
-                title: '当月累计出入频次',
-                dataIndex: 'type',
-            }
+            // {
+            //     colSpan: 1,
+            //     title: '当月累计出入频次',
+            //     dataIndex: 'type',
+            // }
 		];
 		
 		this.Router;
@@ -230,7 +225,16 @@ export default class pointTable extends Component {
             fontSize: '15px',
         }
 		return (
-		<div style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>
+		<div>
+			<Row type="flex" justify="space-between" gutter={1}>
+				<Col  className="printHidden">
+					<text style={{fontSize: 24, color: '#aaa'}}>门禁管理/</text>
+					<text style={{fontSize: 24, color: '#1e8fe6'}}>统计记录</text>
+				</Col>
+				<Col className="printHidden">
+					<Button style={{height: 32}} onClick={()=>window.print()}>打印</Button>
+				</Col>
+			</Row>
 			<Row  className="printHidden" style={{height: 32, margin: 10}}>
 				<Col span={24} style={{textAlign:'right'}}>
 					<Search
@@ -279,9 +283,6 @@ export default class pointTable extends Component {
 				</Col>
 
 			</Row> */}
-			<Row>
-				<Col span={8} style={{margin:'10px'}}> </Col>
-			</Row>
 			<Table bordered dataSource={this.state.dataSource} columns={columns} rowKey='key' pagination={false} style={{marginBottom: 20}}/> 
 			<Row type="flex" justify="end">
 			<Pagination showQuickJumper defaultCurrent={1} current={this.state.pageNum} total={this.state.total} onChange={this._pageChange.bind(this)} />

@@ -12,7 +12,7 @@ import  '../../../App.css'
 
 const { Content } = Layout;
 
-export default class volunteer_edit extends Component{
+export default class exchange_add extends Component{
 	constructor(props){
 		super(props);
 		this.Router;
@@ -29,14 +29,8 @@ export default class volunteer_edit extends Component{
 	}
 	render(){
 		return (
-			<Layout style={{ padding: '0 24px 24px' }}>
-				<Breadcrumb style={{ margin: '12px 0' }} className="printHidden">
-				 <Breadcrumb.Item>活动管理</Breadcrumb.Item>
-				<Breadcrumb.Item>新增（修改）活动</Breadcrumb.Item> 
-				</Breadcrumb>
-				<Content>
-					<ATable message={this.mess} Router={this.Router}/>
-				</Content>
+			<Layout style={{ padding: '0 24px 24px', backgroundColor: 'white' }}>
+				<ATable message={this.mess} Router={this.Router}/>
 			</Layout>
 		)
 	}

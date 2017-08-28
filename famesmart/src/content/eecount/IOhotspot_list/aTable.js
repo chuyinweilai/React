@@ -49,44 +49,14 @@ export default class pointTable extends Component {
                 }
             },
             {
-                colSpan:1,
-                title: '门禁ID',
-                dataIndex: 'access_number',
-            },
-            {
                 colSpan: 1,
                 title: '门禁位置',
                 dataIndex: 'loc_description',
             },
             {
-                colSpan:1,
-                title: '当日IC卡出入频次',
-                dataIndex: 'card_id',
-            },
-            {
                 colSpan: 1,
-                title: '当日数字钥匙出入频次',
-                dataIndex: 'attempted_at',
-            },
-            {
-                colSpan: 1,
-                title: '当月数字钥匙出入频次',
-                dataIndex: 'apt_code',
-            },
-            {
-                colSpan: 1,
-                title: '当月数字钥匙出入频次',
-                dataIndex: 'apt_code',
-            },
-            {
-                colSpan: 1,
-                title: '当日累计出入频次',
-                dataIndex: 'type',
-            },
-            {
-                colSpan: 1,
-                title: '当月累计出入频次',
-                dataIndex: 'type',
+                title: '累计次数',
+                dataIndex: 'count',
             }
         ];
 
@@ -134,11 +104,6 @@ export default class pointTable extends Component {
                 }
             },
             {
-                colSpan:1,
-                title: '门禁ID',
-                dataIndex: 'access_number',
-            },
-            {
                 colSpan: 1,
                 title: '门栋',
                 render:(text, record)=>{
@@ -154,7 +119,7 @@ export default class pointTable extends Component {
                 colSpan:1,
                 title: '房间号',
                 render:(text, record)=>{
-                    var room_number = record.owner_code.split('-')[1] + '-' + record.owner_code.split('-')[2]
+                    var room_number = record.owner_code.split('-')[1]
                     return (
 						<Row type="flex" justify="center">
 							<text>{room_number}</text>
@@ -164,8 +129,8 @@ export default class pointTable extends Component {
             },
             {
                 colSpan:1,
-                title: '当日累计次数',
-                dataIndex: 'card_id',
+                title: '累计次数',
+                dataIndex: 'count',
             },{
                 title:"操作",
                 key:"action",
@@ -206,7 +171,7 @@ export default class pointTable extends Component {
         let afteruri = 'entrance_records/statistics';
 		if(text == 'device'){
             let body = {
-                "column":"device",
+                "owner_group":"device",
                 "top":3
             }
             appData_local._dataPost(afteruri,body,(res) => {
@@ -235,7 +200,7 @@ export default class pointTable extends Component {
 	//操作栏功能
 	_action(type,mess){
 		if(type === "change"){
-
+			this._jump('IOcount_detial', mess)
 		}else if(type === "cancel"){
 			let afteruri = 'vcity/canceluser';
 			let body = {
@@ -341,29 +306,41 @@ export default class pointTable extends Component {
             fontSize: '15px',
         }
 		return (
-		<div style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>
-            <Row  className="printHidden" style={{height: 32, margin: 10}}>
-                <Col span={24} style={{textAlign:'right'}}>
-                    <Search
-                        className="printHidden"
-                        placeholder={this.state.SearchText}
-                        style={{ minWidth: 200, maxWidth: 300 }}
-                        onSearch={value => this._searchMob(value)}
-                    />
-                    <Select
-                        defaultValue="name"
-                        style={{width: 100, marginLeft: 20}}
-                        onChange={this._handleChange.bind(this)}
-                    >
-                        <Option key="name">姓名</Option>
-                        <Option key="mobile">手机号</Option>
-                    </Select>
-                </Col>
-            </Row>
+		<div>
+			<Row type="flex" justify="space-between" gutter={1}>
+				<Col  className="printHidden">
+					<text style={{fontSize: 24, color: '#aaa'}}>门禁管理/</text>
+					<text style={{fontSize: 24, color: '#1e8fe6'}}>热点监控</text>
+				</Col>
+				<Col className="printHidden">
+					<Button style={{height: 32}} onClick={()=>window.print()}>打印</Button>
+				</Col>
+			</Row>
+
+			<Row  className="printHidden" style={{height: 32, margin: 10}}>
+				<Col span={24} style={{textAlign:'right'}}>
+					<Search
+						className="printHidden"
+						placeholder={this.state.SearchText}
+						style={{ minWidth: 200, maxWidth: 300 }}
+						onSearch={value => this._searchMob(value)}
+					/>
+					<Select
+						defaultValue="status"
+						style={{width: 100, marginLeft: 20}}
+						onChange={this._handleChange.bind(this)}
+					>
+						<Option key="status">状态</Option>
+						<Option key="alert_lvl">等级</Option>
+						<Option key="month">时间</Option>
+					</Select>
+				</Col>
+			</Row>
+
 			<h3>当日热点门禁</h3>
-			<Table columns={columns} dataSource={this.state.dataSource} size="middle" />
+			<Table columns={columns} dataSource={this.state.dataSource} size="middle" border/>
 			<h3>当日热点住户</h3>
-			<Table columns={householdcolumns} dataSource={this.state.peopleSource} size="middle" />
+			<Table columns={householdcolumns} dataSource={this.state.peopleSource} size="middle"border />
 			<Row type="flex" justify="end">
 			</Row>
 		</div>

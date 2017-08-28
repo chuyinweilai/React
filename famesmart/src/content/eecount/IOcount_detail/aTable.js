@@ -28,9 +28,6 @@ const FormItem = Form.Item;
 const { Option, OptGroup } = Select
 const AutoCompleteOption = AutoComplete.Option;
 const { TextArea } = Input;
-// const dateFormat = 'YYYY-MM-DD h:mm:ss';
-// moment().format('MMMM Do YYYY, h:mm:ss a');
-
 
 export default class pointTable extends Component {
 	constructor(props) {
@@ -89,23 +86,22 @@ export default class pointTable extends Component {
                 render:(text, record)=>{
                     var str_number = record.owner_code.split('-')[0]
                     return (
-						<Row type="flex" justify="center">
-							<text>{str_number}</text>
-						</Row>
+                        <text>{str_number}</text>
                     )
                 }
             },
             {
                 colSpan: 1,
                 title: '归属业主楼号房间号',
-                render:(text, record)=>{
-                    var room_number = record.owner_code.split('-')[1] + '-' + record.owner_code.split('-')[2]
-                    return (
-						<Row type="flex" justify="center">
-							<text>{room_number}</text>
-						</Row>
-                    )
-                }
+                dataIndex:'owner_code',
+                // render:(text, record)=>{
+                //     var room_number = record.owner_code.split('-')[1] + '-' + record.owner_code.split('-')[2]
+                //     return (
+				// 		<Row type="flex" justify="center">
+				// 			<text>{room_number}</text>
+				// 		</Row>
+                //     )
+                // }
             },
             {
                 colSpan: 1,
@@ -136,9 +132,7 @@ export default class pointTable extends Component {
         let TokenMess = this.TokenMess;
         let userMess = this.userMess;
         let afteruri = 'entrance_records/search';
-        console.log('id:'+mess.id)
         let searchstr = '"device_id":'+'"'+mess.id+'"'
-        console.log('searchstr:'+searchstr)
         let body = {
             "owner_group":"居民",
             "per_page":20,
@@ -146,8 +140,6 @@ export default class pointTable extends Component {
         }
         appData_local._dataPost(afteruri,body,(res) => {
             let data = res.data
-            console.log(res)
-            // return null
             let pageSum = Math.ceil(res.total/res.per_page)
             let len = data.length;
             this.setState({

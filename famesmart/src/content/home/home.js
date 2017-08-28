@@ -5,6 +5,9 @@ import * as d3 from 'd3-shape'
 import appData from './../../assert/Ajax';
 import appData_local from './../../assert/Ajax_local';
 import FivePieChart from '../../components/mainchart/fiveChart'
+// import oneChart from '../../components/mainchart/oneChart'
+// import twoChart from '../../components/mainchart/twoChart'
+// import browser from '../../components/browser/browser'
 
 import styles from '../../components/browser/browser.less'
 import {
@@ -37,6 +40,9 @@ const CustomizedDot = React.createClass({
         );
     }
 });
+
+
+
 
 export default class home extends Component {
 
@@ -90,12 +96,12 @@ export default class home extends Component {
 
     //获取后台信息
     _getEvent(text){
+
         let TokenMess = this.TokenMess;
         if (text === 'area'){
             let afteruri = 'comm_alerts/statistics';
             let body = {
-                "status_column":"open", 
-                "group":["area_code"]
+                "status_column":"open", "group":["area_code"]
             }
             appData_local._dataPost(afteruri,body,(res) => {
                 this.setState({
@@ -211,6 +217,7 @@ export default class home extends Component {
         if (this.state.flag >= 7){
 
             if (this.state.infractionCreate.length >= this.state.infractionClose.length){
+
                 const mytem = [];
                 for(var i = 0 ; i < this.state.infractionCreate.length ; i++){
                     var time = this.state.infractionCreate[i]["date(`created_at`)"].substring(8,10);
@@ -286,7 +293,6 @@ export default class home extends Component {
                 this.setState({
                     tableCivil:mytem
                 })
-
             }else{
 
                 const mytem = [];
@@ -613,7 +619,7 @@ export default class home extends Component {
                             <Button type="primary"  onClick={() =>this._jump('report_list','')} style={buttonStyle}>小区情况汇总</Button>
                         </Col>
                         <Col span={7} offset={1} style={ColStyleciv}>
-                            <Button type="primary"  onClick={() =>this._jump('civilization_list','')} style={buttonStyle}>{this.state.civiNumber}个待处理的文明上报</Button>
+                            <Button type="primary"  onClick={() =>this._jump('civilization_list','')} style={buttonStyle}>{this.state.civiNumber}个待处理文明规范</Button>
                         </Col>
                     </Row>
                     <Row>

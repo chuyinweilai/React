@@ -46,15 +46,6 @@ export default class IOstatistic_list extends Component{
 	render(){
 		return (
 			<Layout style={{ minHeight: 80, background: '#fff', padding: '24px 48px 48px' }}>
-				<Row type="flex" justify="space-between" gutter={1}>
-					<Col  className="printHidden">
-						<text style={{fontSize: 24, color: '#aaa'}}>门禁管理/</text>
-						<text style={{fontSize: 24, color: '#1e8fe6'}}>热点监控</text>
-					</Col>
-					<Col className="printHidden">
-						<Button style={{height: 32}} onClick={()=>window.print()}>打印</Button>
-					</Col>
-				</Row>
 				<Content>
 					<ATable  message={this.mess} Router={this.Router}/>
 				</Content>

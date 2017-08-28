@@ -3,11 +3,10 @@ import React, {Component, PropTypes} from 'react';
 import * as d3 from 'd3-shape'
 import {color} from '../../utils'
 
+import $ from'jquery'
 import appData from './../../assert/Ajax';
 import appData_local from './../../assert/Ajax_local';
 import RecentSales from '../../components/mainchart/recentSales'
-// import oneChart from '../../components/mainchart/oneChart'
-// import twoChart from '../../components/mainchart/twoChart'
 import Completed from '../../components/mainchart/completed'
 import Browser from '../../components/browser/browser'
 
@@ -26,6 +25,7 @@ export default class home2 extends Component {
 
     constructor(props) {
         super(props);
+		const ws = new WebSocket("ws://testws.famesmart.com");
         this.state = {
             comm_name: '',
             infraNumber: 0,
@@ -44,6 +44,8 @@ export default class home2 extends Component {
             tableInfra: [],
             tableCivil: [],
 
+			ws:ws,
+			ws_ok : false,
         }
         this.Router;
         this.mess = null;
@@ -67,9 +69,37 @@ export default class home2 extends Component {
             this._getEvent('civilization_close')
             this._getEvent('count')
         })
+        this.ws_setting()
 
     }
 
+    
+	//进行ws先关设置
+	ws_setting(){
+		let ws = this.state.ws
+		ws.onopen = ()=>{
+			this.setState({
+				ws_ok: true
+			})
+		};
+
+		ws.onmessage =(evt)=>{
+			if ($.trim(evt.data)) {
+				let json = JSON.parse(evt.data);
+				if (!json){
+					return
+				}
+			}
+		}
+
+		ws.onclose = (evt) =>{
+			console.log("WebSocketClosed!");
+		};
+
+		ws.onerror = (evt) =>{
+			console.log("WebSocketError!");
+		};
+	}
 
     _jump(nextPage, mess) {
         this.Router(nextPage, mess, this.mess.nextPage)
@@ -83,7 +113,8 @@ export default class home2 extends Component {
             let afteruri = 'comm_alerts/statistics';
             let body = {
                 "scope":{"alert_type":"五违"},"timestamp_column":"created_at","group":["area_code"]
-            }
+
+        }
             appData_local._dataPost(afteruri, body, (res) => {
                 this.setState({
                     areaInfra: res.statistics,
@@ -121,12 +152,36 @@ export default class home2 extends Component {
             appData_local._dataPost(afteruri, body, (res) => {
                 const countdata = res.data
                 let len = res.data.length
+                const infratem = [];
+                const civiltem = [];
+                let n = 1;
+                let m = 1;
                 for (var i = 0; i < len; i++) {
                     if (countdata[i].alert_type === '五违' && countdata[i].status === '新建') {
+                        n = n++;
+                        let temcode = countdata[i].area_code
+                        let temlvl = countdata[i].alert_lvl
+                        let temtime = countdata[i].created_at
+                        let temstatus = countdata[i].status
+                        let temattach = countdata[i].attachment
+
+                        let data = {key: n , area_code: temcode, lvl: temlvl, status: temstatus,time:temtime,attachment:temattach}
+                        infratem.push(data)
                         this.setState({
                             infraNumber: this.state.infraNumber + 1
                         })
+
                     } else if (countdata[i].alert_type === '文明' && countdata[i].status === '新建') {
+                        m = m++;
+                        let temcode = countdata[i].area_code
+                        let temlvl = countdata[i].alert_lvl
+                        let temtime = countdata[i].created_at
+                        let temstatus = countdata[i].status
+                        let temattach = countdata[i].attachment
+
+                        let data = {key: n , area_code: temcode, lvl: temlvl, status: temstatus,time:temtime,attachment:temattach}
+                        civiltem.push(data)
+
                         this.setState({
                             civilNumber: this.state.civilNumber + 1
                         })
@@ -134,6 +189,8 @@ export default class home2 extends Component {
                 }
 
                 this.setState({
+                    tableInfra: infratem,
+                    tableCivil: civiltem,
                     flag: this.state.flag + 1
                 })
                 this._analyzeData()
@@ -191,127 +248,67 @@ export default class home2 extends Component {
 
     }
 
-    onPieEnter = (data, index) => {
-        this.setState({
-            activeIndex: 0,
-        })
-
-    }
-    onPieEnter2 = (data, index) => {
-        this.setState({
-            activeIndex2: 0,
-        })
-    }
-
-
     _analyzeData = () => {
         if (this.state.flag >= 7) {
 
-            if (this.state.infractionCreate.length >= this.state.infractionClose.length) {
+            if (this.state.areaInfra.length >= this.state.areaCivil.length) {
+
                 const mytem = [];
-                for (var i = 0; i < this.state.infractionCreate.length; i++) {
-                    var time = this.state.infractionCreate[i]["date(`created_at`)"].substring(8, 10);
-                    if (time.substring(0, 1) === '0') {
-                        time = time.substring(1, 2)
-                    }
-                    var undeal = this.state.infractionCreate[i].count;
-                    var deal = 0;
-                    if (this.state.infractionClose === undefined) {
-                        if (this.state.infractionClose[i] === undefined) {
-                            deal = 0;
+
+                for (var i = 0; i < this.state.areaInfra.length; i++) {
+                    var count = this.state.areaInfra[i].count
+                    var temarea = this.state.areaInfra[i].area_code
+                    var civilcount = 0
+
+                    if (this.state.areaCivil === undefined) {
+                        if (this.state.areaCivil[i] === undefined) {
+                            civilcount = 0;
                         } else {
-                            deal = this.state.infractionClose[i].count
+                            for(var j = 0; j < this.state.areaCivil.length; j ++){
+                                if(temarea == this.state.areaCivil[j].area_code){
+                                    civilcount = this.state.areaCivil[j].count
+                                }else{
+                                    civilcount = 0
+                                }
+                            }
                         }
                     }
-
-                    let data = {name: time, 已处理: deal, 未处理: undeal}
+                    let data = {key: i+1 , area_code: temarea, count: count, civcount: civilcount}
                     mytem.push(data)
-
                 }
+
                 this.setState({
-                    tableInfra: mytem
+                    area: mytem
                 })
 
             } else {
-
                 const mytem = [];
-                for (var i = 0; i < this.state.infractionClose.length; i++) {
-                    var time = this.state.infractionClose[i]["date(`closed_at`)"].substring(8, 10);
-                    if (time.substring(0, 1) === '0') {
-                        time = time.substring(1, 2)
-                    }
-                    var undeal = this.state.infractionCreate[i].count;
-                    var deal = 0;
-                    if (this.state.infractionCreate === undefined) {
-                        if (this.state.infractionClose[i] === undefined) {
-                            deal = 0;
+                for (var i = 0; i < this.state.areaCivil.length; i++) {
+                    var count = this.state.areaCivil[i].count
+                    var temarea = this.state.areaCivil[i].area_code
+                    var infracount = 0
+
+                    if (this.state.areaInfra === undefined) {
+                        if (this.state.areaInfra[i] === undefined) {
+                            infracount = 0;
                         } else {
-                            deal = this.state.infractionClose[i].count
+                            for(var j = 0; j < this.state.areaInfra.length; j ++){
+                                if(temarea == this.state.areaInfra[j].area_code){
+                                    infracount = this.state.areaInfra[j].count
+                                }else{
+                                    infracount = 0
+                                }
+                            }
                         }
                     }
-
-                    let data = {name: time, 已处理: deal, 未处理: undeal}
+                    let data = {key: i+1 , area_code: temarea, count: infracount, civcount: count}
                     mytem.push(data)
                 }
                 this.setState({
-                    tableInfra: mytem
-                })
-            }
-
-            if (this.state.civilizationCreate.length >= this.state.civilizationClose.length) {
-
-                const mytem = [];
-                for (var i = 0; i < this.state.civilizationCreate.length; i++) {
-                    var time = this.state.civilizationCreate[i]["date(`created_at`)"].substring(8, 10);
-                    if (time.substring(0, 1) === '0') {
-                        time = time.substring(1, 2)
-                    }
-                    var undeal = this.state.civilizationCreate[i].count;
-                    var deal = 0;
-                    if (this.state.civilizationClose === undefined) {
-                        if (this.state.civilizationClose[i] === undefined) {
-                            deal = 0;
-                        } else {
-                            deal = this.state.civilizationClose[i].count
-                        }
-                    }
-
-                    let data = {name: time, 已处理: deal, 未处理: undeal}
-                    mytem.push(data)
-
-                }
-                this.setState({
-                    tableCivil: mytem
-                })
-
-            } else {
-
-                const mytem = [];
-                for (var i = 0; i < this.state.civilizationClose.length; i++) {
-                    var time = this.state.civilizationClose[i]["date(`closed_at`)"].substring(8, 10);
-                    if (time.substring(0, 1) === '0') {
-                        time = time.substring(1, 2)
-                    }
-                    var undeal = this.state.civilizationCreate[i].count;
-                    var deal = 0;
-                    if (this.state.civilizationCreate === undefined) {
-                        if (this.state.civilizationClose[i] === undefined) {
-                            deal = 0;
-                        } else {
-                            deal = this.state.civilizationClose[i].count
-                        }
-                    }
-
-                    let data = {name: time, 已处理: deal, 未处理: undeal}
-                    mytem.push(data)
-                }
-                this.setState({
-                    tableCivil: mytem
+                    area: mytem
                 })
             }
         }
-
-
     }
 
     render() {
@@ -333,79 +330,19 @@ export default class home2 extends Component {
 
         const cardinal = d3.curveCardinal.tension(0.2)
 
-        const data01 = [
-            {alert_info: '违规停车', count: 24},
-            {alert_info: '违规开门', count: 45},
-            {alert_info: '违规涂画', count: 13},
-            {alert_info: '其他', count: 8},
-        ]
-        const data02 = [
-            {alert_info: '群组可能', count: 4},
-            {alert_info: '违法排污', count: 2},
-            {alert_info: '违法用地', count: 3},
-            {alert_info: '违法建筑', count: 8},
-        ]
-
-        const illePieChart = {
-            pieData: data01,
-        }
-        const data = [{
-            key: '1',
-            area_code: 'A区',
-            status: '4',
-            count: '15',
-            civcount:'11',
-        }, {
-            key: '2',
-            area_code: 'B区',
-            status: '2',
-            count: '9',
-            civcount:'5',
-        }, {
-            key: '3',
-            area_code: 'C区',
-            status: '1',
-            count: '16',
-            civcount:'4',
-        }, {
-            key: '4',
-            area_code: 'D区',
-            status: '1',
-            count: '23',
-            civcount:'16',
-        }]
-
-        const data03 = [{
-            key: '1',
-            area_code: 'A区',
-            status: '中',
-            count: '关闭',
-            date: '2017-4-09',
-        }, {
-            key: '2',
-            area_code: 'D区',
-            status: '低',
-            count: '关闭',
-            date: '2017-4-23',
-        }, {
-            key: '3',
-            area_code: 'C区',
-            status: '高',
-            count: '关闭',
-            date: '2017-5-03',
-        }, {
-            key: '4',
-            area_code: 'A区',
-            status: '中',
-            count: '处理中',
-            date: '2017-5-15',
-        }, {
-            key: '4',
-            area_code: 'D区',
-            status: '低',
-            count: '新建',
-            date: '2017-5-16',
-        }]
+        // const data01 = [
+        //     {alert_info: '违规停车', count: 24},
+        //     {alert_info: '违规开门', count: 45},
+        //     {alert_info: '违规涂画', count: 13},
+        //     {alert_info: '其他', count: 8},
+        // ]
+        // const data02 = [
+        //     {alert_info: '群组可能', count: 4},
+        //     {alert_info: '违法排污', count: 2},
+        //     {alert_info: '违法用地', count: 3},
+        //     {alert_info: '违法建筑', count: 8},
+        // ]
+        //
 
         const data05 = [
             {
@@ -492,52 +429,73 @@ export default class home2 extends Component {
             marginBottom: 10
         }
 
-
         const colors = ['#63B8FF', '#D2691E', '#CAE1FF', '#BCEE68', '#BDB76B', '#00CD00']
-
+        let part_one = '暂无';
+        let part_two = '暂无';
+        let img_one = 'http://www.famesmart.com/test/imageScroll/image/locImg.png'
+        let img_two = 'http://www.famesmart.com/test/imageScroll/image/locImg.png'
+        if(this.state.tableInfra.length > 0){
+            part_one = this.state.tableInfra[0].area_code;
+            if(this.state.tableInfra[0].attachment !== undefined && this.state.tableInfra[0].attachment !== null){
+                img_one = this.state.tableInfra[0].attachment;
+            }
+        }
+        if(this.state.tableCivil.length > 0){
+            part_two = this.state.tableCivil[0].area_code;
+            if(this.state.tableCivil[0].attachment !== undefined && this.state.tableCivil[0].attachment !== null){
+                img_two = this.state.tableCivil[0].attachment;
+            }
+        }
         return (
             <Layout>
                 <Content>
                     <div style={{background: '#fff', padding: 24, margin: 0,}}>
-                        <Row gutter={24}>
+                        <Row gutter={24} type="flex">
                             <Col lg={16} md={12}>
-                                <div className="custom-image">
-                                    <img alt="example"  width="100%" src="http://www.famesmart.com/test/imageScroll/image/locImg.png" />
-                                </div>
+                                 {/* <Row style={{height: '50%', background: '#39C5BB'}}  type="flex" justify="center" align="center">
+                                    <Col span={8} style={{textAlign:'center'}}>
+                                        <text style={{fontSize: '3rem', textAlign:'center', margin: 'auto'}}> 1</text>
+                                    </Col>
+                                    <Col span={8}>2</Col>
+                                    <Col span={8}>3</Col>
+                                </Row>  */}
+                                 <div>
+                                     <img alt="example"  width="100%" src="http://www.famesmart.com/test/imageScroll/image/locImg.png" /> 
+                                </div> 
                                 <Card bordered={false} {...bodyStyle} >
-                                    <Browser data={data} />
+                                    <Browser data={this.state.area} />
                                 </Card>
                             </Col>
                             <Col lg={8} md={24}>
                                 <Row lg={4} md={24}>
                                     <Card bordered={true} {...tableStyle}>
                                         <div style={{ width: '100%',  textAlign: 'center' }} >
-                                            <a>B区1号摄像头</a>
+                                            <a>{part_one}区摄像头报警</a>
                                         </div>
                                         <div className="custom-image">
-                                            <img alt="example"  width="80%" src="http://www.famesmart.com/test/imageScroll/image/locImg.png" />
+                                            <img alt="example"  width="80%"  src={img_one} />
                                         </div>
                                         <div style={{ width: '100%',  textAlign: 'right' }} >
-                                            <a>..更多</a>
+                                            <a  onClick={() =>this._jump('five_list','')} >..更多</a>
                                         </div>
                                     </Card>
                                 </Row>
                                 <Row lg={4} md={24}>
                                     <Card bordered={true} {...tableStyle}>
                                         <div style={{ width: '100%',  textAlign: 'center' }} >
-                                            <a>B区2号摄像头</a>
+                                            <a>{part_two}区摄像头报警</a>
                                         </div>
                                         <div className="custom-image">
-                                            <img alt="example"  width="80%" src="http://www.famesmart.com/test/imageScroll/image/locImg.png" />
+                                            <img alt="example"  width="80%" src={img_two} />
                                         </div>
                                         <div style={{ width: '100%',  textAlign: 'right' }} >
-                                            <a>..更多</a>
+                                            <a  onClick={() =>this._jump('civilization_list','')} >..更多</a>
                                         </div>
                                     </Card>
                                 </Row>
                             </Col>
                             <Col lg={12} md={24} style={{paddingTop: '10px'}}>
-                                <Badge count={15}>
+                                <Badge count={this.state.infraNumber}>
                                     <Card bordered bodyStyle={{background: color.blue}}
                                           style={{textAlign: 'center', width: '330%'}}>
                                         <h2>待处理五违报警</h2>
@@ -545,7 +503,7 @@ export default class home2 extends Component {
                                 </Badge>
                             </Col>
                             <Col lg={12} md={24} style={{paddingTop: '10px'}}>
-                                <Badge count={26}>
+                                <Badge count={this.state.civilNumber}>
                                     <Card bordered bodyStyle={{background: color.yellow}}
                                           style={{textAlign: 'center', width: '330%'}}>
                                         <h2>待处理文明规范</h2>
@@ -554,12 +512,12 @@ export default class home2 extends Component {
                             </Col>
                             <Col lg={12} md={24} style={{paddingTop: '10px'}}>
                                 <Card bordered={false} {...bodyStyle}>
-                                    <RecentSales data={data03}/>
+                                    <RecentSales data={this.state.tableInfra}/>
                                 </Card>
                             </Col>
                             <Col lg={12} md={24} style={{paddingTop: '10px'}}>
                                 <Card bordered={false} {...bodyStyle}>
-                                    <RecentSales data={data03}/>
+                                    <RecentSales data={this.state.tableCivil}/>
                                 </Card>
                             </Col>
                             <Col lg={24} md={24} style={{paddingTop: '10px'}}>

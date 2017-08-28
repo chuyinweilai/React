@@ -136,7 +136,6 @@ export default class coordinate extends Component{
 					W_text: msg
 				})
 				
-                console.log("发送报警");
                 this.send_alarm();
                 this.G_alarm = 1;
             };

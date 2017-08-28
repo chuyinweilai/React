@@ -26,11 +26,19 @@ function Browser ({ data }) {
       dataIndex: 'area_code',
       render: (text) =>
         <p className={styles.content}>{text}未处理事件</p>,
-    }, {
-      title: '五违报警数量',
-      dataIndex: 'count',
-      render: (text, it) => <Tag color={status[it.status].color}>{text}</Tag>,
     },{
+          title: '文明报警数量',
+          dataIndex: 'count',
+          render:(text,it) => {
+              let test = '#8fc9fb'
+              if(text > 10 ) {
+                  test = '#f69899'
+              }else if((text >=5 ) &&( text < 10)){
+                  test = '#f8c82e'
+              }
+              return <Tag color={test}>{text}</Tag>
+          }
+      },{
           title: '文明报警数量',
           dataIndex: 'civcount',
           render:(text,it) => {
@@ -42,7 +50,7 @@ function Browser ({ data }) {
             }
           	return <Tag color={test}>{text}</Tag>
           }
-      },
+      }
   ]
   return (
         <Table pagination={false} showHeader={true} columns={columns} rowKey={(record, key) => key} dataSource={data} />

@@ -52,7 +52,7 @@ export default class home extends Component{
 				<Content>
 					 <Row type="flex" justify="space-between" gutter={1}>
 						<Col  className="printHidden">
-							<text style={{fontSize: 24, color: '#1e8fe6'}}>首页</text>
+							<text style={{fontSize: 24, color: '#1e8fe6'}}>首页3</text>
 						</Col>
 					</Row>
 

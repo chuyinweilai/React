@@ -28,7 +28,6 @@ const RadioGroup = Radio.Group
 const FormItem = Form.Item
 const Panel = Collapse.panel;
 const Search = Input.Search;
-
 require('./index.css');
 
 export default class pointTable extends Component {
@@ -40,6 +39,7 @@ export default class pointTable extends Component {
             total: 0,
             loading: false,
             visible: false,
+            visible2:false,
             listMess: {},
             pageSum: 1,
             pageNum: 1,
@@ -52,12 +52,12 @@ export default class pointTable extends Component {
             dev_id: 0,
             comments:'',
 
-            filter_lvl: [],
-            filter_area: [],            
-			SearchType: 'status',
-			SearchText: '输入状态查询。'
+            alert_lvl:[],
+            area_code:[],
         };
 
+        this.alert_lvl = []
+        this.area_code = [] 
         const handleMenuClick = (record, e) => {
             let closure_code = e.key
 
@@ -129,15 +129,6 @@ export default class pointTable extends Component {
                 title: '状态',
                 dataIndex: 'status',
                 render: (text, it) => <Tag color={status[it.status].color}>{text}</Tag>,
-                // render:(text,record) => {
-                // 	let test = ''
-                // 	if(text === 'Y' ){
-                // 		test = '业主'
-                // 	}  else if(text === 'Z'){
-                // 		test = '租户'
-                // 	}
-                // 	return <div>{test}</div>
-                // }
             },
             {
                 colSpan: 1,
@@ -182,6 +173,7 @@ export default class pointTable extends Component {
         this.TokenMess = '';
     }
 
+        
     componentWillMount() {
         this.Router = this.props.Router;
         this.mess = this.props.message;
@@ -189,10 +181,6 @@ export default class pointTable extends Component {
             this.TokenMess = res
             this._getEvent()
         })
-
-    }
-
-    callback(key) {
     }
 
     _jump(nextPage, mess) {
@@ -200,13 +188,22 @@ export default class pointTable extends Component {
     }
 
     //获取后台信息
-    _getEvent() {
+    _getEvent(type,filter_val) {
         let TokenMess = this.TokenMess;
         let afteruri = 'comm_alerts/search';
-        let body = {
-            "duration": "all",
-            "perpage": 10,
-            "filter": "(alert_type = '五违')"
+        let body = {}
+        if(type == 'search'){
+            body = {
+                "duration": "all",
+                "perpage": 10,
+                "filter": filter_val
+            }
+        } else {
+            body = {
+                "duration": "all",
+                "perpage": 10,
+                "filter": "(alert_type = '五违')"
+            }
         }
         appData_local._dataPost(afteruri, body, (res) => {
             let data = res.data
@@ -216,8 +213,11 @@ export default class pointTable extends Component {
                 total: res.total,
                 dataSource: data,
                 count: len,
+                alert_lvl: this.alert_lvl,
+                area_code: this.area_code,
+
             })
-        }, TokenMess)
+        },TokenMess)
     }
 
     showModal = () => {
@@ -226,11 +226,14 @@ export default class pointTable extends Component {
         });
     }
 
+    showModal2 = () => {
+        this.setState({
+            visible2: true,
+        });
+    }
+
     loop = (text) => {
         if (text != null) {
-            // const array = item.created_at.split(' ')
-            // const arrMin = array[1].split(':')
-            // const image1 = `http://test.famesmart.com/alart_cam/2A0387EPAA00036/${array[0]}/001/jpg/${arrMin[0]}/${arrMin[1]}/${arrMin[2]}[M][0@0][0].jpg`
             let image = ''
             if (text === '违法排污') {
                 image = 'http://www.famesmart.com/test/imageScroll/image/illegal_water.png'
@@ -240,45 +243,21 @@ export default class pointTable extends Component {
                 image = 'http://www.famesmart.com/test/imageScroll/image/illegal_car.png'
             }
             return (
-                <img style={{height: '100px', width: '178px'}} src={image} role="presentation"/>
+                <img style={{height: '200px', width: '240px'}} src={image} role="presentation"/>
             )
         }
         return null
     }
-
+    
     error = (text) => {
         message.error(text);
     };
-    
+
     success = (text) => {
         message.success(text);
     };
 
     handleOk = () => {
-        this.setState({loading: true});
-        setTimeout(() => {
-            this.setState({loading: false, visible: false});
-        }, 500);
-        let TokenMess = this.TokenMess;
-        let devid = this.state.dev_id;
-        let afteruri = 'comm_alerts/' + devid + '/dispatch';
-        let bodyString = 'id=' + devid
-        let body = {
-            bodyString
-        }
-        appData_local._dataPost(afteruri, body, (res) => {
-            this._getEvent()
-
-        }, TokenMess)
-
-    }
-
-    handleCancel = () => {
-        this.setState({visible: false});
-    }
-
-    handleClose = () => {
-
         setTimeout(() => {
             this.setState({loading: false, visible: false});
         }, 500);
@@ -302,31 +281,70 @@ export default class pointTable extends Component {
             }
 
         }, TokenMess)
+
+    }
+
+    handleOk2 = () => {
+        setTimeout(() => {
+            this.setState({loading: false, visible2: false});
+        }, 500);
+
+        let key_value = this.state.value
+
+        let closure_code = key_value;
+        let id = this.state.dev_id;
+
+        let TokenMess = this.TokenMess;
+        let afteruri = 'comm_alerts/close';
+        let body = {
+            "id": id,
+            "closure_code": closure_code,
+        }
+        appData_local._dataPost(afteruri, body, (res) => {
+            if (res.result == 1) {
+                this.success('提交数据成功！！！')
+                this._getEvent()
+            } else {
+                this.error('提交数据失败！！！')
+            }
+
+        }, TokenMess)
+
+    }
+
+    handleCancel = () => {
+        this.setState({visible: false});
+    }
+
+    handleClose = () => {
+        this.setState({visible: false});
+    }
+
+    handleCancel2 = () => {
+        this.setState({visible2: false});
+    }
+
+    handleClose2 = () => {
+        this.setState({visible2: false});
     }
 
     //操作栏功能
     _action(type, mess) {
-        if (type === "change") {
-            this.setState({apt_code: mess.area_code})
-            this.setState({ic_card: mess.source_id})
-            this.setState({roomNum: mess.loc_description})
-            this.setState({dev_id: mess.id})
+        if(type === "change" ){
+            if (mess.alert_info == '群租可能') {
+                this.setState({apt_code: mess.area_code})
+                this.setState({ic_card: mess.source_id})
+                this.setState({roomNum: mess.loc_description})
+                this.setState({dev_id: mess.id})
+                this.showModal2()
+            } else {
 
-            this.showModal()
-
-        } else if (type === "cancel") {
-            let afteruri = 'vcity/canceluser';
-            let body = {
-                "mobile": mess.mobile,
-                "comm_code": mess.comm_code
+                this.setState({apt_code: mess.area_code})
+                this.setState({ic_card: mess.source_id})
+                this.setState({roomNum: mess.loc_description})
+                this.setState({dev_id: mess.id})
+                this.showModal()
             }
-            appData._dataPost(afteruri, body, (res) => {
-                if (res) {
-                    this._getEvent()
-                } else {
-                    alert('操作失败')
-                }
-            })
         }
     }
 
@@ -355,20 +373,56 @@ export default class pointTable extends Component {
             value: e.target.value,
         });
     }
-
+    
     onChangeReportReason = (e) => {
         this.setState({reportReason: e.target.value});
     }
 
+
     onCheckChange(type,key) {
         if(type == 'alert_lvl'){
-            let filter_lvl = this.state.filter_lvl;
-        } else if(type == 'area_code '){
-            let filter_area = this.state.filter_area;
+            this.alert_lvl = key
+        } else if(type == 'area_code'){
+            this.area_code = key
         }
     }
 
+    callback() {
+            let alert_lvl = this.alert_lvl;
+            let area_code = this.area_code;
+            let f_lvl = ""
+            if(alert_lvl.length){
+                alert_lvl.forEach( (value,index)=> {
+                    if(index == 0){
+                        if(alert_lvl.length > 1){
+                            f_lvl += " and((" + value + ")"
+                        } else {
+                            f_lvl += " and(" + value + ")"
+                        }
+                    } else {
+                        f_lvl += " or (" + value + "))"
+                    }
+                });
+            }
+            if(area_code.length){
+                area_code.forEach( (value,index)=> {
+                    if(index == 0){
+                        if(area_code.length > 1){
+                            f_lvl += " and((" + value + ")"
+                        } else {
+                            f_lvl += " and(" + value + ")"
+                        }
+                    } else {
+                        f_lvl += " or (" + value + "))"
+                    }
+                });
+            }
+            let filter = "(alert_type = '五违')" + f_lvl
+            this._getEvent("search", filter)
+    }
+
     render() {
+
         const {reportReason} = this.state;
         const {dataSource} = this.state;
         let columns = this.columns;
@@ -377,16 +431,13 @@ export default class pointTable extends Component {
             fontSize: '15px',
         }
 
-        function handleSearch() {
-        }
-
         const ColStyle = {
             background: '#00A0E9',
-            height: '30px',
-            width:'180px',
-            lineHeight: '30px',
-            fontSize: '13px',
-            margin: '2px',
+            height: '40px',
+            width:'230px',
+            lineHeight: '40px',
+            fontSize: '15px',
+            marginBottom: '15px',
             borderColor: '#E9E9E9',
             fontColor: '#FFF',
             borderRadius: '4px',
@@ -408,7 +459,7 @@ export default class pointTable extends Component {
         }
 
         const test = {
-            marginLeft: '160px'
+            marginLeft: '130px'
         }
         const detail = {
             width: '100%',
@@ -424,8 +475,7 @@ export default class pointTable extends Component {
             <div>
                 <Row type="flex" justify="space-between" gutter={1}>
                     <Col  className="printHidden">
-                        <text style={{fontSize: 24, color: '#aaa'}}>巡更管理/</text>
-                        <text style={{fontSize: 24, color: '#1e8fe6'}}>巡更记录</text>
+                        <text style={{fontSize: 24, color: '#1e8fe6'}}>五违管理</text>
                     </Col>
                     <Col className="printHidden">
                         <Button style={{height: 32}} onClick={()=>window.print()}>打印</Button>
@@ -433,30 +483,29 @@ export default class pointTable extends Component {
                 </Row>
                 
                 <Row style={{margin: 10}}>
-                    <Collapse onChange={this.callback}>
+                    <Collapse disabled>
                         <Panel header="精确筛选" key="1">
-                            <Checkbox.Group onChange={this.onCheckChange.bind(this,'alert_lvl')}>
+                            <Checkbox.Group defaultValue={this.state.alert_lvl} onChange={this.onCheckChange.bind(this,'alert_lvl')}>
                                 <Row style={{borderBottom: '1px solid #aaa',padding: "12px 0"}}>
                                     <Col span={2} style={{fontWeight: 'bold', fontSize: 14}}>报警级别：</Col>
-                                    
-                                    <Col span={3}><Checkbox value={{alert_lvl:'低级'}} style={{fontSize: 14}}>低级</Checkbox></Col>
-                                    <Col span={3}><Checkbox value={{alert_lvl:'中级'}} style={{fontSize: 14}}>中级</Checkbox></Col>
-                                    <Col span={3}><Checkbox value={{alert_lvl:'高级'}} style={{fontSize: 14}}>高级</Checkbox></Col>
+                                    <Col span={3}><Checkbox value="alert_lvl = '低'" style={{fontSize: 14}}>低级</Checkbox></Col>
+                                    <Col span={3}><Checkbox value="alert_lvl = '中'" style={{fontSize: 14}}>中级</Checkbox></Col>
+                                    <Col span={3}><Checkbox value="alert_lvl = '高'" style={{fontSize: 14}}>高级</Checkbox></Col>
                                 </Row>
                             </Checkbox.Group>
-                            <Checkbox.Group onChange={this.onCheckChange.bind(this,'area_code')}>
+                            <Checkbox.Group defaultValue={this.state.area_code} onChange={this.onCheckChange.bind(this,'area_code')}>
                                 <Row style={{borderBottom: '1px solid #aaa',padding: "12px 0"}}>
                                     <Col span={2} style={{fontWeight: 'bold', fontSize: 14}}>所属区域：</Col>
-                                    <Col span={3}><Checkbox value={{area_code:'A'}} style={{fontSize: 14}}>A区</Checkbox></Col>
-                                    <Col span={3}><Checkbox value={{area_code:'B'}} style={{fontSize: 14}}>B区</Checkbox></Col>
-                                    <Col span={3}><Checkbox value={{area_code:'C'}} style={{fontSize: 14}}>C区</Checkbox></Col>
-                                    <Col span={3}><Checkbox value={{area_code:'D'}} style={{fontSize: 14}}>D区</Checkbox></Col>
-                                    <Col span={3}><Checkbox value={{area_code:'E'}} style={{fontSize: 14}}>E区</Checkbox></Col>
-                                    <Col span={3}><Checkbox value={{area_code:'F'}} style={{fontSize: 14}}>F区</Checkbox></Col>
+                                    <Col span={3}><Checkbox value="area_code='A'" style={{fontSize: 14}}>A区</Checkbox></Col>
+                                    <Col span={3}><Checkbox value="area_code='B'" style={{fontSize: 14}}>B区</Checkbox></Col>
+                                    <Col span={3}><Checkbox value="area_code='C'" style={{fontSize: 14}}>C区</Checkbox></Col>
+                                    <Col span={3}><Checkbox value="area_code='D'" style={{fontSize: 14}}>D区</Checkbox></Col>
+                                    <Col span={3}><Checkbox value="area_code='E'" style={{fontSize: 14}}>E区</Checkbox></Col>
+                                    <Col span={3}><Checkbox value="area_code='F'"style={{fontSize: 14}}>F区</Checkbox></Col>
                                 </Row>
                             </Checkbox.Group>
                             <Row type="flex" justify="end">
-                                <Button style={{marginTop: '10px'}} size="large" type="primary" onClick={handleSearch}>搜索</Button>
+                                <Button style={{marginTop: '10px'}} size="large" type="primary" onClick={()=>this.callback()}>搜索</Button>
                             </Row>
                         </Panel>
                     </Collapse>
@@ -476,11 +525,11 @@ export default class pointTable extends Component {
                     footer={[
                         <Row gutter={8} type="flex" justify="space-around">
                             <Col>
-                                <Button key="back" type="primary" size="large" onClick={this.handleClose}>事件关闭</Button>
+                                <Button key="back" type="primary" size="large" onClick={this.handleClose}>取消</Button>
                             </Col>
                             <Col>
                                 <Button key="submit" type="primary" size="large" onClick={this.handleOk}>
-                                    事件分发
+                                    保存
                                 </Button>
                             </Col>
 
@@ -489,9 +538,9 @@ export default class pointTable extends Component {
                 >
                     <Form>
                         <FormItem>
-                            <div style={{height: '100px', width: '100%'}}>
+                            <div style={{height: '200px', width: '100%'}}>
                                 <Row gutter={12}>
-                                    <Col span={6}>
+                                    <Col  span={6}>
                                         {this.loop('')}
                                     </Col>
                                     <Col style={test} span={6}>
@@ -546,9 +595,89 @@ export default class pointTable extends Component {
                     </Form>
                 </Modal>
 
+                <Modal
+                    visible={this.state.visible2}
+                    title="查看页面"
+                    onOk={this.handleOk2}
+                    onCancel={this.handleCancel2}
+                    footer={[
+                        <Row gutter={8} type="flex" justify="space-around">
+                            <Col>
+                                <Button key="back" type="primary" size="large" onClick={this.handleClose2}>取消</Button>
+                            </Col>
+                            <Col>
+                                <Button key="submit" type="primary" size="large" onClick={this.handleOk2}>
+                                    保存
+                                </Button>
+                            </Col>
+
+                        </Row>
+                    ]}
+                >
+                    <Form>
+                        <FormItem>
+                            <div style={{height: '200px', width: '100%'}}>
+                                <Row gutter={12}>
+                                    <Col  span={6}>
+                                        <Row style={ColStyle} span={2} offset={1}>
+                                            <div style={detail}> {`位置:` + this.state.roomNum}</div>
+                                        </Row>
+
+                                        <Row style={ColStyle} span={2} offset={1}>
+                                            <div style={detail}>{`设备号:` + this.state.ic_card}</div>
+                                        </Row>
+
+                                        <Row style={ColStyle} span={2}>
+                                            <div style={detail}>{`区域:` + this.state.apt_code}</div>
+                                        </Row>
+                                    </Col>
+                                    <Col style={test} span={6}>
+
+                                        <Row style={ColStyle} span={2} offset={1}>
+                                            <div style={detail}> {`位置:` + this.state.roomNum}</div>
+                                        </Row>
+
+                                        <Row style={ColStyle} span={2} offset={1}>
+                                            <div style={detail}>{`设备号:` + this.state.ic_card}</div>
+                                        </Row>
+
+                                        <Row style={ColStyle} span={2}>
+                                            <div style={detail}>{`区域:` + this.state.apt_code}</div>
+                                        </Row>
+
+                                    </Col>
+                                </Row>
+                            </div>
+                        </FormItem>
+                        <FormItem>
+                            <Row gutter={8}>
+                                <Col style={ColStyleTopRight} span={12}>
+
+                                    <RadioGroup onChange={this.onChange} value={this.state.value}>
+                                        <Radio style={radioStyle} value={1}>干预解决</Radio>
+                                        <Radio style={radioStyle} value={2}>自行解决</Radio>
+                                        <Radio style={radioStyle} value={3}>误报</Radio>
+                                        <Radio style={radioStyle} value={4}>其他
+                                            {this.state.value === 4 ?
+                                                <Input style={{width: 100, marginLeft: 10}}/> : null}
+                                        </Radio>
+                                    </RadioGroup>
+                                </Col>
+                                <Col style={ColStyleTop} span={12}>
+
+                                    <Input style={{fontSize: 13, width: 200, marginLeft: 30, marginTop: '5px',}}
+                                           type="textarea" autosize={{minRows: 5, maxRows: 5} }
+                                           placeholder="请输入上报的理由" value={reportReason}
+                                           onChange={this.onChangeReportReason}
+                                    />
+
+                                </Col>
+                            </Row>
+                        </FormItem>
+                    </Form>
+                </Modal>
+
             </div>
         );
     }
-
-
 }

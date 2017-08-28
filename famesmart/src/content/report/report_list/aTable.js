@@ -1,29 +1,35 @@
 
 import React, { PropTypes,Component } from 'react';
 import { 
-	Table, 
-	Input, 
-	Icon, 
-	Button, 
-	Row,
-	Col,
+    Table,
+    Input,
+    Icon,
+    Button,
+    Row,
+    Col,
     Radio,
-	Select,
     Form,
-	Popconfirm,
+    Select,
+    Popconfirm,
     Pagination,
-	Tag,
-	Menu, 
-	Dropdown,
+    Tag,
+    Menu,
+    message,
+    Checkbox,
+    Dropdown,
+    Collapse,
     Modal
 } from 'antd'
 import appData from './../../../assert/Ajax';
 import appData_local from './../../../assert/Ajax_local';
 import ACell from './aCell';
-import  '../../../App.css'
-const { Option, OptGroup } = Select
+import  '../../../App.css';
+const {Option, OptGroup} = Select
 const RadioGroup = Radio.Group
 const FormItem = Form.Item
+const {Panel} = Collapse;
+const Search = Input.Search;
+
 require('./index.css');
 export default class pointTable extends Component {
 	constructor(props) {
@@ -34,6 +40,7 @@ export default class pointTable extends Component {
 			total:0,
             loading: false,
             visible: false,
+            visible2: false,
 			listMess:{},
 			pageSum:1,
 			pageNum:1,
@@ -44,7 +51,12 @@ export default class pointTable extends Component {
             ic_card:0,
 			comments:'',
 
-		};
+            alert_lvl:[],
+            area_code:[],
+        };
+
+        this.alert_lvl = [];
+        this.area_code = []; 
 
         const status = {
             新建: {
@@ -95,15 +107,6 @@ export default class pointTable extends Component {
                 title: '状态',
                 dataIndex: 'status',
                 render: (text, it) => <Tag color={status[it.status].color}>{text}</Tag>,
-                // render:(text,record) => {
-                // 	let test = ''
-                // 	if(text === 'Y' ){
-                // 		test = '业主'
-                // 	}  else if(text === 'Z'){
-                // 		test = '租户'
-                // 	}
-                // 	return <div>{test}</div>
-                // }
             },
             {
                 colSpan: 1,
@@ -153,12 +156,21 @@ export default class pointTable extends Component {
 	}
 
 	//获取后台信息
-	_getEvent(){
+    _getEvent(type,filter_val) {
         let TokenMess = this.TokenMess;
         let afteruri = 'comm_alerts/search';
-        let body = {
-            "duration": "all",
-            "perpage":10
+        let body = {}
+        if(type == 'search'){
+            body = {
+                "duration": "all",
+                "perpage": 10,
+                "filter": filter_val
+            }
+        } else {
+            body = {
+                "duration": "all",
+                "perpage": 10,
+            }
         }
 		appData_local._dataPost(afteruri,body,(res) => {
 			let data = res.data
@@ -178,53 +190,77 @@ export default class pointTable extends Component {
         });
     }
 
+    showModal2 = () => {
+        this.setState({
+            visible2: true,
+        });
+    }
+
     handleOk = () => {
         this.setState({ loading: true });
         setTimeout(() => {
             this.setState({ loading: false, visible: false });
-        }, 3000);
+        }, 500);
     }
 
     handleCancel = () => {
         this.setState({ visible: false });
     }
 
+    handleOk2 = () => {
+        this.setState({ loading: true });
+        setTimeout(() => {
+            this.setState({ loading: false, visible2: false });
+        }, 500);
+    }
+
+    handleCancel2 = () => {
+        this.setState({ visible2: false });
+    }
+
 	//操作栏功能
 	_action(type,mess){
-		if(type === "change"){
-			// this._jump('volunteer_edit', mess)
-            this.state.apt_code = mess.area_code
-            this.state.ic_card = mess.source_id
-            this.state.roomNum = mess.loc_description
-			this.state.comments = mess.comments
-			if(mess.closure_code === '干预解决'){
-                this.setState({ value: 1})
-			}else if(mess.closure_code === '自行解决'){
-                this.setState({ value: 2})
-			}else if(mess.closure_code === '误报'){
-                this.setState({ value: 3})
-            }else if(mess.closure_code === '其他'){
-                this.setState({ value: 4})
-            }else{
-                this.setState({ value: 4})
-			}
 
-            this.showModal()
+            if(type === "change" ){
 
-		}else if(type === "cancel"){
-			let afteruri = 'vcity/canceluser';
-			let body = {
-				"mobile": mess.mobile,
-				"comm_code": mess.comm_code
-			}
-			appData._dataPost(afteruri,body,(res) => {
-				if(res){
-					this._getEvent()
-				} else {
-					alert('操作失败')
-				}
-			})
-		}
+                if (mess.alert_info == '群租可能') {
+                    this.state.apt_code = mess.area_code
+                    this.state.ic_card = mess.source_id
+                    this.state.roomNum = mess.loc_description
+                    this.state.comments = mess.comments
+
+                    if(mess.closure_code === '干预解决'){
+                        this.setState({ value: 1})
+                    }else if(mess.closure_code === '自行解决'){
+                        this.setState({ value: 2})
+                    }else if(mess.closure_code === '误报'){
+                        this.setState({ value: 3})
+                    }else if(mess.closure_code === '其他'){
+                        this.setState({ value: 4})
+                    }else{
+                        this.setState({ value: 4})
+                    }
+                    this.showModal2()
+                } else {
+                    this.state.apt_code = mess.area_code
+                    this.state.ic_card = mess.source_id
+                    this.state.roomNum = mess.loc_description
+                    this.state.comments = mess.comments
+                    if(mess.closure_code === '干预解决'){
+                        this.setState({ value: 1})
+                    }else if(mess.closure_code === '自行解决'){
+                        this.setState({ value: 2})
+                    }else if(mess.closure_code === '误报'){
+                        this.setState({ value: 3})
+                    }else if(mess.closure_code === '其他'){
+                        this.setState({ value: 4})
+                    }else{
+                        this.setState({ value: 4})
+                    }
+                    this.showModal()
+                }
+            }
+
 	}
 
 	//分页器activity/list?page=num
@@ -255,9 +291,6 @@ export default class pointTable extends Component {
 
     loop = (text) => {
         if (text != null) {
-            // const array = item.created_at.split(' ')
-            // const arrMin = array[1].split(':')
-            // const image1 = `http://test.famesmart.com/alart_cam/2A0387EPAA00036/${array[0]}/001/jpg/${arrMin[0]}/${arrMin[1]}/${arrMin[2]}[M][0@0][0].jpg`
             let image = ''
             if (text === '违法排污') {
                 image = 'http://www.famesmart.com/test/imageScroll/image/illegal_water.png'
@@ -267,12 +300,56 @@ export default class pointTable extends Component {
                 image = 'http://www.famesmart.com/test/imageScroll/image/illegal_car.png'
             }
             return (
-				<img style={{height: '100px', width: '178px'}} src={image} role="presentation"/>
+				<img style={{height: '200px', width: '240px'}} src={image} role="presentation"/>
             )
         }
         return null
     }
 
+    onCheckChange(type,key) {
+        if(type == 'alert_lvl'){
+            this.alert_lvl = key
+        } else if(type == 'area_code'){
+            this.area_code = key
+        }
+    }
+
+    callback() {
+            let alert_lvl = this.alert_lvl;
+            let area_code = this.area_code;
+            let f_lvl = ""
+            if(alert_lvl.length){
+                alert_lvl.forEach( (value,index)=> {
+                    if(index == 0){
+                        if(alert_lvl.length > 1){
+                            f_lvl += "((" + value + ")"
+                        } else {
+                            f_lvl += " (" + value + ")"
+                        }
+                    } else {
+                        f_lvl += " or (" + value + "))"
+                    }
+                });
+            }
+            if(area_code.length){
+                if(alert_lvl.length){
+                    f_lvl += 'and'
+                }
+                area_code.forEach( (value,index)=> {
+                    if(index == 0){
+                        if(area_code.length > 1){
+                            f_lvl += "((" + value + ")"
+                        } else {
+                            f_lvl += "(" + value + ")"
+                        }
+                    } else {
+                        f_lvl += " or (" + value + "))"
+                    }
+                });
+            }
+            let filter = f_lvl
+            this._getEvent("search", filter)
+    }
 
 	render() {
 		const { dataSource } = this.state;
@@ -281,15 +358,13 @@ export default class pointTable extends Component {
             color: '#00A0E9',
             fontSize: '15px',
         }
-        function handleSearch(){
-        }
         const ColStyle = {
             background: '#00A0E9',
-            height: '30px',
-            width:'180px',
-            lineHeight: '30px',
-            fontSize: '13px',
-            margin: '2px',
+            height: '40px',
+            width:'230px',
+            lineHeight: '40px',
+            fontSize: '15px',
+            marginBottom: '15px',
             borderColor: '#E9E9E9',
             fontColor: '#FFF',
             borderRadius: '4px',
@@ -306,7 +381,7 @@ export default class pointTable extends Component {
             borderColor: '#00A0E9',
         }
         const test = {
-            marginLeft: '160px'
+            marginLeft: '130px'
         }
         const detail = {
             width: '100%',
@@ -317,115 +392,191 @@ export default class pointTable extends Component {
             marginRight:'2px'
         }
 		return (
-		<div style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>
-			<Row type="flex" justify="space-between" gutter={1}>
-				<Col lg={8} md={12} sm={16} xs={24} style={{ marginBottom: 16 }}>
-					<Select
-						mode="multiple"
-						size="large"
-						style={{ width: '80%' }}
-						placeholder="Please select"
-					>
-						<OptGroup label="状态" style={lableS}>
-							<Option style={{ marginLeft: 16 }} value="(status='新建')">新建</Option>
-							<Option style={{ marginLeft: 16 }} value="(status='分发')">分发</Option>
-							<Option style={{ marginLeft: 16 }} value="(status='关闭')">关闭</Option>
-						</OptGroup>
-						<OptGroup label="等级" style={lableS} >
-							<Option style={{ marginLeft: 16 }} value="(alert_lvl='高')">高</Option>
-							<Option style={{ marginLeft: 16 }} value="(alert_lvl='中')">中</Option>
-							<Option style={{ marginLeft: 16 }} value="(alert_lvl='低')">低</Option>
-						</OptGroup>
-						<OptGroup label="时间" style={lableS} >
-							<Option style={{ marginLeft: 16 }} value="month">最近一个月</Option>
-						</OptGroup>
-					</Select>
-					<Button size="large" type="primary" onClick={handleSearch}>搜索</Button>
-				</Col>
-				<Col span={2} className="printHidden">
-					<Button type="primary" onClick={() => this._print()}>打印</Button>
-				</Col>
+            <div>
+                <Row type="flex" justify="space-between" gutter={1}>
+                    <Col  className="printHidden">
+                        <text style={{fontSize: 24, color: '#1e8fe6'}}>报警汇总</text>
+                    </Col>
+                    <Col className="printHidden">
+                        <Button style={{height: 32}} onClick={()=>window.print()}>打印</Button>
+                    </Col>
+                </Row>
 
-			</Row>
-			<Row>
-				<Col span={8} style={{margin:'10px'}}> </Col>
-			</Row>
-			<Table bordered dataSource={this.state.dataSource} columns={columns} rowKey='key' pagination={false} style={{marginBottom: 20}}/> 
-			<Row type="flex" justify="end">
-			<Pagination showQuickJumper defaultCurrent={1} current={this.state.pageNum} total={this.state.total} onChange={this._pageChange.bind(this)} />
-			</Row>
-			<Modal
-				visible={this.state.visible}
-				title="查看页面"
-				onOk={this.handleOk}
-				onCancel={this.handleCancel}
-				footer={[
-					<Button key="submit" type="primary" size="large" onClick={this.handleCancel}>
-						关闭
-					</Button>,
-                ]}
-			>
-				<Form>
-					<FormItem>
-						<div style={{height: '100px', width: '100%'}}>
-							<Row gutter={12}>
-								<Col span={6}>
-                                    {this.loop('')}
-								</Col>
-								<Col style={test} span={6}>
+                <Row style={{margin: 10}}>
+                    <Collapse disabled>
+                         <Panel header="精确筛选" key="1"> 
+                            <Checkbox.Group  defaultValue={this.state.alert_lvl} onChange={this.onCheckChange.bind(this,'alert_lvl')}
+                            >
+                                <Row style={{borderBottom: '1px solid #aaa',padding: "12px 0"}}>
+                                    <Col span={2} style={{fontWeight: 'bold', fontSize: 14}}>报警级别：</Col>
+                                    <Col span={3}><Checkbox value="alert_lvl = '低'" style={{fontSize: 14}}>低级</Checkbox></Col>
+                                    <Col span={3}><Checkbox value="alert_lvl = '中'" style={{fontSize: 14}}>中级</Checkbox></Col>
+                                    <Col span={3}><Checkbox value="alert_lvl = '高'" style={{fontSize: 14}}>高级</Checkbox></Col>
+                                </Row>
+                            </Checkbox.Group>
+                            <Checkbox.Group defaultValue={this.state.area_code} onChange={this.onCheckChange.bind(this,'area_code')}
+                            >
+                                <Row style={{borderBottom: '1px solid #aaa',padding: "12px 0"}}>
+                                    <Col span={2} style={{fontWeight: 'bold', fontSize: 14}}>所属区域：</Col>
+                                    <Col span={3}><Checkbox value="area_code='A'" style={{fontSize: 14}}>A区</Checkbox></Col>
+                                    <Col span={3}><Checkbox value="area_code='B'" style={{fontSize: 14}}>B区</Checkbox></Col>
+                                    <Col span={3}><Checkbox value="area_code='C'" style={{fontSize: 14}}>C区</Checkbox></Col>
+                                    <Col span={3}><Checkbox value="area_code='D'" style={{fontSize: 14}}>D区</Checkbox></Col>
+                                    <Col span={3}><Checkbox value="area_code='E'" style={{fontSize: 14}}>E区</Checkbox></Col>
+                                    <Col span={3}><Checkbox value="area_code='F'"style={{fontSize: 14}}>F区</Checkbox></Col>
+                                </Row>
+                            </Checkbox.Group>
+                            <Row type="flex" justify="end">
+                                <Button style={{marginTop: '10px'}} size="large" type="primary" onClick={()=>this.callback()}>搜索</Button>
+                            </Row>
+                         </Panel> 
+                    </Collapse>
+                </Row>
+                
+                <Table bordered dataSource={this.state.dataSource} columns={columns} rowKey='key' pagination={false} style={{marginBottom: 20}}/> 
+                <Row type="flex" justify="end">
+                <Pagination showQuickJumper defaultCurrent={1} current={this.state.pageNum} total={this.state.total} onChange={this._pageChange.bind(this)} />
+                </Row>
+                <Modal
+                    visible={this.state.visible}
+                    title="查看页面"
+                    onOk={this.handleOk}
+                    onCancel={this.handleCancel}
+                    footer={[
+                        <Button key="submit" type="primary" size="large" onClick={this.handleCancel}>
+                            关闭
+                        </Button>,
+                    ]}
+                >
+                    <Form>
+                        <FormItem>
+                            <div style={{height: '100px', width: '100%'}}>
+                                <Row gutter={12}>
+                                    <Col span={6}>
+                                        {this.loop('')}
+                                    </Col>
+                                    <Col style={test} span={6}>
 
-									<Row style={ColStyle} span={2} offset={1}>
-										<div style={detail}> {`位置:` + this.state.roomNum}</div>
-									</Row>
+                                        <Row style={ColStyle} span={2} offset={1}>
+                                            <div style={detail}> {`位置:` + this.state.roomNum}</div>
+                                        </Row>
 
-									<Row style={ColStyle} span={2} offset={1}>
-										<div style={detail}>{`设备号:` + this.state.ic_card}</div>
-									</Row>
+                                        <Row style={ColStyle} span={2} offset={1}>
+                                            <div style={detail}>{`设备号:` + this.state.ic_card}</div>
+                                        </Row>
 
-									<Row style={ColStyle} span={2}>
-										<div style={detail}>{`区域:` + this.state.apt_code}</div>
-									</Row>
-									{/*<Row span={2} offset={2}>*/}
-										{/*<a style={{marginLeft: '25%',*/}
-                                            {/*textAlign: 'left',*/}
-                                            {/*fontWeight:'bold', }} target="_blank" rel="noopener noreferrer"*/}
-										   {/*href="http://192.168.1.158/">视频确认</a>*/}
-									{/*</Row>*/}
-								</Col>
-							</Row>
-						</div>
-					</FormItem>
-					<FormItem>
-						<div style={{ height: '100px', width: '80%' }}>
+                                        <Row style={ColStyle} span={2}>
+                                            <div style={detail}>{`区域:` + this.state.apt_code}</div>
+                                        </Row>
+                                    </Col>
+                                </Row>
+                            </div>
+                        </FormItem>
+                        <FormItem>
+                            <div style={{ height: '1px', width: '80%' }}>
 
-						</div>
-					</FormItem>
-					<FormItem>
-						<Row gutter={8}>
-							<Col style={myColStyle} span={12}>
+                            </div>
+                        </FormItem>
+                        <FormItem>
+                            <Row gutter={8}>
+                                <Col style={myColStyle} span={12}>
 
-									<RadioGroup  value={this.state.value}>
-										<Radio  style={radioStyle} value={1}>干预解决</Radio>
-										<Radio  style={radioStyle} value={2}>自行解决</Radio>
-										<Radio style={radioStyle} value={3}>误报</Radio>
-										<Radio style={radioStyle} value={4}>其他
+                                        <RadioGroup  value={this.state.value}>
+                                            <Radio  style={radioStyle} value={1} disabled={true}>干预解决</Radio>
+                                            <Radio  style={radioStyle} value={2} disabled={true}>自行解决</Radio>
+                                            <Radio style={radioStyle} value={3} disabled={true}>误报</Radio>
+                                            <Radio style={radioStyle} value={4} disabled={true}>其他
+                                                {this.state.value === 4 ? <Input style={{ width: 100, marginLeft: 10 }} /> : null}
+                                            </Radio>
+                                        </RadioGroup>
+                                </Col>
+                                <Col  style={myColStyle} span={12}>
+
+                                        <Input style={{ fontSize: 13, width: 200, marginLeft: 30 }} disabled= {true} type="textarea" autosize={{ minRows: 5, maxRows: 5 }}
+                                            placeholder={this.state.comments}
+                                        />
+
+                                </Col>
+                            </Row>
+                        </FormItem>
+                    </Form>
+                </Modal>
+
+                <Modal
+                    visible={this.state.visible2}
+                    title="查看页面"
+                    onOk={this.handleOk2}
+                    onCancel={this.handleCancel2}
+                    footer={[
+                        <Button key="submit" type="primary" size="large" onClick={this.handleCancel2}>
+                            关闭
+                        </Button>,
+                    ]}
+                >
+                    <Form>
+                        <FormItem>
+                            <div style={{height: '100px', width: '100%'}}>
+                                <Row gutter={12}>
+                                    <Col span={6}>
+                                        <Row style={ColStyle} span={2} offset={1}>
+                                            <div style={detail}> {`位置:` + this.state.roomNum}</div>
+                                        </Row>
+
+                                        <Row style={ColStyle} span={2} offset={1}>
+                                            <div style={detail}>{`设备号:` + this.state.ic_card}</div>
+                                        </Row>
+
+                                        <Row style={ColStyle} span={2}>
+                                            <div style={detail}>{`区域:` + this.state.apt_code}</div>
+                                        </Row>
+                                    </Col>
+                                    <Col style={test} span={6}>
+
+                                        <Row style={ColStyle} span={2} offset={1}>
+                                            <div style={detail}> {`位置:` + this.state.roomNum}</div>
+                                        </Row>
+
+                                        <Row style={ColStyle} span={2} offset={1}>
+                                            <div style={detail}>{`设备号:` + this.state.ic_card}</div>
+                                        </Row>
+
+                                        <Row style={ColStyle} span={2}>
+                                            <div style={detail}>{`区域:` + this.state.apt_code}</div>
+                                        </Row>
+                                    </Col>
+                                </Row>
+                            </div>
+                        </FormItem>
+                        <FormItem>
+                            <div style={{ height: '1px', width: '80%' }}>
+
+                            </div>
+                        </FormItem>
+                        <FormItem>
+                            <Row gutter={8}>
+                                <Col style={myColStyle} span={12}>
+
+                                    <RadioGroup  value={this.state.value}>
+                                        <Radio  style={radioStyle} value={1} disabled={true}>干预解决</Radio>
+                                        <Radio  style={radioStyle} value={2} disabled={true}>自行解决</Radio>
+                                        <Radio style={radioStyle} value={3} disabled={true}>误报</Radio>
+                                        <Radio style={radioStyle} value={4} disabled={true}>其他
                                             {this.state.value === 4 ? <Input style={{ width: 100, marginLeft: 10 }} /> : null}
-										</Radio>
-									</RadioGroup>
-							</Col>
-							<Col  style={myColStyle} span={12}>
+                                        </Radio>
+                                    </RadioGroup>
+                                </Col>
+                                <Col  style={myColStyle} span={12}>
 
-									<Input style={{ fontSize: 13, width: 200, marginLeft: 30 }} disabled="true" type="textarea" autosize={{ minRows: 5, maxRows: 5 }}
-										   placeholder={this.state.comments}
-									/>
+                                    <Input style={{ fontSize: 13, width: 200, marginLeft: 30 }} disabled type="textarea" autosize={{ minRows: 5, maxRows: 5 }}
+                                        placeholder={this.state.comments}
+                                    />
 
-							</Col>
-						</Row>
-					</FormItem>
-				</Form>
-			</Modal>
-
-		</div>
+                                </Col>
+                            </Row>
+                        </FormItem>
+                    </Form>
+                </Modal>
+            </div>
 		);
 	}
 
