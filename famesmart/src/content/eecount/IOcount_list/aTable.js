@@ -86,15 +86,6 @@ export default class pointTable extends Component {
   				colSpan: 1,
 				title: '归属业主楼号房间号',
 				dataIndex: 'owner_code',
-                // render:(text, record)=>{
-				// 	console.log(record)
-                //     var room_number = record.owner_code.split('-')[1] + '-' + record.owner_code.split('-')[0]
-                //         return (
-				// 			<Row type="flex" justify="center">
-				// 				<text>{room_number}</text>
-				// 			</Row>
-                //         )
-                // }
 			}, 
 			{
   				colSpan: 1,

@@ -605,8 +605,7 @@ export default class pointTable extends Component {
                     ]} 
                 >   
                     <object type='application/x-vlc-plugin' id='vlc' events='True' width="720" height="540" pluginspage="http://www.videolan.org" codebase="http://downloads.videolan.org/pub/videolan/vlc-webplugins/2.0.6/npapi-vlc-2.0.6.tar.xz">  
-                        {/* <param name='mrl' value={'rtsp://' + this.state.ic_card + '/vod/mp4://BigBuckBunny_175k.mov'} />   */}
-                        <param name='mrl' value='rtsp://184.72.239.149/vod/mp4://BigBuckBunny_175k.mov' />  
+                        <param name='mrl' value={'rtsp://admin:admin@' + this.state.ic_card + ':554/cam/realmonitor?channel=1&subtype=1'} />   
                         <param name='volume' value='50' />  
                         <param name='autoplay' value='true' />  
                         <param name='loop' value='false' />  

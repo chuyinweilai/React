@@ -202,9 +202,7 @@ export default class pointTable extends Component {
             color: '#00A0E9',
             fontSize: '15px',
         }
-        function handleSearch(){
-            console.log()
-        }
+        
         return (
             <div style={{ background: '#fff', padding: 24, margin: 0, minHeight: 80 }}>
                 <Row type="flex" justify="space-between" gutter={1}>
