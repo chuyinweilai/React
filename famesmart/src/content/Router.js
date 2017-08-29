@@ -16,6 +16,9 @@ import {
 
 	Volunteer_edit,
 	Volunteer_list,
+	
+	Exchange_add,
+	Exchange_list,
 } from './operation';	
 
 import{
@@ -156,6 +159,12 @@ export default class mainPage extends Component{
 			return <Volunteer_edit message={this.mess} Router={this.Router}/>
 		else if(name === 'volunteer_list')	
 			return <Volunteer_list message={this.mess} Router={this.Router}/>
+
+		else if(name === 'exchange_add')	
+			return <Exchange_add message={this.mess} Router={this.Router}/>
+		else if(name === 'exchange_list')	
+			return <Exchange_list message={this.mess} Router={this.Router}/>
+		
 
 		//用户管理
 		else if(name === 'platform_user_list')	

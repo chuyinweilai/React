@@ -227,7 +227,10 @@ export default class pointTable extends Component {
 					<Button style={{height: 32}} onClick={()=>window.print()}>打印</Button>
 				</Col>
 			</Row>
-			<Row  className="printHidden" style={{height: 32, margin: 10}}>
+			<Row>
+				<Col span={8} style={{margin:'10px'}}> </Col>
+			</Row>
+			{/* <Row  className="printHidden" style={{height: 32, margin: 10}}>
 				<Col span={24} style={{textAlign:'right'}}>
 					<Search
 						className="printHidden"
@@ -245,7 +248,7 @@ export default class pointTable extends Component {
 						<Option key="audit_time">时间</Option>
 					</Select>
 				</Col>
-			</Row>
+			</Row> */}
 			<Table bordered  dataSource={this.state.dataSource} columns={columns} rowKey='key' pagination={false} style={{marginBottom: 20}}/>
 			<Row type="flex" justify="end">
 			<Pagination showQuickJumper defaultCurrent={1} current={this.state.pageNum} total={this.state.total} onChange={this._pageChange.bind(this)} />

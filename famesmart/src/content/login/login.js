@@ -48,7 +48,8 @@ class Login extends Component {
                                 error: true
                             })
                         } else {
-                            res.user["comm_code"] = "M0002"
+                            res.user["comm_code"] = res.comm.comm_code
+                            res.user["comm_name"] = res.comm.comm_name
                             appData._Storage('set',"Token",res.token)
                             appData._Storage('set',"userMess",res.user)
                             appData._Storage('set',"LoginType",'server')

@@ -18,9 +18,9 @@ import {
 	InputNumber,
 	AutoComplete 
 } from 'antd';
-import appData from './../../../assert/Ajax'
+import appData from './../../../../assert/Ajax'
 import moment from 'moment';
-import '../../../App.css'
+import '../../../../App.css'
 import "./index.css"
 import $ from 'jquery';
 const FormItem = Form.Item;
@@ -372,7 +372,7 @@ class pointTable extends Component {
 		return (
 			<div style={{ padding: 24, margin: 0, minHeight: 80 }}>
 				<Col  className="printHidden">
-					<text style={{fontSize: 24, color: '#aaa'}}>兑换商品管理/</text>
+					<text style={{fontSize: 24, color: '#aaa'}}>米社运维/兑换商品管理/</text>
 					<text style={{fontSize: 24, color: '#1e8fe6'}}>兑换商品详情</text>
 				</Col>
 				<Form  style={{paddingTop: '50px'}} >

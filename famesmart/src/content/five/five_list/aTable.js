@@ -39,6 +39,7 @@ export default class pointTable extends Component {
             total: 0,
             loading: false,
             visible: false,
+            visible_1:false,
             visible2:false,
             listMess: {},
             pageSum: 1,
@@ -534,8 +535,8 @@ export default class pointTable extends Component {
                             </Col>
 
                         </Row>
-                    ]}
-                >
+                    ]} 
+                >       
                     <Form>
                         <FormItem>
                             <div style={{height: '200px', width: '100%'}}>
@@ -557,10 +558,7 @@ export default class pointTable extends Component {
                                             <div style={detail}>{`区域:` + this.state.apt_code}</div>
                                         </Row>
                                         <Row span={2} offset={2}>
-                                            <a style={{marginLeft: '25%',
-                                                textAlign: 'left',
-                                                fontWeight:'bold', }} target="_blank" rel="noopener noreferrer"
-                                               href="http://192.168.1.158/">视频确认</a>
+                                            <Button onClick={()=> this.setState({visible_1: true})}>视频确认</Button>
                                         </Row>
 
                                     </Col>
@@ -584,15 +582,40 @@ export default class pointTable extends Component {
                                 <Col style={ColStyleTop} span={12}>
 
                                     <Input style={{fontSize: 13, width: 200, marginLeft: 30, marginTop: '5px',}}
-                                           type="textarea" autosize={{minRows: 5, maxRows: 5} }
-                                           placeholder="请输入上报的理由" value={reportReason}
-                                           onChange={this.onChangeReportReason}
+                                        type="textarea" autosize={{minRows: 5, maxRows: 5} }
+                                        placeholder="请输入上报的理由" value={reportReason}
+                                        onChange={this.onChangeReportReason}
                                     />
 
                                 </Col>
                             </Row>
                         </FormItem>
-                    </Form>
+                    </Form> 
+                </Modal>
+               
+                <Modal
+                    visible={this.state.visible_1}
+                    title="视频播放"
+                    width= '760'
+                    onCancel={()=> this.setState({visible_1: false})}
+                    footer={[
+                        <Row gutter={8} type="flex" justify="end">
+                            <Col>
+                                <Button key="back" type="primary" size="large" onClick={()=> this.setState({visible_1: false})}>取消</Button>
+                            </Col>
+                        </Row>
+                    ]} 
+                >   
+                    <div style={{height: '540'}}>
+                    <object  style={{height: '540',width:"720"}} type='application/x-vlc-plugin' id='vlc' events='True' width="720" height="540" pluginspage="http://www.videolan.org" codebase="http://downloads.videolan.org/pub/videolan/vlc-webplugins/2.0.6/npapi-vlc-2.0.6.tar.xz">  
+                         {/* <param name='mrl' value={'rtsp://' + this.state.ic_card + '/vod/mp4://BigBuckBunny_175k.mov'} />    */}
+                        <param name='mrl' value='rtsp://184.72.239.149/vod/mp4://BigBuckBunny_175k.mov' />  
+                        <param name='volume' value='50' />  
+                        <param name='autoplay' value='true' />  
+                        <param name='loop' value='false' />  
+                        <param name='fullscreen' value='false' />  
+                    </object>   
+                    </div>
                 </Modal>
 
                 <Modal

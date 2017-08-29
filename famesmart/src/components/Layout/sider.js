@@ -126,6 +126,7 @@ export default class siders extends Component{
 							<Menu.Item key="activity_list"><Icon type="star-o" />活动管理</Menu.Item>
 							<Menu.Item key="accumulate_list"><Icon type="heart-o" />积分管理</Menu.Item>
 							<Menu.Item key="volunteer_list"><Icon type="user" />志愿者管理</Menu.Item>
+						<Menu.Item key="exchange_list"><Icon type="tag" />兑换商品管理</Menu.Item>
 					</SubMenu> 
 
 					<SubMenu key = "system" title={<span><Icon type="tool" /><span>系统功能</span></span>}>

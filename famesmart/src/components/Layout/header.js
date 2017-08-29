@@ -16,7 +16,7 @@ export default class headers extends Component{
 		appData._Storage('get',"userMess",(res) =>{
 			this.setState({
 				comm_name: res.comm_name,
-				user_id: res.user_id
+				user_id: res.name
 			})
 		})
 	}

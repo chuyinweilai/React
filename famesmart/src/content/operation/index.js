@@ -12,6 +12,9 @@ import Activity_sign from './activity/activity_sign/index';
 import Volunteer_list from './volunteer/volunteer_list/index';
 import Volunteer_edit from './volunteer/volunteer_edit/index';
 
+import Exchange_add from './exchange/exchange_add';
+import Exchange_list from './exchange/exchange_list';
+
 export{
 	Accumulate_history,
 	Accumulate_list,
@@ -24,4 +27,7 @@ export{
 
 	Volunteer_edit,
 	Volunteer_list,
+	
+	Exchange_add,
+	Exchange_list,
 }

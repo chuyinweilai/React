@@ -21,7 +21,6 @@ import {
 } from 'antd'
 import appData from './../../../assert/Ajax';
 import appData_local from './../../../assert/Ajax_local';
-import ACell from './aCell';
 import  '../../../App.css'
 const {Option, OptGroup} = Select
 const RadioGroup = Radio.Group
@@ -39,6 +38,7 @@ export default class pointTable extends Component {
             total: 0,
             loading: false,
             visible: false,
+            visible_1:false,    
             visible2:false,
             listMess: {},
             pageSum: 1,
@@ -556,21 +556,13 @@ export default class pointTable extends Component {
                                             <div style={detail}>{`区域:` + this.state.apt_code}</div>
                                         </Row>
                                         <Row span={2} offset={2}>
-                                            <a style={{marginLeft: '25%',
-                                                textAlign: 'left',
-                                                fontWeight:'bold', }} target="_blank" rel="noopener noreferrer"
-                                               href="http://192.168.1.158/">视频确认</a>
+                                            <Button onClick={()=> this.setState({visible_1: true})}>视频确认</Button>
                                         </Row>
 
                                     </Col>
                                 </Row>
                             </div>
                         </FormItem>
-                        {/*<FormItem>*/}
-                            {/*<div style={{ height: '5px', width: '80%' }}>*/}
-
-                            {/*</div>*/}
-                        {/*</FormItem>*/}
                         <FormItem>
                             <Row gutter={8}>
                                 <Col style={ColStyleTopRight} span={12}>
@@ -598,7 +590,29 @@ export default class pointTable extends Component {
                         </FormItem>
                     </Form>
                 </Modal>
-
+                  
+                <Modal
+                    visible={this.state.visible_1}
+                    title="视频播放"
+                    width= '760'
+                    onCancel={()=> this.setState({visible_1: false})}
+                    footer={[
+                        <Row gutter={8} type="flex" justify="end">
+                            <Col>
+                                <Button key="back" type="primary" size="large" onClick={()=> this.setState({visible_1: false})}>取消</Button>
+                            </Col>
+                        </Row>
+                    ]} 
+                >   
+                    <object type='application/x-vlc-plugin' id='vlc' events='True' width="720" height="540" pluginspage="http://www.videolan.org" codebase="http://downloads.videolan.org/pub/videolan/vlc-webplugins/2.0.6/npapi-vlc-2.0.6.tar.xz">  
+                        {/* <param name='mrl' value={'rtsp://' + this.state.ic_card + '/vod/mp4://BigBuckBunny_175k.mov'} />   */}
+                        <param name='mrl' value='rtsp://184.72.239.149/vod/mp4://BigBuckBunny_175k.mov' />  
+                        <param name='volume' value='50' />  
+                        <param name='autoplay' value='true' />  
+                        <param name='loop' value='false' />  
+                        <param name='fullscreen' value='false' />  
+                    </object>   
+                </Modal>                              
             </div>
         );
     }

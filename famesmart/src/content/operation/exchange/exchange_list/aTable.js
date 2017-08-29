@@ -13,9 +13,9 @@ import {
 	Modal, 
 	Dropdown 
 } from 'antd'
-import appData from './../../../assert/Ajax';
-import '../../../App.css'
-import '../../../index.css'
+import appData from './../../../../assert/Ajax';
+import '../../../../App.css'
+import '../../../../index.css'
 
 require('./index.css');
 export default class pointTable extends Component {
@@ -200,6 +200,7 @@ export default class pointTable extends Component {
 		<div style={{background: '#fff',padding: 24,margin: 0,minHeight: 80}}>
 			<Row type="flex" justify="space-between" gutter={1}>
 				<Col  className="printHidden">
+					<text style={{fontSize: 24, color: '#aaa'}}>米社运维/</text>
 					<text style={{fontSize: 24, color: '#1e8fe6'}}>兑换商品管理</text>
 				</Col>
 				<Col className="printHidden">

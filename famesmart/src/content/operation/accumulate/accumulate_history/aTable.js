@@ -237,7 +237,7 @@ export default class pointTable extends Component {
 		<div style={{padding: 24, margin: 0, minHeight: 80 }}>
 			<Row type="flex" justify="space-between" gutter={1}>
 				<Col className="printHidden">
-					<text style={{fontSize: 24, color: '#aaa'}}>积分管理/</text>
+					<text style={{fontSize: 24, color: '#aaa'}}>米社运维/积分管理/</text>
 					<text style={{fontSize: 24, color: '#1e8fe6'}}>积分历史</text>
 				</Col>
 				<Col span={2} className="printHidden">

@@ -316,8 +316,11 @@ export default class pointTable extends Component {
 					<Button style={{height: 32}} onClick={()=>window.print()}>打印</Button>
 				</Col>
 			</Row>
+			<Row>
+				<Col span={8} style={{margin:'10px'}}> </Col>
+			</Row>
 
-			<Row  className="printHidden" style={{height: 32, margin: 10}}>
+			{/* <Row  className="printHidden" style={{height: 32, margin: 10}}>
 				<Col span={24} style={{textAlign:'right'}}>
 					<Search
 						className="printHidden"
@@ -335,7 +338,7 @@ export default class pointTable extends Component {
 						<Option key="month">时间</Option>
 					</Select>
 				</Col>
-			</Row>
+			</Row> */}
 
 			<h3>当日热点门禁</h3>
 			<Table columns={columns} dataSource={this.state.dataSource} size="middle" border/>

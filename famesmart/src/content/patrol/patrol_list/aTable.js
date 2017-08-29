@@ -11,14 +11,17 @@ import {
 	Popconfirm, 
 	Pagination,
 	Menu, 
-	Dropdown 
+	Dropdown,
+	Radio ,
+	Collapse,
 } from 'antd'
 import appData_local from './../../../assert/Ajax_local';
 import appData from './../../../assert/Ajax';
-import ACell from './aCell';
 import  '../../../App.css'
 const { Option, OptGroup } = Select
+const {Panel} = Collapse;
 const Search = Input.Search;
+const RadioGroup = Radio.Group;
 require('./index.css');
 export default class pointTable extends Component {
 	constructor(props) {
@@ -33,7 +36,10 @@ export default class pointTable extends Component {
 			comm_name:'',
 
 			SearchType: 'status',
-			SearchText: '输入状态查询。'
+			SearchText: '输入状态查询。',
+
+            alert_lvl:[],
+            area_code:[],
 		};
 
 		this.columns = [
@@ -90,6 +96,7 @@ export default class pointTable extends Component {
 		
 		this.Router;
 		this.mess = null;
+		this.duration='';
         this.TokenMess = '';
 	}
 
@@ -169,58 +176,32 @@ export default class pointTable extends Component {
 		})
 	}
 
-	// 搜索框
-	_searchMob(val){
-		let TokenMess = this.TokenMess;
-		let afteruri = 'entrance_records/search';
-		let body = {}
-		let searchType =  this.state.SearchType;
-		if( searchType == "status"){
-			body = {
-            	"owner_group":"居民",
-				"status": val,
-			}
-		} else if( searchType == "alert_lvl"){
-			body = {
-				"owner_group":"居民",
-				"alert_lvl": val,
-			}
-		} else if(val == 'month'){
-			body = {
-				"owner_group":"居民",
-				"month": val
-			}
-		}
-		appData_local._dataPost(afteruri,body,(res) => {
-			let pageSum = Math.ceil(res.total/res.per_page)
-			let data = res.data;
-			let len = data.length;
-			this.setState({
-				total:res.total,
-				dataSource: data,
-				count:len,
-			})
-		},TokenMess)
+    onCheckChange(key) {
+		this.duration = key.target.value
 	}
 
-	_handleChange(val){
-		if(val == 'status'){
-			this.setState({
-				SearchType: 'status',
-				SearchText: '输入状态查询。'
-			})
-		} else if(val == 'alert_lvl'){
-			this.setState({
-				SearchType: 'alert_lvl',
-				SearchText: '输入等级查询。'
-			})
-		} else if(val == 'month'){
-			this.setState({
-				SearchType: 'month',
-				SearchText:'输入时间查询。'
-			})
+    callback() {
+        let TokenMess = this.TokenMess;
+		let userMess = this.userMess;
+		let afteruri = 'entrance_records/search';
+		let body = {};
+		body = {
+            "owner_group":"物业",
+            "duration": this.duration,
+            "per_page":10
 		}
-	}
+        appData_local._dataPost(afteruri,body,(res) => {
+            let data = res.data
+            let pageSum = Math.ceil(res.total/res.per_page)
+            let len = data.length;
+            this.setState({
+                total:res.total,
+                dataSource: data,
+                count:len,
+            })
+        },TokenMess)
+		
+    }
 
 	render() {
 		const { dataSource } = this.state;
@@ -240,26 +221,24 @@ export default class pointTable extends Component {
 					<Button style={{height: 32}} onClick={()=>window.print()}>打印</Button>
 				</Col>
 			</Row>
-			<Row  className="printHidden" style={{height: 32, margin: 10}}>
-				<Col span={24} style={{textAlign:'right'}}>
-					<Search
-						className="printHidden"
-						placeholder={this.state.SearchText}
-						style={{ minWidth: 200, maxWidth: 300 }}
-						onSearch={value => this._searchMob(value)}
-					/>
-					<Select
-						defaultValue="status"
-						style={{width: 100, marginLeft: 20}}
-						onChange={this._handleChange.bind(this)}
-					>
-						<Option key="status">状态</Option>
-						<Option key="alert_lvl">等级</Option>
-						<Option key="month">时间</Option>
-					</Select>
-				</Col>
-			</Row>
-			
+                
+                <Row style={{margin: 10}}>
+                    <Collapse disabled>
+                        <Panel header="精确筛选" key="1">
+                             <RadioGroup  onChange={this.onCheckChange.bind(this)} style={{width: '100%'}}>
+                                <Row style={{borderBottom: '1px solid #aaa',padding: "12px 0"}}>
+                                    <Col span={2} style={{fontWeight: 'bold', fontSize: 14}}>时间段：</Col>
+                                    <Col span={3}><Radio  value="day" style={{fontSize: 14}}>当天</Radio></Col>
+                                    <Col span={3}><Radio  value="week" style={{fontSize: 14}}>当周</Radio></Col>
+                                    <Col span={3}><Radio  value="month" style={{fontSize: 14}}>当月</Radio></Col>
+                                </Row>
+                            </RadioGroup >
+                            <Row type="flex" justify="end">
+                                <Button style={{marginTop: '10px'}} size="large" type="primary" onClick={()=>this.callback()}>搜索</Button>
+                            </Row> 
+                        </Panel>
+                    </Collapse>
+                </Row>
 			<Table bordered  dataSource={this.state.dataSource} columns={columns} rowKey='key' pagination={false} style={{marginBottom: 20}}/>
 			<Row type="flex" justify="end">
 			<Pagination showQuickJumper defaultCurrent={1} current={this.state.pageNum} total={this.state.total} onChange={this._pageChange.bind(this)} />

@@ -57,6 +57,13 @@ class pointTable extends Component {
 			updataType: true,
 			volType: false,
 			_modal: false,			
+			open_date_Type:"",
+			open_date_Text:"",
+			vld_start_Type: '',
+			vld_start_Text: '',
+			vld_end_Type: '',
+			vld_end_Text:''
+
 		};
 		this.userMess;
 		this.Router;
@@ -358,52 +365,94 @@ class pointTable extends Component {
 							pic_path = val;
 						}
 					})
-					if(this.activeMess == undefined){
-							afteruri  = 'activity/add';
-							body = {
-								"comm_code":  this.userMess.comm_code,
-								"title":  this.state.theme,
-								"detail":  this.state.content,
-								"pic_path":pic_path,
-								"join_limit": this.state.limite,
-								"type": this.state.type,
-								"score_type": this.state.score_type,
-								"score": this.state.score,
-								"pub_date": time,
-								"open_date": this.state.open_date,
-								"vld_start":  this.state.vld_start,
-								"vld_end":  this.state.vld_end,
-								"open_add": this.state.open_add,
-							}
-					} else {
-							afteruri  = 'activity/update';
-							body= {
-								"comm_code":  this.userMess.comm_code,
-								"title":  this.state.theme,
-								"detail":  this.state.content,
-								"pic_path": pic_path,
-								"join_limit": this.state.limite,
-								"type": this.state.type,
-								"score_type": this.state.score_type,
-								"score": this.state.score,
-								"pub_date": time,
-								"open_date": this.state.open_date,
-								"vld_start":  this.state.vld_start,
-								"vld_end":  this.state.vld_end,
-								"activity_no": this.activeMess.activity_no,
-								"join_cnt": this.activeMess.join_cnt,
-								"sign_cnt": this.activeMess.sign_cnt,
-								"open_add": this.state.open_add,
-							}
-					}
-					appData._dataPost(afteruri, body, (res) =>{
-						if(res){
-							this._jump('back')
+					
+					if(moment(time).isBefore(this.state.vld_start) || moment(time).isSame(this.state.vld_start)){
+						this.setState({
+							vld_start_Type: '',
+							vld_start_Text: '',
+						})
+
+						if(moment(this.state.vld_start).isBefore(this.state.vld_end) || moment(this.state.vld_start).isSame(this.state.vld_end)){
+							this.setState({
+								vld_end_Type: '',
+								vld_end_Text: ''
+							})
+							if(moment(this.state.vld_end).isBefore(this.state.open_date) || moment(this.state.vld_end).isSame(this.state.open_date)){
+								this.setState({
+									open_date_Type: '',
+									open_date_Text: ''
+								})
+
+								this._success(pic_path,time)
+							}else {
+								this.setState({
+									open_date_Type: 'error',
+									open_date_Text: '活动时间不得早于报名结束时间'
+								})
+							}							
+						} else {
+							this.setState({
+								vld_end_Type: 'error',
+								vld_end_Text:'结束时间不得早于开始时间'
+							})
 						}
-					})
+					} else {
+						this.setState({
+							vld_start_Type: 'error',
+							vld_start_Text: '开始时间不得早于当天时间',
+						})
+					}
 				}
 			})
 		}
+	}
+
+	_success(pic_path,time){
+		let afteruri  = '';
+		let body  = {}
+		if(this.activeMess == undefined){
+			afteruri  = 'activity/add';
+			body = {
+				"comm_code":  this.userMess.comm_code,
+				"title":  this.state.theme,
+				"detail":  this.state.content,
+				"pic_path":pic_path,
+				"join_limit": this.state.limite,
+				"type": this.state.type,
+				"score_type": this.state.score_type,
+				"score": this.state.score,
+				"pub_date": time,
+				"open_date": this.state.open_date,
+				"vld_start":  this.state.vld_start,
+				"vld_end":  this.state.vld_end,
+				"open_add": this.state.open_add,
+			}
+		} else {
+			afteruri  = 'activity/update';
+			body= {
+				"comm_code":  this.userMess.comm_code,
+				"title":  this.state.theme,
+				"detail":  this.state.content,
+				"pic_path": pic_path,
+				"join_limit": this.state.limite,
+				"type": this.state.type,
+				"score_type": this.state.score_type,
+				"score": this.state.score,
+				"pub_date": time,
+				"open_date": this.state.open_date,
+				"vld_start":  this.state.vld_start,
+				"vld_end":  this.state.vld_end,
+				"activity_no": this.activeMess.activity_no,
+				"join_cnt": this.activeMess.join_cnt,
+				"sign_cnt": this.activeMess.sign_cnt,
+				"open_add": this.state.open_add,
+			}
+		}
+		appData._dataPost(afteruri, body, (res) =>{
+			if(res){
+				this._jump('back')
+			}
+		})
 	}
 
 	//操作栏功能
@@ -568,9 +617,16 @@ class pointTable extends Component {
 						<Col span={8}>
 							<FormItem
 								{...formItemLayout}
+								validateStatus = {this.state.open_date_Type}
+								help={this.state.open_date_Text}
 								label="活动日期">
 								{getFieldDecorator('open_date',{
-									initialValue: moment(this.state.open_date, 'YYYY-MM-DD')
+									initialValue: moment(this.state.open_date, 'YYYY-MM-DD'),
+									rules:[
+										{
+											required: true, message: '请选择活动日期'
+										}
+									]
 								})(
 									<DatePicker placeholder="选择活动日期" disabled={this.state.updataType} onChange={this._timeInput.bind(this,'open_date')}/>
 								)}
@@ -579,9 +635,16 @@ class pointTable extends Component {
 						<Col span={8}>
 							<FormItem
 								{...formItemLayout}
+								validateStatus = {this.state.vld_start_Type}
+								help={this.state.vld_start_Text}
 								label="报名开始">
 								{getFieldDecorator('vld_start',{
-									initialValue: moment(this.state.vld_start, 'YYYY-MM-DD')
+									initialValue: moment(this.state.vld_start, 'YYYY-MM-DD'),
+							rules:[
+								{
+									required: true, message: '请选择开始日期'
+								}
+							]
 								})(
 									<DatePicker  placeholder="报名开始日期"	showToday  onChange={this._timeInput.bind(this,'vld_start')} disabled={this.state.updataType}/>
 								)}
@@ -590,9 +653,16 @@ class pointTable extends Component {
 						<Col span={8}>
 							<FormItem
 								{...formItemLayout}
+								validateStatus = {this.state.vld_end_Type}
+								help={this.state.vld_end_Text}
 								label="报名结束">
 								{getFieldDecorator('vld_end',{
-									initialValue: moment(this.state.vld_end, 'YYYY-MM-DD')
+									initialValue: moment(this.state.vld_end, 'YYYY-MM-DD'),
+									rules:[
+										{
+											required: true, message: '请选择结束日期'
+										}
+									]
 								})(
 									<DatePicker placeholder="报名结束日期"  onChange={this._timeInput.bind(this,'vld_end')} disabled={this.state.updataType}/>
 								)}
@@ -610,7 +680,7 @@ class pointTable extends Component {
 							{getFieldDecorator('content',{
 								initialValue: this.state.content,
 								rules:[
-									{ max: 300, message:'超过输入最大长度！'},
+									{ max: 255, message:'最大输入255个文字！'},
 									{required: true, message:"请输入活动内容"}
 									]
 							})(
