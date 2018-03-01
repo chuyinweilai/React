@@ -4,4 +4,5 @@ clone下项目后，进入multipage目录,先执行：
     yarn install
     然后执行：
     yarn start
-即可成功运行demo
+即可成功运行demo/n
+简书地址：https://www.jianshu.com/p/7ffdf1925d12
