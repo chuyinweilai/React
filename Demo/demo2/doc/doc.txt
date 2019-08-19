@@ -1,4 +1,0 @@
-app 目录用于存放项目代码， 
-dist 目录为编译后的项目文件， 
-webpack.config.js 为 webpack 的配置文件。
-html-webpack-plugin： 但是我们还需要一个html文件来加载编译后的代码，这就需要用到一个webpack插件
